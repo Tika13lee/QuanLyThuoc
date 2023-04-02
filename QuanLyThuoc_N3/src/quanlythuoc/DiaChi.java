@@ -4,7 +4,29 @@ import java.util.Objects;
 
 public class DiaChi {
 	private String maDiaChi;
-	private String soNha, tenPhuong, phuong, quan, thanhPho, quocGia;
+	private String soNha;
+	private String tenDuong;
+	private String phuong;
+	private String quan;
+	private String thanhPho;
+	private String quocGia;
+
+	public DiaChi(String maDiaChi, String soNha, String tenDuong, String phuong, String quan, String thanhPho,
+			String quocGia) {
+		super();
+		this.maDiaChi = maDiaChi;
+		this.soNha = soNha;
+		this.tenDuong = tenDuong;
+		this.phuong = phuong;
+		this.quan = quan;
+		this.thanhPho = thanhPho;
+		this.quocGia = quocGia;
+	}
+
+	public DiaChi() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	public String getMaDiaChi() {
 		return maDiaChi;
@@ -22,12 +44,12 @@ public class DiaChi {
 		this.soNha = soNha;
 	}
 
-	public String getTenPhuong() {
-		return tenPhuong;
+	public String getTenDuong() {
+		return tenDuong;
 	}
 
-	public void setTenPhuong(String tenPhuong) {
-		this.tenPhuong = tenPhuong;
+	public void setTenDuong(String tenDuong) {
+		this.tenDuong = tenDuong;
 	}
 
 	public String getPhuong() {
@@ -62,26 +84,9 @@ public class DiaChi {
 		this.quocGia = quocGia;
 	}
 
-	public DiaChi(String maDiaChi, String soNha, String tenPhuong, String phuong, String quan, String thanhPho,
-			String quocGia) {
-		super();
-		this.maDiaChi = maDiaChi;
-		this.soNha = soNha;
-		this.tenPhuong = tenPhuong;
-		this.phuong = phuong;
-		this.quan = quan;
-		this.thanhPho = thanhPho;
-		this.quocGia = quocGia;
-	}
-
-	public DiaChi() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
 	@Override
 	public int hashCode() {
-		return Objects.hash(maDiaChi, phuong, quan, quocGia, soNha, tenPhuong, thanhPho);
+		return Objects.hash(maDiaChi);
 	}
 
 	@Override
@@ -93,15 +98,12 @@ public class DiaChi {
 		if (getClass() != obj.getClass())
 			return false;
 		DiaChi other = (DiaChi) obj;
-		return Objects.equals(maDiaChi, other.maDiaChi) && Objects.equals(phuong, other.phuong)
-				&& Objects.equals(quan, other.quan) && Objects.equals(quocGia, other.quocGia)
-				&& Objects.equals(soNha, other.soNha) && Objects.equals(tenPhuong, other.tenPhuong)
-				&& Objects.equals(thanhPho, other.thanhPho);
+		return Objects.equals(maDiaChi, other.maDiaChi);
 	}
 
 	@Override
 	public String toString() {
-		return "DiaChi [maDiaChi=" + maDiaChi + ", soNha=" + soNha + ", tenPhuong=" + tenPhuong + ", phuong=" + phuong
+		return "DiaChi [maDiaChi=" + maDiaChi + ", soNha=" + soNha + ", tenDuong=" + tenDuong + ", phuong=" + phuong
 				+ ", quan=" + quan + ", thanhPho=" + thanhPho + ", quocGia=" + quocGia + "]";
 	}
 
