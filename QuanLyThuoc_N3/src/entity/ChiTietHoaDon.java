@@ -1,6 +1,7 @@
 package entity;
 
 public class ChiTietHoaDon {
+	private Thuoc thuoc;
 	private double donGia;
 	private int soLuong;
 	private String donViTinh;
@@ -11,7 +12,9 @@ public class ChiTietHoaDon {
 		super();
 	}
 
-	public ChiTietHoaDon(double donGia, int soLuong, String donViTinh, double phiVAT) {
+	public ChiTietHoaDon(Thuoc thuoc, double donGia, int soLuong, String donViTinh, double phiVAT) {
+		super();
+		this.thuoc = thuoc;
 		this.donGia = donGia;
 		this.soLuong = soLuong;
 		this.donViTinh = donViTinh;
@@ -19,6 +22,14 @@ public class ChiTietHoaDon {
 	}
 
 	// getter-setter
+	public Thuoc getThuoc() {
+		return thuoc;
+	}
+
+	public void setThuoc(Thuoc thuoc) {
+		this.thuoc = thuoc;
+	}
+
 	public double getDonGia() {
 		return donGia;
 	}
@@ -55,13 +66,13 @@ public class ChiTietHoaDon {
 	public double soTienPhaiTra() {
 		double tienChuaVAT = soLuong * donGia;
 		double tienVAT = tienChuaVAT * phiVAT / 100.0;
-		return 	tienVAT;
+		return tienVAT;
 	}
-	//toString
-	public String toString()
-	{
-		return "ChiTietHoaDon [donGia=" + donGia + ", soLuong=" + soLuong + ", donViTinh=" + donViTinh + ", phiVAT=" + phiVAT 
-				+ ", soTienPhaiTra=" + soTienPhaiTra() + "]";
+
+	// toString
+	public String toString() {
+		return "ChiTietHoaDon [Thuoc="+ thuoc +"donGia=" + donGia + ", soLuong=" + soLuong + ", donViTinh=" + donViTinh + ", phiVAT="
+				+ phiVAT + ", soTienPhaiTra=" + soTienPhaiTra() + "]";
 	}
 
 }
