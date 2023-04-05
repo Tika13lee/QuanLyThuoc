@@ -1,4 +1,4 @@
-package quanlythuoc;
+package entity;
 
 import java.util.Objects;
 

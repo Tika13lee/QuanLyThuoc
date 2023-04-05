@@ -1,4 +1,4 @@
-package quanlythuoc;
+package entity;
 
 public class ChiTietHoaDon {
 	private double donGia;

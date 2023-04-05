@@ -1,4 +1,4 @@
-package quanlythuoc;
+package entity;
 
 import java.util.Objects;
 
@@ -7,28 +7,27 @@ public class KhachHang {
 	private String tenKH;
 	private String diaChi;
 	private String soDT;
-	private String CCCD;
+	private String soCCCD;
 	private int tuoi;
 	private boolean gioiTinh;
+	private DiaChi diaChiKH;
 
-	public KhachHang(String maKH, String tenKH, String diaChi, String soDT, String cCCD, int tuoi, boolean gioiTinh) {
+	public KhachHang(String maKH, String tenKH, String diaChi, String soDT, String soCCCD, int tuoi, boolean gioiTinh,
+			DiaChi diaChiKH) {
 		super();
 		this.maKH = maKH;
 		this.tenKH = tenKH;
 		this.diaChi = diaChi;
 		this.soDT = soDT;
-		CCCD = cCCD;
+		this.soCCCD = soCCCD;
 		this.tuoi = tuoi;
 		this.gioiTinh = gioiTinh;
+		this.diaChiKH = diaChiKH;
 	}
 
 	public KhachHang() {
 		super();
 		// TODO Auto-generated constructor stub
-	}
-
-	public KhachHang(String maKH) {
-		this.maKH = maKH;
 	}
 
 	public String getMaKH() {
@@ -63,12 +62,12 @@ public class KhachHang {
 		this.soDT = soDT;
 	}
 
-	public String getCCCD() {
-		return CCCD;
+	public String getsoCCCD() {
+		return soCCCD;
 	}
 
-	public void setCCCD(String cCCD) {
-		CCCD = cCCD;
+	public void setsoCCCD(String soCCCD) {
+		soCCCD = soCCCD;
 	}
 
 	public int getTuoi() {
@@ -85,6 +84,14 @@ public class KhachHang {
 
 	public void setGioiTinh(boolean gioiTinh) {
 		this.gioiTinh = gioiTinh;
+	}
+
+	public DiaChi getDiaChiKH() {
+		return diaChiKH;
+	}
+
+	public void setDiaChiKH(DiaChi diaChiKH) {
+		this.diaChiKH = diaChiKH;
 	}
 
 	@Override
@@ -106,8 +113,8 @@ public class KhachHang {
 
 	@Override
 	public String toString() {
-		return "KhachHang [maKH=" + maKH + ", tenKH=" + tenKH + ", diaChi=" + diaChi + ", soDT=" + soDT + ", CCCD="
-				+ CCCD + ", tuoi=" + tuoi + ", gioiTinh=" + gioiTinh + "]";
+		return "KhachHang [maKH=" + maKH + ", tenKH=" + tenKH + ", diaChi=" + diaChi + ", soDT=" + soDT + ", soCCCD="
+				+ soCCCD + ", tuoi=" + tuoi + ", gioiTinh=" + gioiTinh + ", diaChiKH=" + diaChiKH + "]";
 	}
 
 }
