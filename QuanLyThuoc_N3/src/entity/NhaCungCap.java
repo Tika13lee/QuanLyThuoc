@@ -7,21 +7,22 @@ public class NhaCungCap {
 	private String tenNCC;
 	private String soDT;
 	private String email;
-	private DiaChi diaChiNCC;
+	private String diaChi;
 
-	public NhaCungCap(String maNCC, String tenNCC, String soDT, String email, DiaChi diaChiNCC) {
+	public NhaCungCap(String maNCC, String tenNCC, String soDT, String email, String diaChi) {
 		super();
 		this.maNCC = maNCC;
 		this.tenNCC = tenNCC;
 		this.soDT = soDT;
 		this.email = email;
-		this.diaChiNCC = diaChiNCC;
+		this.diaChi = diaChi;
 	}
 
 	public NhaCungCap() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
 
 	public String getMaNCC() {
 		return maNCC;
@@ -39,12 +40,12 @@ public class NhaCungCap {
 		this.tenNCC = tenNCC;
 	}
 
-	public String getSDT() {
+	public String getSoDT() {
 		return soDT;
 	}
 
 	public void setSoDT(String soDT) {
-		soDT = soDT;
+		this.soDT = soDT;
 	}
 
 	public String getEmail() {
@@ -55,12 +56,12 @@ public class NhaCungCap {
 		this.email = email;
 	}
 
-	public DiaChi getDiaChiNCC() {
-		return diaChiNCC;
+	public String getDiaChi() {
+		return diaChi;
 	}
 
-	public void setDiaChiNCC(DiaChi diaChiNCC) {
-		this.diaChiNCC = diaChiNCC;
+	public void setDiaChi(String diaChi) {
+		this.diaChi = diaChi;
 	}
 
 	@Override
@@ -82,8 +83,8 @@ public class NhaCungCap {
 
 	@Override
 	public String toString() {
-		return "NhaCungCap [maNCC=" + maNCC + ", tenNCC=" + tenNCC + ", soDT=" + soDT + ", email=" + email
-				+ ", diaChiNCC=" + diaChiNCC + "]";
+		return "NhaCungCap [maNCC=" + maNCC + ", tenNCC=" + tenNCC + ", soDT=" + soDT + ", email=" + email + ", diaChi="
+				+ diaChi + "]";
 	}
-	
+
 }

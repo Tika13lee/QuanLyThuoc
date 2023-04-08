@@ -6,22 +6,23 @@ public class ChiTietHoaDon {
 	private int soLuong;
 	private String donViTinh;
 	private double phiVAT;
+	private HoaDon hoaDon;
 
-	// constructor
 	public ChiTietHoaDon() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 
-	public ChiTietHoaDon(Thuoc thuoc, double donGia, int soLuong, String donViTinh, double phiVAT) {
+	public ChiTietHoaDon(Thuoc thuoc, double donGia, int soLuong, String donViTinh, double phiVAT, HoaDon hoaDon) {
 		super();
 		this.thuoc = thuoc;
 		this.donGia = donGia;
 		this.soLuong = soLuong;
 		this.donViTinh = donViTinh;
 		this.phiVAT = phiVAT;
+		this.hoaDon = hoaDon;
 	}
 
-	// getter-setter
 	public Thuoc getThuoc() {
 		return thuoc;
 	}
@@ -62,6 +63,14 @@ public class ChiTietHoaDon {
 		this.phiVAT = phiVAT;
 	}
 
+	public HoaDon getHoaDon() {
+		return hoaDon;
+	}
+
+	public void setHoaDon(HoaDon hoaDon) {
+		this.hoaDon = hoaDon;
+	}
+
 	// tinh tien phai tra
 	public double soTienPhaiTra() {
 		double tienChuaVAT = soLuong * donGia;
@@ -69,10 +78,12 @@ public class ChiTietHoaDon {
 		return tienVAT;
 	}
 
-	// toString
+	@Override
 	public String toString() {
-		return "ChiTietHoaDon [Thuoc="+ thuoc +"donGia=" + donGia + ", soLuong=" + soLuong + ", donViTinh=" + donViTinh + ", phiVAT="
-				+ phiVAT + ", soTienPhaiTra=" + soTienPhaiTra() + "]";
+		return "ChiTietHoaDon [thuoc=" + thuoc + ", donGia=" + donGia + ", soLuong=" + soLuong + ", donViTinh="
+				+ donViTinh + ", phiVAT=" + phiVAT + ", hoaDon=" + hoaDon + "]";
 	}
+
+	
 
 }

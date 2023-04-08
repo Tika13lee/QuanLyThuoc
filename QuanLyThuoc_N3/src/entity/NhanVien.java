@@ -4,28 +4,30 @@ import java.util.Objects;
 
 public class NhanVien {
 	private String maNV;
+	private String hoNV;
 	private String tenNV;
 	private int tuoi;
 	private String soCCCD;
 	private boolean gioiTinh;
 	private TaiKhoan taiKhoan;
-	private DiaChi diaChiNV;
+	private String diaChi;
 
-	public NhanVien(String maNV, String tenNV, int tuoi, String soCCCD, boolean gioiTinh, TaiKhoan taiKhoan,
-			DiaChi diaChiNV) {
+	public NhanVien() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public NhanVien(String maNV, String hoNV, String tenNV, int tuoi, String soCCCD, boolean gioiTinh,
+			TaiKhoan taiKhoan, String diaChi) {
 		super();
 		this.maNV = maNV;
+		this.hoNV = hoNV;
 		this.tenNV = tenNV;
 		this.tuoi = tuoi;
 		this.soCCCD = soCCCD;
 		this.gioiTinh = gioiTinh;
 		this.taiKhoan = taiKhoan;
-		this.diaChiNV = diaChiNV;
-	}
-
-	public NhanVien() {
-		super();
-		// TODO Auto-generated constructor stub
+		this.diaChi = diaChi;
 	}
 
 	public String getMaNV() {
@@ -34,6 +36,14 @@ public class NhanVien {
 
 	public void setMaNV(String maNV) {
 		this.maNV = maNV;
+	}
+
+	public String getHoNV() {
+		return hoNV;
+	}
+
+	public void setHoNV(String hoNV) {
+		this.hoNV = hoNV;
 	}
 
 	public String getTenNV() {
@@ -76,12 +86,12 @@ public class NhanVien {
 		this.taiKhoan = taiKhoan;
 	}
 
-	public DiaChi getDiaChiNV() {
-		return diaChiNV;
+	public String getDiaChi() {
+		return diaChi;
 	}
 
-	public void setDiaChiNV(DiaChi diaChiNV) {
-		this.diaChiNV = diaChiNV;
+	public void setDiaChi(String diaChi) {
+		this.diaChi = diaChi;
 	}
 
 	@Override
@@ -103,8 +113,8 @@ public class NhanVien {
 
 	@Override
 	public String toString() {
-		return "NhanVien [maNV=" + maNV + ", tenNV=" + tenNV + ", tuoi=" + tuoi + ", soCCCD=" + soCCCD + ", gioiTinh="
-				+ gioiTinh + ", taiKhoan=" + taiKhoan + ", diaChiNV=" + diaChiNV + "]";
+		return "NhanVien [maNV=" + maNV + ", hoNV=" + hoNV + ", tenNV=" + tenNV + ", tuoi=" + tuoi + ", soCCCD="
+				+ soCCCD + ", gioiTinh=" + gioiTinh + ", taiKhoan=" + taiKhoan + ", diaChi=" + diaChi + "]";
 	}
 
 }
