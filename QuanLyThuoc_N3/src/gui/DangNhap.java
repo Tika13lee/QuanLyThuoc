@@ -56,7 +56,7 @@ public class DangNhap extends JFrame {
 		
 		lblImg = new JLabel("New label");
 		lblImg.setIcon(new ImageIcon(
-				"C:/Users/DELL/eclipse-workspace/BTLon_Java/QuanLyThuoc/QuanLyThuoc_N3/src/img/bg-login.png"));
+				"src/img/bg-login.png"));
 		lblImg.setBounds(0, 0, 800, 580);
 		this.add(lblImg);
 	}
