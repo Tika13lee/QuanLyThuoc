@@ -58,7 +58,7 @@ public class formThuoc extends JFrame {
 
 		Box bb = new Box(BoxLayout.Y_AXIS);
 		Box ba = new Box(BoxLayout.Y_AXIS);
-		ba.setBorder(BorderFactory.createTitledBorder("tim kiem thong tin"));
+		ba.setBorder(BorderFactory.createTitledBorder("tìm kiếm thông tin:"));
 		bb.setBorder(BorderFactory.createTitledBorder("thông tin thuốc"));
 		
 		Box b1 = new Box(BoxLayout.X_AXIS);
@@ -66,32 +66,34 @@ public class formThuoc extends JFrame {
 		Box b3 = new Box(BoxLayout.X_AXIS);
 		Box b4 = new Box(BoxLayout.X_AXIS);
 
-		lbltitle = new JLabel("Quan ly thuoc");
+		lbltitle = new JLabel("QUẢN LÝ THUỐC");
 		lbltitle.setFont(new Font("arial", Font.BOLD, 24));
 		lbltitle.setForeground(Color.pink);
 
-		b1.add(lblMaThuoc = new JLabel("ma:"));
+		b1.add(lblMaThuoc = new JLabel("mã:"));
 		b1.add(txtMaThuoc = new JTextField());
-		b1.add(lblTenThuoc = new JLabel("ten thuoc"));
+		b1.add(lblTenThuoc = new JLabel("tên thuốc:"));
 		b1.add(txtTenThuoc = new JTextField());
 
-		b2.add(lblSoLuong = new JLabel("so luong:"));
+		b2.add(lblSoLuong = new JLabel("số lượng:"));
 		b2.add(txtSoLuong = new JTextField());
-		b2.add(lblDonGia = new JLabel("don gia"));
+		b2.add(lblDonGia = new JLabel("đơn giá:"));
 		b2.add(txtDonGia = new JTextField());
 
 		b3.add(lblngaySX = new JLabel("ngày sản xuất:"));
 		b3.add(txtngaySX = new JTextField());
-		b3.add(lblhanSD = new JLabel("han su dung:"));
+		b3.add(lblhanSD = new JLabel("hạn sử dụng:"));
 		b3.add(txtHanSD = new JTextField());
 
 		cboPhanLoai = new JComboBox<>();
-		cboPhanLoai.addItem("thuoc kê đơn");
-		cboPhanLoai.addItem("thuoc không kê đơn");
+		cboPhanLoai.addItem("thuốc kê đơn");
+		cboPhanLoai.addItem("thuốc không kê đơn");
 
 		b4.add(lblnhaCC = new JLabel("nhà cung cấp:"));
 		b4.add(txtnhaCC = new JTextField());
-		b4.add(lblPhanLoai = new JLabel("phan loai:"));
+		b4.add(Box.createHorizontalStrut(150));
+		b4.add(lblPhanLoai = new JLabel("phân loại:"));
+		b4.add(Box.createHorizontalStrut(30));
 		b4.add(cboPhanLoai);
 
 		b.add(Box.createVerticalStrut(15));
@@ -118,8 +120,8 @@ public class formThuoc extends JFrame {
 		b.add(ba);
 		bAll.add(lbltitle);
 		bAll.add(b);
-		bAll.add(Box.createVerticalStrut(20));
-//		this.add(b, BorderLayout.NORTH);
+		bAll.add(Box.createVerticalStrut(50));
+
 		
 		//
 
