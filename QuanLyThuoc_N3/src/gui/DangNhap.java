@@ -1,18 +1,15 @@
 package gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
@@ -31,6 +28,8 @@ public class DangNhap extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setVisible(true);
+
+		setLayout(null);
 //		setExtendedState(MAXIMIZED_BOTH);
 
 		showGUI();
@@ -40,47 +39,43 @@ public class DangNhap extends JFrame implements ActionListener {
 	public void showGUI() {
 
 		// title
-		JPanel jpTitle = new JPanel();
-		this.add(jpTitle, BorderLayout.NORTH);
-		jpTitle.add(lblTitle = new JLabel("PHẦN MỀM QUẢN LÝ HIỆU THUỐC"));
-		lblTitle.setFont(new Font("Arial", Font.PLAIN, 30));
+		lblTitle = new JLabel("PHẦN MỀM QUẢN LÝ HIỆU THUỐC");
+		lblTitle.setFont(new Font("Time new roman", Font.PLAIN, 30));
 		lblTitle.setForeground(Color.BLUE);
+		lblTitle.setBounds(155, 23, 500, 30);
 
 		// login
-		JPanel jpLogIn = new JPanel();
-		jpLogIn.setLayout(null);
-		jpLogIn.setBackground(Color.WHITE);
-		this.add(jpLogIn);
-
 		lblUser = new JLabel("User: ");
 		lblUser.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblUser.setBounds(410, 110, 45, 13);
+		lblUser.setBounds(410, 140, 45, 13);
 
 		txtUser = new JTextField();
-		txtUser.setBounds(515, 100, 245, 30);
+		txtUser.setBounds(515, 130, 245, 30);
 		txtUser.setColumns(10);
 
 		lblPass = new JLabel("Password:");
 		lblPass.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblPass.setBounds(410, 170, 86, 13);
+		lblPass.setBounds(410, 200, 86, 13);
 
 		txtPass = new JPasswordField();
-		txtPass.setBounds(515, 160, 245, 30);
+		txtPass.setBounds(515, 190, 245, 30);
 		txtPass.setColumns(10);
 
 		btnLogIn = new JButton("Đăng nhập");
-		btnLogIn.setBounds(510, 240, 100, 30);
+		btnLogIn.setBounds(530, 270, 100, 30);
 
-		lblImg = new JLabel("New label");
-		lblImg.setIcon(new ImageIcon("src/img/bg-login.png"));
-		lblImg.setBounds(0, 0, 800, 500);
+		lblImg = new JLabel();
+		ImageIcon img = new ImageIcon("src/img/bg-login.png");
+		lblImg.setIcon(img);
+		lblImg.setBounds(0, 0, 800, 550);
 
-		jpLogIn.add(lblUser);
-		jpLogIn.add(txtUser);
-		jpLogIn.add(lblPass);
-		jpLogIn.add(txtPass);
-		jpLogIn.add(btnLogIn);
-		jpLogIn.add(lblImg);
+		add(lblTitle);
+		add(lblUser);
+		add(txtUser);
+		add(lblPass);
+		add(txtPass);
+		add(btnLogIn);
+		add(lblImg);
 
 		// set data
 		txtUser.setText("nhom3");
@@ -88,6 +83,7 @@ public class DangNhap extends JFrame implements ActionListener {
 
 		// event
 		btnLogIn.addActionListener(this);
+
 	}
 
 	public static void main(String[] args) {
