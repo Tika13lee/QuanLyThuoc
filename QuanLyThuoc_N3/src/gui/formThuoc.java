@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.Calendar;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -23,18 +24,17 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-//import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.JDateChooser;
 
 public class formThuoc extends JFrame {
 	private JLabel lblMaThuoc, lblTenThuoc, lblPhanLoai, lblhanSD, lbldonViTinh, lblSoLuong, lblDonGia, lblngaySX,
 			lblnhaCC;
-	private JTextField txtMaThuoc, txtTenThuoc, txtHanSD, txtDonViTinh, txtSoLuong, txtDonGia, txtnhaCC, txtngaySX,
-			txtTimKiem;
-//	private JDateChooser datehanSD;
+	private JTextField txtMaThuoc, txtTenThuoc, txtDonViTinh, txtSoLuong, txtDonGia, txtnhaCC, txtTimKiem;
+	private JDateChooser jdcHanSD, jdcNgaySX;
 	private JComboBox cboPhanLoai;
 	private DefaultTableModel model;
 	private JTable table;
-	private JButton btnTimKiem, btnLamMoi, btnThoat ;
+	private JButton btnTimKiem, btnLamMoi, btnThoat;
 	private JLabel lblTimKiem;
 	private JLabel lbltitle;
 
@@ -51,7 +51,7 @@ public class formThuoc extends JFrame {
 		JPanel pn = new JPanel();
 		pn.setLayout(new BorderLayout());
 		pn.setBorder(new EmptyBorder(20, 50, 20, 50));
-		
+
 		// north
 		Box bAll = new Box(BoxLayout.Y_AXIS);
 		Box b = new Box(BoxLayout.X_AXIS);
@@ -60,7 +60,7 @@ public class formThuoc extends JFrame {
 		Box ba = new Box(BoxLayout.Y_AXIS);
 		ba.setBorder(BorderFactory.createTitledBorder("tìm kiếm thông tin:"));
 		bb.setBorder(BorderFactory.createTitledBorder("thông tin thuốc"));
-		
+
 		Box b1 = new Box(BoxLayout.X_AXIS);
 		Box b2 = new Box(BoxLayout.X_AXIS);
 		Box b3 = new Box(BoxLayout.X_AXIS);
@@ -81,9 +81,11 @@ public class formThuoc extends JFrame {
 		b2.add(txtDonGia = new JTextField());
 
 		b3.add(lblngaySX = new JLabel("ngày sản xuất:"));
-		b3.add(txtngaySX = new JTextField());
+		b3.add(jdcNgaySX = new JDateChooser());
+		jdcNgaySX.setCalendar(Calendar.getInstance());
 		b3.add(lblhanSD = new JLabel("hạn sử dụng:"));
-		b3.add(txtHanSD = new JTextField());
+		b3.add(jdcHanSD = new JDateChooser());
+		
 
 		cboPhanLoai = new JComboBox<>();
 		cboPhanLoai.addItem("thuốc kê đơn");
@@ -115,14 +117,13 @@ public class formThuoc extends JFrame {
 		pnTim.add(txtTimKiem = new JTextField(20));
 		pnTim.add(btnTimKiem = new JButton("Tim kiếm"));
 		ba.add(pnTim);
-		
+
 		b.add(Box.createHorizontalStrut(50));
 		b.add(ba);
 		bAll.add(lbltitle);
 		bAll.add(b);
 		bAll.add(Box.createVerticalStrut(50));
 
-		
 		//
 
 		lblMaThuoc.setPreferredSize(new Dimension(100, 20));
@@ -130,27 +131,27 @@ public class formThuoc extends JFrame {
 		lblSoLuong.setPreferredSize(new Dimension(100, 20));
 		lblngaySX.setPreferredSize(new Dimension(100, 20));
 		lblnhaCC.setPreferredSize(new Dimension(100, 20));
-		
+
 		lblTenThuoc.setPreferredSize(new Dimension(100, 20));
 		lblDonGia.setPreferredSize(new Dimension(100, 20));
 		lblhanSD.setPreferredSize(new Dimension(100, 20));
-		
+
 		// center
 		String[] cols = { "ma thuoc", "ten thuoc", "so luong", "don gia", "ngay san xuat", "han su dung", "phan loai",
 				"nha cung cap" };
 		model = new DefaultTableModel(cols, 0);
 		table = new JTable(model);
 		JScrollPane scr = new JScrollPane(table);
-		
+
 		// south
 
 		JPanel pnSouth = new JPanel();
 		pnSouth.add(btnLamMoi = new JButton("lam moi"));
 		pnSouth.add(btnThoat = new JButton("thoat"));
 
-		pn.add(bAll,BorderLayout.NORTH);
+		pn.add(bAll, BorderLayout.NORTH);
 		pn.add(scr, BorderLayout.CENTER);
-		pn.add(pnSouth,BorderLayout.SOUTH);
+		pn.add(pnSouth, BorderLayout.SOUTH);
 		this.add(pn);
 	}
 
