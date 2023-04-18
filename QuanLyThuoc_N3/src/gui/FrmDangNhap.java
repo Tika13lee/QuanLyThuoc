@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class DangNhap extends JFrame implements ActionListener {
+public class FrmDangNhap extends JFrame implements ActionListener {
 	private JLabel lblTitle;
 	private JLabel lblUser;
 	private JLabel lblPass;
@@ -22,13 +22,12 @@ public class DangNhap extends JFrame implements ActionListener {
 	private JPasswordField txtPass;
 	private JButton btnLogIn;
 
-	public DangNhap() {
+	public FrmDangNhap() {
 		setTitle("DangNhap");
 		setSize(800, 500);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
-		setVisible(true);
-
+		setResizable(false);
 		setLayout(null);
 //		setExtendedState(MAXIMIZED_BOTH);
 
@@ -87,7 +86,7 @@ public class DangNhap extends JFrame implements ActionListener {
 	}
 
 	public static void main(String[] args) {
-		new DangNhap();
+		new FrmDangNhap().setVisible(true);
 	}
 
 	@Override
@@ -100,7 +99,7 @@ public class DangNhap extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(this, "Vui lòng nhập đủ thông tin");
 			} else {
 				if (user.equals("nhom3") && pass.equals("147852369")) {
-					ManHinhChinh main = new ManHinhChinh();
+					FrmManHinhChinh main = new FrmManHinhChinh();
 					main.setVisible(true);
 					setVisible(false);
 				}

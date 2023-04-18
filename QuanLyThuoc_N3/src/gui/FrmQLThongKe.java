@@ -33,33 +33,33 @@ import javax.swing.table.DefaultTableModel;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JMonthChooser;
 
-public class ThongKeTongQuat extends JFrame {
+public class FrmQLThongKe extends JFrame {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private JTabbedPane tabbedPane;
-	private JPanel pnlThongkeTTThuoc, pnlToanPhan,  panel, pnlThongKeBaoCao, pnlThongTinChung, pnlThongTin,
+	private JPanel pnlThongkeTTThuoc, pnlToanPhan, panel, pnlThongKeBaoCao, pnlThongTinChung, pnlThongTin,
 			pnlThongKeChiTiet, pnlThongKe;
 
-	JLabel lblThongTinKhachHang, lblDiaChi, lblThngKTheo, lblTongSLThuocBan, lblMaNV, lblTenNV, lblSDT, lblNN,
-			lblMakh, lblNgay, lblDonthuoc, lblTongHD;
+	JLabel lblThongTinKhachHang, lblDiaChi, lblThngKTheo, lblTongSLThuocBan, lblMaNV, lblTenNV, lblSDT, lblNN, lblMakh,
+			lblNgay, lblDonthuoc, lblTongHD;
 	JTextField txtDiaChi, txtTenKH, txtMaKH, txtNN, txtSDT, txtMakn;
 	JButton btnTim, btnThem, btnXoa, btnBaoCao, btnXemThuocConLai, btnXemThuocDaBan, btnXemThuocHetHan,
 			btnXemthuocConLaiTrongKho;
 	JComboBox cmbMaKH, cmbNgay, cmbDonThuoc, cmbNgayTLTQ;
 	ImageIcon background;
-	JPanel panel_1 ;
+	JPanel panel_1;
 	JScrollPane scrollPaneTKTTT, scrTKTQ1;
 	JMonthChooser monthChooser;
 	JMonthChooser txtThang;
-	
+
 	public static DefaultTableModel tablemodel = new DefaultTableModel();
 	public static DefaultTableModel tablemodel1 = new DefaultTableModel();
 	DefaultTableModel tablemodel2 = new DefaultTableModel();
 	private JLabel lblNgayy;
-	public static  JTextField txtTongSoLuongThuoc;
-	public static  JTextField txtTongSoLoaiThuoc;
+	public static JTextField txtTongSoLuongThuoc;
+	public static JTextField txtTongSoLoaiThuoc;
 	public static JTextField txtTongSLThuocBan;
 	public static JTextField txtTongSoHD;
 	private JTable table_1;
@@ -82,31 +82,25 @@ public class ThongKeTongQuat extends JFrame {
 	private JRadioButton radSLThuocMua;
 	private JRadioButton radTongHD;
 
-	
-	public ThongKeTongQuat(){
+	public FrmQLThongKe() {
 //		setBackground(new Color(176, 224, 230));
 		setTitle("Quản Lí Hiệu Thuốc");
 //		setSize(1354, 733);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setLocationRelativeTo(null);
 		setResizable(false);
-		
+
 		/**
-		 * Tab thống kê hóa đơn theo nhân viên
-		 * -Panel thông tin chung:
-		 * 		+Ngày mua 
-		 * 		+Mã khách hàng, tên khách hàng
-		 * 		+Đơn thuốc
-		 * -Panel Thống kê chi tiết:
-		 * 		+Tổng lượng thuốc đã mua
-		 * 		+Tổng hóa đơn	
+		 * Tab thống kê hóa đơn theo nhân viên -Panel thông tin chung: +Ngày mua +Mã
+		 * khách hàng, tên khách hàng +Đơn thuốc -Panel Thống kê chi tiết: +Tổng lượng
+		 * thuốc đã mua +Tổng hóa đơn
 		 */
 		panel = new JPanel();
 		pnlThongTinChung = new JPanel();
 		pnlThongTin = new JPanel();
 		pnlThongTin.setBounds(20, 60, 610, 89);
 		pnlThongKeChiTiet = new JPanel();
-		pnlThongKe= new JPanel();
+		pnlThongKe = new JPanel();
 		txtTongSoHD = new JTextField();
 		txtTongSoHD.setForeground(Color.BLUE);
 		txtTongSLThuocBan = new JTextField();
@@ -114,7 +108,7 @@ public class ThongKeTongQuat extends JFrame {
 		txtTenKH = new JTextField();
 		cmbMaKH = new JComboBox();
 		cmbDonThuoc = new JComboBox();
-		
+
 		// set Ngày hiện tại
 		String ngay;
 		AbstractButton datePicker = null;
@@ -122,14 +116,14 @@ public class ThongKeTongQuat extends JFrame {
 		SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd"); // định dạng kiểu ngày
 		ngay = timeFormat.format(today.getTime());
 		pnlThongTinChung.setLayout(null);
-		
-		//tạo tab
+
+		// tạo tab
 		tabbedPane = new JTabbedPane();
 		tabbedPane.setForeground(new Color(0, 128, 128));
 		tabbedPane.setBounds(0, 0, 1535, 840);
 		tabbedPane.setBorder(null);
-		
-		//panel tổng
+
+		// panel tổng
 		pnlToanPhan = new JPanel();
 		pnlToanPhan.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		pnlToanPhan.setBackground(SystemColor.controlHighlight);
@@ -185,7 +179,7 @@ public class ThongKeTongQuat extends JFrame {
 		txtTongSoHD.setColumns(10);
 		cmbMaKH.setBounds(140, 18, 130, 20);
 		cmbDonThuoc.setBounds(450, 18, 135, 20);
-		
+
 		txtChonNgay = new JDateChooser();
 		txtChonNgay.setForeground(new Color(0, 0, 255));
 		txtChonNgay.getCalendarButton().setFont(new Font("Times New Roman", Font.PLAIN, 14));
@@ -223,7 +217,7 @@ public class ThongKeTongQuat extends JFrame {
 		pnlThongTin.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		pnlThongTinChung.add(pnlThongTin);
 		pnlThongTin.setLayout(null);
-		
+
 		pnlThongKeChiTiet.setBackground(SystemColor.controlHighlight);
 		pnlThongKeChiTiet.setBounds(670, 93, 850, 157);
 		pnlToanPhan.add(pnlThongKeChiTiet);
@@ -232,8 +226,8 @@ public class ThongKeTongQuat extends JFrame {
 		javax.swing.border.Border southborder5 = BorderFactory.createLineBorder(Color.blue, Font.BOLD);
 		TitledBorder southTitleBorder5 = new TitledBorder(southborder5, "Chi tiết thống kê");
 		southTitleBorder5.setTitleColor(Color.blue);
-		pnlThongKeChiTiet.setBorder(new TitledBorder(null, "Thông kê chi tiết", TitledBorder.LEADING,
-				TitledBorder.TOP, null, null));
+		pnlThongKeChiTiet.setBorder(
+				new TitledBorder(null, "Thông kê chi tiết", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnlToanPhan.add(pnlThongKeChiTiet);
 
 		pnlThongKe.setBackground(SystemColor.controlHighlight);
@@ -257,11 +251,11 @@ public class ThongKeTongQuat extends JFrame {
 		radTongHD.setBackground(SystemColor.controlHighlight);
 		radTongHD.setBounds(15, 60, 28, 19);
 		pnlThongKe.add(radTongHD);
-		
-		//danh sách thống kê và nút báo cáo
+
+		// danh sách thống kê và nút báo cáo
 		JScrollPane scrDSTK;
-		String[] tb1 = new String[] {  "Mã Hóa đơn", "Mã Nhân Viên", "Họ Nhân Viên", "Tên Nhân Viên","Tuổi", "Số CCCD",
-				 "Giới tính", "Tài Khoản", "Địa Chỉ" };
+		String[] tb1 = new String[] { "Mã Hóa đơn", "Mã Nhân Viên", "Họ Nhân Viên", "Tên Nhân Viên", "Tuổi", "Số CCCD",
+				"Giới tính", "Tài Khoản", "Địa Chỉ" };
 		tablemodel = new DefaultTableModel(tb1, 0);
 		table_1 = new JTable(tablemodel);
 		table_1.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
@@ -274,9 +268,9 @@ public class ThongKeTongQuat extends JFrame {
 		javax.swing.border.Border southbordert = BorderFactory.createLineBorder(Color.blue);
 		TitledBorder southTitleBordert = new TitledBorder(southbordert, "Thông tin chung v�? thuốc");
 		southTitleBordert.setTitleColor(Color.blue);
-		scrDSTK.setBorder(new TitledBorder(null, "Danh sách thống kê", TitledBorder.LEADING,
-				TitledBorder.TOP, null, null));
-		
+		scrDSTK.setBorder(
+				new TitledBorder(null, "Danh sách thống kê", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+
 		pnlToanPhan.add(scrDSTK);
 		scrDSTK.setPreferredSize(new Dimension(0, 250));
 		pnlToanPhan.setLayout(null);
@@ -303,22 +297,12 @@ public class ThongKeTongQuat extends JFrame {
 		btnBaoCao.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnBaoCao.setBackground(SystemColor.controlHighlight);
 
-		
-		
-		
 		/**
-		 * Tab thuốc
-		 * -Panel hình thức thống kê:
-		 * 		+Xem thuốc hết hạn
-		 * 		+Xem thuốc còn hạn
-		 * 		+Xem thuốc đã bán
-		 * 		+Xem thuốc còn trong kho
-		 * -Panel báo cáo sau thống kê:
-		 * 		+Tổng lượng thuốc 
-		 * 		+Tổng loại thuốc	
+		 * Tab thuốc -Panel hình thức thống kê: +Xem thuốc hết hạn +Xem thuốc còn hạn
+		 * +Xem thuốc đã bán +Xem thuốc còn trong kho -Panel báo cáo sau thống kê: +Tổng
+		 * lượng thuốc +Tổng loại thuốc
 		 */
-	
-		
+
 		javax.swing.border.Border southborder = BorderFactory.createLineBorder(Color.blue, Font.BOLD);
 		TitledBorder southTitleBorder = new TitledBorder(southborder, "Hình thức thống kê");
 		southTitleBorder.setTitleColor(Color.blue);
@@ -337,7 +321,7 @@ public class ThongKeTongQuat extends JFrame {
 		pnlThongkeTTThuoc.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		pnlThongkeTTThuoc.setBackground(SystemColor.controlHighlight);
 
-		tabbedPane.addTab("Thống kê tình trạng thuốc",pnlThongkeTTThuoc);
+		tabbedPane.addTab("Thống kê tình trạng thuốc", pnlThongkeTTThuoc);
 		pnlThongkeTTThuoc.setBounds(0, 50, 900, 240);
 		pnlThongkeTTThuoc.setPreferredSize(new Dimension(0, 240));
 		pnlThongkeTTThuoc.setLayout(null);
@@ -349,15 +333,15 @@ public class ThongKeTongQuat extends JFrame {
 		panel_2.setBackground(SystemColor.controlHighlight);
 		pnlThongkeTTThuoc.add(panel_2);
 		panel_2.setLayout(null);
-		panel_2.setBorder(new TitledBorder(null, "Hình thức thống kê", TitledBorder.LEADING,
-				TitledBorder.TOP, null, null));
+		panel_2.setBorder(
+				new TitledBorder(null, "Hình thức thống kê", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 
 		lblNgayy = new JLabel("Ngày:");
 		lblNgayy.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNgayy.setForeground(new Color(0, 0, 0));
 		lblNgayy.setBounds(23, 29, 48, 20);
 		panel_2.add(lblNgayy);
-	
+
 		JPanel panel_3 = new JPanel();
 		panel_3.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		panel_3.setBackground(SystemColor.controlHighlight);
@@ -389,7 +373,6 @@ public class ThongKeTongQuat extends JFrame {
 		btnXemThuocConLai.setForeground(new Color(0, 0, 0));
 		btnXemThuocConLai.setFont(new Font("Tahoma", Font.BOLD, 16));
 
-
 		btnXemthuocConLaiTrongKho = new JButton("Xem thuốc còn lại trong kho");
 		btnXemthuocConLaiTrongKho.setHorizontalAlignment(SwingConstants.CENTER);
 		btnXemthuocConLaiTrongKho.setBounds(380, 76, 323, 55);
@@ -413,12 +396,10 @@ public class ThongKeTongQuat extends JFrame {
 		SimpleDateFormat timeFormat1 = new SimpleDateFormat("yyyy-MM-dd"); // định dạng kiểu ngày
 		ngay2 = timeFormat1.format(today.getTime());
 
-
 		JPanel jp = new JPanel();
 		jp.setBounds(800, 107, 720, 239);
 		jp.setBackground(SystemColor.controlHighlight);
-		jp.setBorder(new TitledBorder(null, "Báo cáo thống kê", TitledBorder.LEADING,
-				TitledBorder.TOP, null, null));
+		jp.setBorder(new TitledBorder(null, "Báo cáo thống kê", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnlThongkeTTThuoc.add(jp);
 		jp.setLayout(null);
 
@@ -477,8 +458,8 @@ public class ThongKeTongQuat extends JFrame {
 		scrollPaneTKTTT.setBounds(10, 355, 1510, 450);
 		pnlThongkeTTThuoc.add(scrollPaneTKTTT);
 
-		String[] tb2 = new String[] { "Mã Thuốc", "Tên Thuốc", "Phân Loại","Hạn Sử dụng","Đơn vị tính",
-				"Số lượng", "Đơn giá", "Ngày Sản Xuất","Nhà cung cấp" };
+		String[] tb2 = new String[] { "Mã Thuốc", "Tên Thuốc", "Phân Loại", "Hạn Sử dụng", "Đơn vị tính", "Số lượng",
+				"Đơn giá", "Ngày Sản Xuất", "Nhà cung cấp" };
 		tablemodel1 = new DefaultTableModel(tb2, 0);
 		table2 = new JTable(tablemodel1);
 		table2.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
@@ -503,25 +484,16 @@ public class ThongKeTongQuat extends JFrame {
 		lblT.setBounds(540, 11, 362, 49);
 		panel.add(lblT);
 
-		
-		
-		
-		
 		/**
-		 * Tab Thống kê báo cáo doanh thu
-		 * -Panel thông tin thống kê
-		 * 		+Tổng tiền bán được
-		 * 		+Tổng tiền thuốc đã nhập
-		 * 		+Lợi nhuận thu đc
+		 * Tab Thống kê báo cáo doanh thu -Panel thông tin thống kê +Tổng tiền bán được
+		 * +Tổng tiền thuốc đã nhập +Lợi nhuận thu đc
 		 *
-		 * -Panel xem báo cáo
-		 * 		+ nhập năm và chọn tháng 
-		 * 		+ Xem báo cáo
+		 * -Panel xem báo cáo + nhập năm và chọn tháng + Xem báo cáo
 		 */
 		pnlThongKeBaoCao = new JPanel();
 		pnlThongKeBaoCao.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		pnlThongKeBaoCao.setBackground(SystemColor.controlHighlight);
-		tabbedPane.addTab("Thống kê báo cáo",  pnlThongKeBaoCao);
+		tabbedPane.addTab("Thống kê báo cáo", pnlThongKeBaoCao);
 
 		pnlThongKeBaoCao.setBounds(0, 50, 1510, 240);
 		pnlThongKeBaoCao.setPreferredSize(new Dimension(0, 240));
@@ -547,14 +519,13 @@ public class ThongKeTongQuat extends JFrame {
 		lblNgayTKTQ.setBounds(10, 23, 59, 31);
 		panel_5.add(lblNgayTKTQ);
 
-	
 		btnXemBCAoTKTQ = new JButton("Xem Báo Cáo");
 		btnXemBCAoTKTQ.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnXemBCAoTKTQ.setBackground(new Color(0, 206, 209));
 		btnXemBCAoTKTQ.setBounds(74, 85, 205, 46);
 		panel_5.add(btnXemBCAoTKTQ);
-		
-		//combo box 12 tháng
+
+		// combo box 12 tháng
 		comboBox = new JComboBox();
 		comboBox.setForeground(new Color(0, 0, 255));
 		comboBox.setBounds(79, 23, 85, 31);
@@ -592,8 +563,8 @@ public class ThongKeTongQuat extends JFrame {
 
 		JPanel pnlThongtinThongKeTQ = new JPanel();
 		pnlThongtinThongKeTQ.setBackground(SystemColor.controlHighlight);
-		pnlThongtinThongKeTQ.setBorder(new TitledBorder(null, "Thông tin thống kê ",
-				TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		pnlThongtinThongKeTQ.setBorder(
+				new TitledBorder(null, "Thông tin thống kê ", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnlThongtinThongKeTQ.setBounds(50, 29, 960, 124);
 		panel_7.add(pnlThongtinThongKeTQ);
 		pnlThongtinThongKeTQ.setLayout(null);
@@ -616,9 +587,7 @@ public class ThongKeTongQuat extends JFrame {
 		txtTongTienBanDuocTKTq.setColumns(10);
 		txtTongTienBanDuocTKTq.setBounds(400, 32, 241, 20);
 		pnlThongtinThongKeTQ.add(txtTongTienBanDuocTKTq);
-		
-		
-		
+
 		JLabel lblTongSoTienBanDuoc = new JLabel("Tổng tiền bán được:");
 		lblTongSoTienBanDuoc.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblTongSoTienBanDuoc.setBounds(70, 30, 300, 20);
@@ -635,8 +604,6 @@ public class ThongKeTongQuat extends JFrame {
 		txtLoiNhuanThuDkTQ.setColumns(10);
 		txtLoiNhuanThuDkTQ.setBounds(400, 92, 241, 20);
 		pnlThongtinThongKeTQ.add(txtLoiNhuanThuDkTQ);
-
-		
 
 		radioButton_2 = new JRadioButton("");
 		radioButton_2.setSelected(true);
@@ -703,7 +670,7 @@ public class ThongKeTongQuat extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		new ThongKeTongQuat().setVisible(true);
+		new FrmQLThongKe().setVisible(true);
 	}
 
 }

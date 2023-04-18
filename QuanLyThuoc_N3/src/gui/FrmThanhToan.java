@@ -18,14 +18,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-public class frmThanhToan extends JFrame implements ActionListener{
+public class FrmThanhToan extends JFrame implements ActionListener{
 	private static final long serialVersionUID =1L;
 	private JLabel lblTongThanhToan,lblHinhThucThanhToan,lblLoaiTien,lblTienKhachDua,lblTienTraLai;
 	private JTextField txtTongThanhToan,txtTienKhachDua,txtTienTraLai;
 	private JComboBox cboHinhThucThanhToan;
 	private JComboBox cboLoaiTien;
 	private JButton btnTinhTien,btnDong;
-	public frmThanhToan() {
+	public FrmThanhToan() {
 		// TODO Auto-generated constructor stub
 		setTitle("Thông tin thanh toán");
 		setSize(600,400);
@@ -100,7 +100,7 @@ public class frmThanhToan extends JFrame implements ActionListener{
 		
 	}
 	public static void main(String[] args) {
-		new frmThanhToan().setVisible(true);
+		new FrmThanhToan().setVisible(true);
 	}
 
 	@Override

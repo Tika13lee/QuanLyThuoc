@@ -26,7 +26,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JDateChooser;
 
-public class formThuoc extends JFrame {
+public class FrmQLThuoc extends JFrame {
 	private JLabel lblMaThuoc, lblTenThuoc, lblPhanLoai, lblhanSD, lbldonViTinh, lblSoLuong, lblDonGia, lblngaySX,
 			lblnhaCC;
 	private JTextField txtMaThuoc, txtTenThuoc, txtDonViTinh, txtSoLuong, txtDonGia, txtnhaCC, txtTimKiem;
@@ -38,12 +38,13 @@ public class formThuoc extends JFrame {
 	private JLabel lblTimKiem;
 	private JLabel lbltitle;
 
-	public formThuoc() {
+	public FrmQLThuoc() {
 		setTitle("quản lý thuốc");
 		setSize(900, 600);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+//		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setExtendedState(MAXIMIZED_BOTH);
+		setResizable(false);
 		showGui();
 	}
 
@@ -85,7 +86,6 @@ public class formThuoc extends JFrame {
 		jdcNgaySX.setCalendar(Calendar.getInstance());
 		b3.add(lblhanSD = new JLabel("hạn sử dụng:"));
 		b3.add(jdcHanSD = new JDateChooser());
-		
 
 		cboPhanLoai = new JComboBox<>();
 		cboPhanLoai.addItem("thuốc kê đơn");
@@ -156,6 +156,6 @@ public class formThuoc extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		new formThuoc().setVisible(true);
+		new FrmQLThuoc().setVisible(true);
 	}
 }
