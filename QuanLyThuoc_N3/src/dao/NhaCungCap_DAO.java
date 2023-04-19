@@ -1,4 +1,4 @@
-package DAO;
+package dao_;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -35,7 +35,8 @@ public class NhaCungCap_DAO {
 		}
 		return list;
 	}
-	//them nha cung cap vao DB
+
+	// them nha cung cap vao DB
 	public void insertNhaCungCap(NhaCungCap ncc) {
 		try {
 			Connection con = ConnectDB.getConnection();
