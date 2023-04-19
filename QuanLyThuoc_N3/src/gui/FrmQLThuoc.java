@@ -50,11 +50,11 @@ public class FrmQLThuoc extends JFrame {
 		setTitle("quản lý thuốc");
 		setSize(900, 600);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);
+//		setLocationRelativeTo(null);
 		setExtendedState(MAXIMIZED_BOTH);
 		setResizable(false);
 
-		// khởi tạo kết nối đến CSDL
+		// khởi tạo kết nối đến database
 		try {
 			ConnectDB.getInstance().connect();
 		} catch (SQLException e) {
@@ -119,7 +119,7 @@ public class FrmQLThuoc extends JFrame {
 		b4.add(lblDonViTinh = new JLabel("Đơn vị tính:"));
 		b4.add(cboDonViTinh = new JComboBox<>());
 
-		// load data nha cung cap vao cboNhaCC
+		// load data cboNhaCC
 		ArrayList<NhaCungCap> listNCC = nhaCC_dao.getAllNhaCungCap();
 		for (NhaCungCap p : listNCC) {
 			cboNhaCC.addItem(p.getMaNCC());

@@ -12,7 +12,7 @@ import entity.NhaCungCap;
 import entity.Thuoc;
 
 public class Thuoc_DAO {
-	public ArrayList<Thuoc> getAlltbThuoc() {
+	public ArrayList<Thuoc> getAllThuoc() {
 		ArrayList<Thuoc> dsThuoc = new ArrayList<Thuoc>();
 		try {
 			ConnectDB.getInstance();
@@ -39,5 +39,36 @@ public class Thuoc_DAO {
 			e.printStackTrace();
 		}
 		return dsThuoc;
+	}
+
+	public ArrayList<Thuoc> getDanhMucThuoc() {
+		ArrayList<Thuoc> dsDanhMuc = new ArrayList<Thuoc>();
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+
+			String sql = "select maThuoc, tenThuoc from Thuoc";
+			Statement statement = con.createStatement();
+
+			ResultSet rs = statement.executeQuery(sql);
+			while (rs.next()) {
+				Thuoc thuoc = new Thuoc();
+				String ma = rs.getString(1);
+				thuoc.setMaThuoc(ma);
+				String ten = rs.getString(2);
+				thuoc.setTenThuoc(ten);
+//				String phanloai = rs.getString(3);
+//				thuoc.setPhanLoai(phanloai);
+//				
+//				double donGia = rs.getDouble(7);
+//				thuoc.setDonGia(donGia);
+//				int soLuong = rs.getInt(8);
+//				thuoc.setSoLuong(soLuong);
+				dsDanhMuc.add(thuoc);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dsDanhMuc;
 	}
 }
