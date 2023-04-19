@@ -1,5 +1,6 @@
 package entity;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -11,12 +12,14 @@ public class Thuoc {
 	private String donViTinh;
 	private int soLuong;
 	private double donGia;
-	private LocalDate ngaySX;
+	private Date ngaySX;
 	private NhaCungCap nhaCC;
 
+	public Thuoc() {
+	}
+
 	public Thuoc(String maThuoc, String tenThuoc, String phanLoai, String hanSD, String donViTinh, int soLuong,
-			double donGia, LocalDate ngaySX, NhaCungCap nhaCC) {
-		super();
+			double donGia, Date ngaySX, NhaCungCap nhaCC) {
 		this.maThuoc = maThuoc;
 		this.tenThuoc = tenThuoc;
 		this.phanLoai = phanLoai;
@@ -28,9 +31,8 @@ public class Thuoc {
 		this.nhaCC = nhaCC;
 	}
 
-	public Thuoc() {
-		super();
-		// TODO Auto-generated constructor stub
+	public Thuoc(String maThuoc) {
+		this.maThuoc = maThuoc;
 	}
 
 	public String getMaThuoc() {
@@ -89,11 +91,11 @@ public class Thuoc {
 		this.donGia = donGia;
 	}
 
-	public LocalDate getNgaySX() {
+	public Date getNgaySX() {
 		return ngaySX;
 	}
 
-	public void setNgaySX(LocalDate ngaySX) {
+	public void setNgaySX(Date ngaySX) {
 		this.ngaySX = ngaySX;
 	}
 
