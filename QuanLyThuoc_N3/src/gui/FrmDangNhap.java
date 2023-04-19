@@ -29,7 +29,6 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setLayout(null);
-//		setExtendedState(MAXIMIZED_BOTH);
 
 		showGUI();
 

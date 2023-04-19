@@ -30,7 +30,7 @@ public class FrmThanhToan extends JFrame implements ActionListener{
 		setTitle("Thông tin thanh toán");
 		setSize(600,400);
 		//setExtendedState(MAXIMIZED_BOTH);
-		//setLocationRelativeTo(null);
+		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
 		JPanel pBorder = new JPanel();
