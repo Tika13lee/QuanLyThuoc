@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.swing.BorderFactory;
@@ -11,7 +13,6 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,14 +20,16 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JDateChooser;
+
+import connect.ConnectDB;
+import dao.NhaCungCap_DAO;
+import entity.NhaCungCap;
 
 public class FrmQLThuoc extends JFrame {
 	private JLabel lblMaThuoc, lblTenThuoc, lblPhanLoai, lblhanSD, lbldonViTinh, lblSoLuong, lblDonGia, lblngaySX,
@@ -41,6 +44,7 @@ public class FrmQLThuoc extends JFrame {
 	private JLabel lblTimKiem;
 	private JLabel lbltitle;
 	private JRadioButton radTheoMa, radHsd, radTen;
+	private NhaCungCap_DAO nhaCC_dao;
 
 	public FrmQLThuoc() {
 		setTitle("quản lý thuốc");
@@ -49,6 +53,15 @@ public class FrmQLThuoc extends JFrame {
 		setLocationRelativeTo(null);
 		setExtendedState(MAXIMIZED_BOTH);
 		setResizable(false);
+
+		// khởi tạo kết nối đến CSDL
+		try {
+			ConnectDB.getInstance().connect();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		nhaCC_dao = new NhaCungCap_DAO();
+		
 		showGui();
 	}
 
@@ -92,7 +105,6 @@ public class FrmQLThuoc extends JFrame {
 		b3.add(lblhanSD = new JLabel("hạn sử dụng:"));
 //		b3.add(jdcHanSD = new JDateChooser());
 		b3.add(txtHanSD = new JTextField());
-				
 
 		cboPhanLoai = new JComboBox<>();
 
@@ -107,6 +119,12 @@ public class FrmQLThuoc extends JFrame {
 		b4.add(lblDonViTinh = new JLabel("Đơn vị tính:"));
 		b4.add(cboDonViTinh = new JComboBox<>());
 
+		// load data nha cung cap vao cboNhaCC
+		ArrayList<NhaCungCap> listNCC = nhaCC_dao.getAllNhaCungCap();
+		for (NhaCungCap p : listNCC) {
+			cboNhaCC.addItem(p.getMaNCC());
+		}
+		
 		b.add(Box.createVerticalStrut(15));
 
 		bb.add(b1);
@@ -126,7 +144,7 @@ public class FrmQLThuoc extends JFrame {
 		pnTim.add(lblTimKiem = new JLabel("nhập thông tin tìm kiếm:"));
 		pnTim.add(txtTimKiem = new JTextField(20));
 		pnTim.add(btnTimKiem = new JButton("Tim kiếm"));
-		
+
 		pnLuaChon.add(radTen = new JRadioButton("Tìm theo tên"));
 		pnLuaChon.add(radTheoMa = new JRadioButton("Tìm theo mã"));
 		pnLuaChon.add(radHsd = new JRadioButton("tìm theo hạn sử dụng"));

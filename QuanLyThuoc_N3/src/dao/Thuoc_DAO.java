@@ -33,6 +33,7 @@ public class Thuoc_DAO {
 				double dongia = rs.getDouble(8);
 				NhaCungCap ncc = (NhaCungCap) rs.getArray(9);
 				Thuoc thuoc = new Thuoc(ma, ten, phanloai, hansd, donviTinh, soLuong, dongia, ngaysx, ncc);
+				dsThuoc.add(thuoc);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

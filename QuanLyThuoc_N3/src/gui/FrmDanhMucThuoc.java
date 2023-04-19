@@ -24,6 +24,7 @@ public class FrmDanhMucThuoc extends JFrame {
 	public FrmDanhMucThuoc() {
 		setTitle("DanhMucThuoc");
 		setSize(800, 500);
+		setResizable(false);
 		setLocationRelativeTo(null);
 
 		JPanel jpNorth, jpS;
