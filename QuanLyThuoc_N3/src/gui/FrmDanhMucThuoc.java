@@ -35,7 +35,7 @@ public class FrmDanhMucThuoc extends JFrame {
 		lblTitle.setFont(new Font("Time New Roman", Font.BOLD, 20));
 		lblTitle.setForeground(Color.BLUE);
 
-		String[] cols = { "STT", "Mã thuốc", "Tên thuốc", "Phân loại", "Hạn sử dụng", "Đơn vị tính", "Đơn giá bán" };
+		String[] cols = { "STT", "Mã thuốc", "Tên thuốc", "Phân loại", "Hạn sử dụng", "Đơn giá bán" };
 		modelNV = new DefaultTableModel(cols, 0);
 		tableNV = new JTable(modelNV);
 		JScrollPane pane = new JScrollPane(tableNV);
@@ -43,7 +43,7 @@ public class FrmDanhMucThuoc extends JFrame {
 
 		jpS = new JPanel();
 		jpS.add(new Label("Nhập số lượng: "));
-		jpS.add(txtSL = new JTextField(10));
+		jpS.add(txtSL = new JTextField(20));
 		jpS.add(btnChon = new JButton("Chọn thuốc"));
 		jpS.add(btnThoat = new JButton("Thoát"));
 //		btnThoat.setIcon(new ImageIcon("src/img/Users-Exit-icon.png"));

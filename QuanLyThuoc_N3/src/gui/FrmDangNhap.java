@@ -21,6 +21,7 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 	private JTextField txtUser;
 	private JPasswordField txtPass;
 	private JButton btnLogIn;
+	private JButton btnExit;
 
 	public FrmDangNhap() {
 		setTitle("DangNhap");
@@ -60,7 +61,10 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 		txtPass.setColumns(10);
 
 		btnLogIn = new JButton("Đăng nhập");
-		btnLogIn.setBounds(530, 270, 100, 30);
+		btnLogIn.setBounds(480, 270, 100, 30);
+
+		btnExit = new JButton("Thoát");
+		btnExit.setBounds(630, 270, 90, 30);
 
 		lblImg = new JLabel();
 		ImageIcon img = new ImageIcon("src/img/bg-login.png");
@@ -73,6 +77,7 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 		add(lblPass);
 		add(txtPass);
 		add(btnLogIn);
+		add(btnExit);
 		add(lblImg);
 
 		// set data
@@ -81,7 +86,7 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 
 		// event
 		btnLogIn.addActionListener(this);
-
+		btnExit.addActionListener(this);
 	}
 
 	public static void main(String[] args) {
@@ -101,8 +106,12 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 					FrmManHinhChinh main = new FrmManHinhChinh();
 					main.setVisible(true);
 					setVisible(false);
+				}else {
+					JOptionPane.showMessageDialog(this, "Tên đăng nhập hoặc mật khẩu không đúng");
 				}
 			}
+		} else if (o.equals(btnExit)) {
+			System.exit(0);
 		}
 	}
 
