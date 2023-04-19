@@ -27,12 +27,12 @@ public class Thuoc_DAO {
 				String ten = rs.getString(2);
 				String phanloai = rs.getString(3);
 				Date ngaysx = rs.getDate(4);
-				String hansd = rs.getString(5);
+				Date ngayHH = rs.getDate(4);
 				String donviTinh = rs.getString(6);
 				int soLuong = rs.getInt(7);
 				double dongia = rs.getDouble(8);
 				NhaCungCap ncc = (NhaCungCap) rs.getArray(9);
-				Thuoc thuoc = new Thuoc(ma, ten, phanloai, hansd, donviTinh, soLuong, dongia, ngaysx, ncc);
+				Thuoc thuoc = new Thuoc(ma, ten, phanloai, ngayHH, donviTinh, soLuong, dongia, ngaysx, ncc);
 				dsThuoc.add(thuoc);
 			}
 		} catch (Exception e) {

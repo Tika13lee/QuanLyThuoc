@@ -8,7 +8,7 @@ public class Thuoc {
 	private String maThuoc;
 	private String tenThuoc;
 	private String phanLoai;
-	private String hanSD;
+	private Date ngayHetHan;
 	private String donViTinh;
 	private int soLuong;
 	private double donGia;
@@ -18,12 +18,12 @@ public class Thuoc {
 	public Thuoc() {
 	}
 
-	public Thuoc(String maThuoc, String tenThuoc, String phanLoai, String hanSD, String donViTinh, int soLuong,
+	public Thuoc(String maThuoc, String tenThuoc, String phanLoai, Date ngayHetHan, String donViTinh, int soLuong,
 			double donGia, Date ngaySX, NhaCungCap nhaCC) {
 		this.maThuoc = maThuoc;
 		this.tenThuoc = tenThuoc;
 		this.phanLoai = phanLoai;
-		this.hanSD = hanSD;
+		this.ngayHetHan =ngayHetHan;
 		this.donViTinh = donViTinh;
 		this.soLuong = soLuong;
 		this.donGia = donGia;
@@ -59,12 +59,13 @@ public class Thuoc {
 		this.phanLoai = phanLoai;
 	}
 
-	public String getHanSD() {
-		return hanSD;
+
+	public Date getNgayHetHan() {
+		return ngayHetHan;
 	}
 
-	public void setHanSD(String hanSD) {
-		this.hanSD = hanSD;
+	public void setNgayHetHan(Date ngayHetHan) {
+		this.ngayHetHan = ngayHetHan;
 	}
 
 	public String getDonViTinh() {
@@ -126,9 +127,11 @@ public class Thuoc {
 
 	@Override
 	public String toString() {
-		return "Thuoc [maThuoc=" + maThuoc + ", tenThuoc=" + tenThuoc + ", phanLoai=" + phanLoai + ", hanSD=" + hanSD
-				+ ", donViTinh=" + donViTinh + ", soLuong=" + soLuong + ", donGia=" + donGia + ", ngaySX=" + ngaySX
-				+ ", nhaCC=" + nhaCC + "]";
+		return "Thuoc [maThuoc=" + maThuoc + ", tenThuoc=" + tenThuoc + ", phanLoai=" + phanLoai + ", ngayHetHan="
+				+ ngayHetHan + ", donViTinh=" + donViTinh + ", soLuong=" + soLuong + ", donGia=" + donGia + ", ngaySX="
+				+ ngaySX + ", nhaCC=" + nhaCC + "]";
 	}
+
+	
 
 }

@@ -1,5 +1,6 @@
 package entity;
 
+import java.sql.Date;
 import java.util.Objects;
 
 public class KhachHang {
@@ -8,14 +9,14 @@ public class KhachHang {
 	private String tenKH;
 	private String diaChi;
 	private String soDT;
-	private String soCCCD;
+	private Date ngaySinh;
 	private int tuoi;
 	private boolean gioiTinh;
 	public KhachHang() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public KhachHang(String maKH, String hoKH, String tenKH, String diaChi, String soDT, String soCCCD, int tuoi,
+	public KhachHang(String maKH, String hoKH, String tenKH, String diaChi, String soDT, Date ngaySinh, int tuoi,
 			boolean gioiTinh) {
 		super();
 		this.maKH = maKH;
@@ -23,7 +24,7 @@ public class KhachHang {
 		this.tenKH = tenKH;
 		this.diaChi = diaChi;
 		this.soDT = soDT;
-		this.soCCCD = soCCCD;
+		this.ngaySinh = ngaySinh;
 		this.tuoi = tuoi;
 		this.gioiTinh = gioiTinh;
 	}
@@ -57,11 +58,12 @@ public class KhachHang {
 	public void setSoDT(String soDT) {
 		this.soDT = soDT;
 	}
-	public String getSoCCCD() {
-		return soCCCD;
+	
+	public Date getNgaySinh() {
+		return ngaySinh;
 	}
-	public void setSoCCCD(String soCCCD) {
-		this.soCCCD = soCCCD;
+	public void setNgaySinh(Date ngaySinh) {
+		this.ngaySinh = ngaySinh;
 	}
 	public int getTuoi() {
 		return tuoi;
@@ -93,7 +95,7 @@ public class KhachHang {
 	@Override
 	public String toString() {
 		return "KhachHang [maKH=" + maKH + ", hoKH=" + hoKH + ", tenKH=" + tenKH + ", diaChi=" + diaChi + ", soDT="
-				+ soDT + ", soCCCD=" + soCCCD + ", tuoi=" + tuoi + ", gioiTinh=" + gioiTinh + "]";
+				+ soDT + ", ngaySinh=" + ngaySinh + ", tuoi=" + tuoi + ", gioiTinh=" + gioiTinh + "]";
 	}
 
 }

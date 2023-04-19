@@ -7,7 +7,7 @@ public class NhanVien {
 	private String hoNV;
 	private String tenNV;
 	private int tuoi;
-	private String soCCCD;
+	private String soDT;
 	private boolean gioiTinh;
 	private TaiKhoan taiKhoan;
 	private String diaChi;
@@ -17,14 +17,14 @@ public class NhanVien {
 		// TODO Auto-generated constructor stub
 	}
 
-	public NhanVien(String maNV, String hoNV, String tenNV, int tuoi, String soCCCD, boolean gioiTinh,
-			TaiKhoan taiKhoan, String diaChi) {
+	public NhanVien(String maNV, String hoNV, String tenNV, int tuoi, String soDT, boolean gioiTinh, TaiKhoan taiKhoan,
+			String diaChi) {
 		super();
 		this.maNV = maNV;
 		this.hoNV = hoNV;
 		this.tenNV = tenNV;
 		this.tuoi = tuoi;
-		this.soCCCD = soCCCD;
+		this.soDT = soDT;
 		this.gioiTinh = gioiTinh;
 		this.taiKhoan = taiKhoan;
 		this.diaChi = diaChi;
@@ -62,12 +62,12 @@ public class NhanVien {
 		this.tuoi = tuoi;
 	}
 
-	public String getSoCCCD() {
-		return soCCCD;
+	public String getSoDT() {
+		return soDT;
 	}
 
-	public void setSoCCCD(String soCCCD) {
-		this.soCCCD = soCCCD;
+	public void setSoDT(String soDT) {
+		this.soDT = soDT;
 	}
 
 	public boolean isGioiTinh() {
@@ -113,8 +113,8 @@ public class NhanVien {
 
 	@Override
 	public String toString() {
-		return "NhanVien [maNV=" + maNV + ", hoNV=" + hoNV + ", tenNV=" + tenNV + ", tuoi=" + tuoi + ", soCCCD="
-				+ soCCCD + ", gioiTinh=" + gioiTinh + ", taiKhoan=" + taiKhoan + ", diaChi=" + diaChi + "]";
+		return "NhanVien [maNV=" + maNV + ", hoNV=" + hoNV + ", tenNV=" + tenNV + ", tuoi=" + tuoi + ", soDT=" + soDT
+				+ ", gioiTinh=" + gioiTinh + ", taiKhoan=" + taiKhoan + ", diaChi=" + diaChi + "]";
 	}
 
 }
