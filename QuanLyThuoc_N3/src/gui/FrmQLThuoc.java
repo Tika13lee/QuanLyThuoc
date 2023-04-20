@@ -24,6 +24,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -175,7 +177,7 @@ public class FrmQLThuoc extends JFrame {
 		model = new DefaultTableModel(cols, 0);
 		table = new JTable(model);
 		JScrollPane scr = new JScrollPane(table);
-
+		
 		// south
 
 		JPanel pnSouth = new JPanel();

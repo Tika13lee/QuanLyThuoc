@@ -23,6 +23,9 @@ public class NhaCungCap {
 		// TODO Auto-generated constructor stub
 	}
 
+	public NhaCungCap(String maNCC) {
+		this.maNCC = maNCC;
+	}
 
 	public String getMaNCC() {
 		return maNCC;
