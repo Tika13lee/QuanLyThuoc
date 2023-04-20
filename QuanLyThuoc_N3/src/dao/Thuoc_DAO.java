@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import connect.ConnectDB;
@@ -28,7 +27,7 @@ public class Thuoc_DAO {
 				String ten = rs.getString(2);
 				String phanLoai = rs.getString(3);
 				Date ngaySX = rs.getDate(4);
-				Date ngayHH = rs.getDate(4);
+				Date ngayHH = rs.getDate(5);
 				String donViTinh = rs.getString(6);
 				int soLuong = rs.getInt(7);
 				double dongia = rs.getDouble(8);
@@ -42,22 +41,24 @@ public class Thuoc_DAO {
 		return dsThuoc;
 	}
 
-	public ArrayList<Thuoc> getAllThuocTheoMa(String maThuoc) {
+	public ArrayList<Thuoc> getAllThuocTheoPL(String pl) {
 		ArrayList<Thuoc> ds = new ArrayList<Thuoc>();
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement statement = null;
+		ResultSet rs = null;
+		String sql = "select * from Thuoc where phanLoai = ?";
+
 		try {
-			String sql = "Seclect * from Thuoc where maThuoc = ?";
 			statement = con.prepareStatement(sql);
-			statement.setString(1, maThuoc);
-			ResultSet rs = statement.executeQuery(sql);
+			statement.setString(1, pl);
+			rs = statement.executeQuery();
 			while (rs.next()) {
 				String ma = rs.getString(1);
 				String ten = rs.getString(2);
 				String phanLoai = rs.getString(3);
 				Date ngaySX = rs.getDate(4);
-				Date ngayHH = rs.getDate(4);
+				Date ngayHH = rs.getDate(5);
 				String donViTinh = rs.getString(6);
 				int soLuong = rs.getInt(7);
 				double dongia = rs.getDouble(8);

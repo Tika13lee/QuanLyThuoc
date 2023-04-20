@@ -12,10 +12,16 @@ public class KhachHang {
 	private Date ngaySinh;
 	private int tuoi;
 	private boolean gioiTinh;
+
 	public KhachHang() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
+	public KhachHang(String maKH) {
+		this.maKH = maKH;
+	}
+	
 	public KhachHang(String maKH, String hoKH, String tenKH, String diaChi, String soDT, Date ngaySinh, int tuoi,
 			boolean gioiTinh) {
 		super();
@@ -28,59 +34,76 @@ public class KhachHang {
 		this.tuoi = tuoi;
 		this.gioiTinh = gioiTinh;
 	}
+
 	public String getMaKH() {
 		return maKH;
 	}
+
 	public void setMaKH(String maKH) {
 		this.maKH = maKH;
 	}
+
 	public String getHoKH() {
 		return hoKH;
 	}
+
 	public void setHoKH(String hoKH) {
 		this.hoKH = hoKH;
 	}
+
 	public String getTenKH() {
 		return tenKH;
 	}
+
 	public void setTenKH(String tenKH) {
 		this.tenKH = tenKH;
 	}
+
 	public String getDiaChi() {
 		return diaChi;
 	}
+
 	public void setDiaChi(String diaChi) {
 		this.diaChi = diaChi;
 	}
+
 	public String getSoDT() {
 		return soDT;
 	}
+
 	public void setSoDT(String soDT) {
 		this.soDT = soDT;
 	}
-	
+
 	public Date getNgaySinh() {
 		return ngaySinh;
 	}
+
 	public void setNgaySinh(Date ngaySinh) {
 		this.ngaySinh = ngaySinh;
 	}
+
 	public int getTuoi() {
 		return tuoi;
 	}
+
 	public void setTuoi(int tuoi) {
 		this.tuoi = tuoi;
 	}
+
 	public boolean isGioiTinh() {
 		return gioiTinh;
 	}
+
 	public void setGioiTinh(boolean gioiTinh) {
 		this.gioiTinh = gioiTinh;
 	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(maKH);
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -92,6 +115,7 @@ public class KhachHang {
 		KhachHang other = (KhachHang) obj;
 		return Objects.equals(maKH, other.maKH);
 	}
+
 	@Override
 	public String toString() {
 		return "KhachHang [maKH=" + maKH + ", hoKH=" + hoKH + ", tenKH=" + tenKH + ", diaChi=" + diaChi + ", soDT="
@@ -99,7 +123,3 @@ public class KhachHang {
 	}
 
 }
-	
-
-	
-	

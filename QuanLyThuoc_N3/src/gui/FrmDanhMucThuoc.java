@@ -31,15 +31,15 @@ public class FrmDanhMucThuoc extends JFrame implements ActionListener {
 	private JTable tableDM;
 	private JTextField txtSL;
 	private JButton btnChon;
+	private JButton btnXem;
 	private JButton btnThoat;
 	private JButton btnTim;
-	private JTextField txtTim;
 //	private ArrayList<Thuoc> dsThuoc;
 	private TableRowSorter<TableModel> sorter;
-	private JComboBox cboMa;
+	private JComboBox<String> cboPL;
 
 	private Thuoc_DAO thuoc_dao;
-	private JButton btnXem;
+
 	private ArrayList<Thuoc> dsThuoc;
 
 	public FrmDanhMucThuoc() {
@@ -85,14 +85,10 @@ public class FrmDanhMucThuoc extends JFrame implements ActionListener {
 		split.setResizeWeight(0.5);
 
 		JPanel jpSearch = new JPanel();
-		jpSearch.add(new Label("Tìm thuốc theo mã:"));
+		jpSearch.add(new Label("Tìm thuốc theo phân loại:"));
 //		jpSearch.add(txtTim = new JTextField(20));
-
-		jpSearch.add(cboMa = new JComboBox<>());
-//		ArrayList<Thuoc> dsThuoc = thuoc_dao.getAllThuoc();
-		for (Thuoc p : dsThuoc) {
-			cboMa.addItem(p.getMaThuoc());
-		}
+		String[] str = { "Kê đơn", "Không kê đơn" };
+		jpSearch.add(cboPL = new JComboBox<String>(str));
 
 		jpSearch.add(btnTim = new JButton("Tìm"));
 		jpSearch.add(btnXem = new JButton("Xem chi tiết"));
@@ -100,7 +96,7 @@ public class FrmDanhMucThuoc extends JFrame implements ActionListener {
 
 		JPanel jpChon = new JPanel();
 		jpChon.add(new Label("Nhập số lượng: "));
-		jpChon.add(txtSL = new JTextField(20));
+		jpChon.add(txtSL = new JTextField(10));
 		jpChon.add(btnChon = new JButton("Chọn thuốc"));
 		jpChon.add(btnThoat = new JButton("Thoát"));
 		split.add(jpChon);
@@ -115,7 +111,6 @@ public class FrmDanhMucThuoc extends JFrame implements ActionListener {
 	// load data to table
 	public void LoadDatabaseVaoTable(ArrayList<Thuoc> ds) {
 		modelDM.setRowCount(0);
-//		ArrayList<Thuoc> list = thuoc_dao.getAllThuoc();
 		int stt = 0;
 		for (Thuoc t : ds) {
 			modelDM.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getDonGia(),
@@ -152,10 +147,8 @@ public class FrmDanhMucThuoc extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(this, "Vui lòng chọn thuốc");
 			}
 		} else if (o.equals(btnTim)) {
-			String ma = cboMa.getSelectedObjects().toString();
-			ArrayList<Thuoc> ds = thuoc_dao.getAllThuocTheoMa(ma);
-			modelDM = (DefaultTableModel) tableDM.getModel();
-			modelDM.getDataVector().removeAllElements();
+			String pl = cboPL.getSelectedItem().toString();
+			ArrayList<Thuoc> ds = thuoc_dao.getAllThuocTheoPL(pl);
 			LoadDatabaseVaoTable(ds);
 
 		} else if (o.equals(btnXem)) {

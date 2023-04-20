@@ -1,15 +1,16 @@
 package entity;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Objects;
 
 public class HoaDon {
 	private String maHD;
-	private LocalDate ngayLapHD;
+	private Date ngayLapHD;
 	private KhachHang khachHang;
 	private NhanVien nhanVien;
 
-	public HoaDon(String maHD, LocalDate ngayLapHD, KhachHang khachHang, NhanVien nhanVien) {
+	public HoaDon(String maHD, Date ngayLapHD, KhachHang khachHang, NhanVien nhanVien) {
 		super();
 		this.maHD = maHD;
 		this.ngayLapHD = ngayLapHD;
@@ -30,11 +31,11 @@ public class HoaDon {
 		this.maHD = maHD;
 	}
 
-	public LocalDate getNgayLapHD() {
+	public Date getNgayLapHD() {
 		return ngayLapHD;
 	}
 
-	public void setNgayLapHD(LocalDate ngayLapHD) {
+	public void setNgayLapHD(Date ngayLapHD) {
 		this.ngayLapHD = ngayLapHD;
 	}
 
