@@ -13,6 +13,10 @@ import entity.NhaCungCap;
 import entity.Thuoc;
 
 public class Thuoc_DAO {
+	public Thuoc_DAO() {
+
+	}
+
 	public ArrayList<Thuoc> getAllThuoc() {
 		ArrayList<Thuoc> dsThuoc = new ArrayList<Thuoc>();
 		try {
@@ -23,15 +27,15 @@ public class Thuoc_DAO {
 			Statement statement = con.createStatement();
 			ResultSet rs = statement.executeQuery(sql);
 			while (rs.next()) {
-				String ma = rs.getString(1);
-				String ten = rs.getString(2);
-				String phanLoai = rs.getString(3);
-				Date ngaySX = rs.getDate(4);
-				Date ngayHH = rs.getDate(5);
-				String donViTinh = rs.getString(6);
-				int soLuong = rs.getInt(7);
-				double dongia = rs.getDouble(8);
-				NhaCungCap ncc = new NhaCungCap(rs.getString(9));
+				String ma = rs.getString("maThuoc");
+				String ten = rs.getString("tenThuoc");
+				String phanLoai = rs.getString("phanLoai");
+				Date ngaySX = rs.getDate("ngaySX");
+				Date ngayHH = rs.getDate("ngayHetHan");
+				String donViTinh = rs.getString("donViTinh");
+				int soLuong = rs.getInt("soLuong");
+				double dongia = rs.getDouble("donGia");
+				NhaCungCap ncc = new NhaCungCap(rs.getString("maNCC"));
 				Thuoc thuoc = new Thuoc(ma, ten, phanLoai, ngayHH, donViTinh, soLuong, dongia, ngaySX, ncc);
 				dsThuoc.add(thuoc);
 			}
