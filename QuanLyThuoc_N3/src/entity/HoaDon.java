@@ -17,6 +17,13 @@ public class HoaDon {
 		this.khachHang = khachHang;
 		this.nhanVien = nhanVien;
 	}
+	
+
+	public HoaDon(String maHD) {
+		super();
+		this.maHD = maHD;
+	}
+
 
 	public HoaDon() {
 		super();
