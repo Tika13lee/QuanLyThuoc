@@ -1,12 +1,14 @@
 package dao;
 
 import java.sql.Connection;
-import java.sql.Date;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
+//import java.sql.Date;
 
 import connect.ConnectDB;
 import entity.NhaCungCap;
@@ -17,6 +19,9 @@ public class Thuoc_DAO {
 
 	}
 
+	/*
+	 * lấy data từ sql lên table;
+	 */
 	public ArrayList<Thuoc> getAllThuoc() {
 		ArrayList<Thuoc> dsThuoc = new ArrayList<Thuoc>();
 		try {
@@ -36,6 +41,7 @@ public class Thuoc_DAO {
 				int soLuong = rs.getInt("soLuong");
 				double dongia = rs.getDouble("donGia");
 				NhaCungCap ncc = new NhaCungCap(rs.getString("maNCC"));
+				
 				Thuoc thuoc = new Thuoc(ma, ten, phanLoai, ngayHH, donViTinh, soLuong, dongia, ngaySX, ncc);
 				dsThuoc.add(thuoc);
 			}
@@ -45,6 +51,9 @@ public class Thuoc_DAO {
 		return dsThuoc;
 	}
 
+	/*
+	 * lấy data thuốc theo phân loại;
+	 */
 	public ArrayList<Thuoc> getAllThuocTheoPL(String pl) {
 		ArrayList<Thuoc> ds = new ArrayList<Thuoc>();
 		ConnectDB.getInstance();
@@ -82,4 +91,42 @@ public class Thuoc_DAO {
 		}
 		return ds;
 	}
+	
+	/*
+	 * them nhan vien
+	 */
+	public boolean createThuoc(Thuoc t) {
+		 ConnectDB.getInstance();
+		 Connection con = ConnectDB.getConnection();
+		 PreparedStatement stmt = null;
+		 int n = 0;
+		 try {
+			 stmt = con.prepareStatement("insert into" +" Thuoc values (?,?,?,?,?,?,?,?,?)");
+			 stmt.setString(1, t.getMaThuoc());
+			 stmt.setString(2, t.getTenThuoc());
+			 stmt.setString(3, t.getPhanLoai());
+			 stmt.setDate(4,  (java.sql.Date) t.getNgaySX());
+			 stmt.setDate(5,  (java.sql.Date) t.getNgayHetHan());
+			 stmt.setString(6, t.getDonViTinh());
+			 stmt.setDouble(7, t.getDonGia());
+			 stmt.setInt(8, t.getSoLuong());
+			 stmt.setString(9, t.getNhaCC().getMaNCC());
+			 n = stmt.executeUpdate();
+			 
+			 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		 finally {
+			 try {
+				stmt.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		 }
+		 return n> 0;
+	}
+	
+	
+	
 }

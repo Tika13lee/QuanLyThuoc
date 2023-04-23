@@ -8,8 +8,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.Date;
+//import java.sql.Date;
+import java.util.Date;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,6 +25,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollBar;
@@ -46,9 +49,9 @@ import entity.Thuoc;
 public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener {
 	private JLabel lblMaThuoc, lblTenThuoc, lblPhanLoai, lblhanSD, lbldonViTinh, lblSoLuong, lblDonGia, lblngaySX,
 			lblnhaCC, lblDonViTinh;
-	private JTextField txtMaThuoc, txtTenThuoc, txtDonViTinh, txtSoLuong, txtDonGia, txtnhaCC, txtTimKiem;
-	private JDateChooser jdcNgaySX;
-	private JTextField txtHanSD;
+	private JTextField txtMaThuoc, txtTenThuoc, txtDonViTinh, txtSoLuong, txtDonGia, txtnhaCC, txtTimKiem, txtngaySX;
+//	private JDateChooser jdcNgaySX;
+	private JTextField txtNgayHH;
 	private JComboBox cboPhanLoai, cboNhaCC, cboDonViTinh;
 
 	private DefaultTableModel model;
@@ -60,8 +63,6 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 	private JRadioButton radTheoMa, radHsd, radTen;
 	private Thuoc_DAO thuoc_dao;
 	private NhaCungCap_DAO ncc_dao;
-
-//	private 
 
 	public FrmQLThuoc() {
 		setTitle("quản lý thuốc");
@@ -109,7 +110,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 
 		b1.add(lblMaThuoc = new JLabel("mã:"));
 		b1.add(txtMaThuoc = new JTextField());
-		txtMaThuoc.setEditable(false); // set chỉ được đọc
+//		txtMaThuoc.setEditable(false); // set chỉ được đọc
 		b1.add(lblTenThuoc = new JLabel("tên thuốc:"));
 		b1.add(txtTenThuoc = new JTextField());
 
@@ -119,10 +120,10 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 		b2.add(txtDonGia = new JTextField());
 
 		b3.add(lblngaySX = new JLabel("ngày sản xuất:"));
-		b3.add(jdcNgaySX = new JDateChooser());
+		b3.add(txtngaySX = new JTextField());
 //		jdcNgaySX.setCalendar(Calendar.getInstance());
 		b3.add(lblhanSD = new JLabel("hạn sử dụng:"));
-		b3.add(txtHanSD = new JTextField());
+		b3.add(txtNgayHH = new JTextField());
 
 		cboPhanLoai = new JComboBox<>();
 
@@ -168,7 +169,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 		bAll.add(b);
 		bAll.add(Box.createVerticalStrut(50));
 
-		// design kích thước cho đẹp
+		// design kích thước
 		lblMaThuoc.setPreferredSize(new Dimension(100, 20));
 
 		lblSoLuong.setPreferredSize(new Dimension(100, 20));
@@ -190,9 +191,15 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 		DocDuLieuDBVaoTable();
 
 		// đọc dl vào combobox
-		ArrayList<NhaCungCap> listncc = ncc_dao.getAllNhaCungCap();
-		for (NhaCungCap ncc : listncc) {
-			cboNhaCC.addItem(ncc.getMaNCC());
+//		ArrayList<NhaCungCap> listncc = ncc_dao.getAllNhaCungCap();
+//		for (NhaCungCap ncc : listncc) {
+//			cboNhaCC.addItem(ncc.getMaNCC());
+//		}
+		ArrayList<Thuoc> listThuoc = thuoc_dao.getAllThuoc();
+		for (Thuoc t : listThuoc) {
+			cboNhaCC.addItem(t.getNhaCC().getMaNCC());
+			cboPhanLoai.addItem(t.getPhanLoai());
+			cboDonViTinh.addItem(t.getDonViTinh());
 		}
 
 		// south
@@ -210,7 +217,11 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 
 		// đăng kí sự kiện
 		table.addMouseListener(this);
-
+		btnThem.addActionListener(this);
+		btnXoa.addActionListener(this);
+		btnSua.addActionListener(this);
+		btnLamMoi.addActionListener(this);
+		btnThoat.addActionListener(this);
 	}
 
 	/*
@@ -240,13 +251,11 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 		txtTenThuoc.setText(model.getValueAt(row, 2).toString());
 		txtSoLuong.setText(model.getValueAt(row, 3).toString());
 		txtDonGia.setText(model.getValueAt(row, 4).toString());
-		txtHanSD.setText(model.getValueAt(row, 6).toString());
+		txtNgayHH.setText(model.getValueAt(row, 6).toString());
 		cboNhaCC.setSelectedItem(model.getValueAt(row, 7).toString());
-
-//		Object objDate = model.getValueAt(row, 5);
-//		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-//		Date date = df.parse(objDate.toString());
-//		jdcNgaySX.setDate(date);
+		txtngaySX.setText(model.getValueAt(row, 5).toString());
+		cboPhanLoai.setSelectedItem(model.getValueAt(row, 8).toString());
+		cboDonViTinh.setSelectedItem(model.getValueAt(row, 9).toString());
 
 	}
 
@@ -276,7 +285,46 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		Object o = e.getSource();
+		if (o.equals(btnThem)) {
+			String ma = txtMaThuoc.getText();
+			String tenthuoc = txtTenThuoc.getText();
+			int soluong = Integer.parseInt(txtSoLuong.getText());
+			double dongianhap = Double.parseDouble(txtDonGia.getText());
+
+			String nsxString = txtngaySX.getText();
+			String nhhString = txtNgayHH.getText();
+			java.sql.Date datensx = java.sql.Date.valueOf(nsxString);
+			java.sql.Date datenhh = java.sql.Date.valueOf(nhhString);
+
+			String nhacc = cboNhaCC.getSelectedItem().toString();
+			String phanloai = cboPhanLoai.getSelectedItem().toString();
+			String doviTinh = cboDonViTinh.getSelectedItem().toString();
+			NhaCungCap ncc = new NhaCungCap(nhacc);
+			Thuoc t = new Thuoc(ma, tenthuoc, phanloai, datenhh, doviTinh, soluong, dongianhap, datensx, ncc);
+			try {
+				if(thuoc_dao.createThuoc(t)) {
+					clearDataOnTable();
+					DocDuLieuDBVaoTable();
+				}
+//				thuoc_dao.createThuoc(t);
+//				clearDataOnTable();
+//				DocDuLieuDBVaoTable();
+			} catch (Exception e2) {
+				JOptionPane.showMessageDialog(null, "trung id");
+			}
+
+		}
 
 	}
+
+	/*
+	 * xóa hết data trên table
+	 */
+	private void clearDataOnTable() {
+		while (model.getRowCount() > 0) {
+			model.removeRow(0);
+		}
+	}
+
 }

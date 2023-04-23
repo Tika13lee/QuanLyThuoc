@@ -1,7 +1,10 @@
 package entity;
 
-import java.sql.Date;
+
+
 import java.time.LocalDate;
+import java.util.Date;
+//import java.sql.Date;
 import java.util.Objects;
 
 public class Thuoc {
@@ -23,7 +26,7 @@ public class Thuoc {
 		this.maThuoc = maThuoc;
 		this.tenThuoc = tenThuoc;
 		this.phanLoai = phanLoai;
-		this.ngayHetHan =ngayHetHan;
+		this.ngayHetHan = ngayHetHan;
 		this.donViTinh = donViTinh;
 		this.soLuong = soLuong;
 		this.donGia = donGia;
@@ -33,6 +36,11 @@ public class Thuoc {
 
 	public Thuoc(String maThuoc) {
 		this.maThuoc = maThuoc;
+	}
+
+	public Thuoc(String maThuoc, String tenThuoc) {
+		this.maThuoc = maThuoc;
+		this.tenThuoc = tenThuoc;
 	}
 
 	public String getMaThuoc() {
@@ -58,7 +66,6 @@ public class Thuoc {
 	public void setPhanLoai(String phanLoai) {
 		this.phanLoai = phanLoai;
 	}
-
 
 	public Date getNgayHetHan() {
 		return ngayHetHan;
@@ -131,7 +138,5 @@ public class Thuoc {
 				+ ngayHetHan + ", donViTinh=" + donViTinh + ", soLuong=" + soLuong + ", donGia=" + donGia + ", ngaySX="
 				+ ngaySX + ", nhaCC=" + nhaCC + "]";
 	}
-
-	
 
 }
