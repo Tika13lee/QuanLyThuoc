@@ -17,6 +17,10 @@ public class Thuoc {
 	private double donGia;
 	private Date ngaySX;
 	private NhaCungCap nhaCC;
+	
+//	public Object[] getOBJThuoc() {
+//		Object[] obj = {t
+//	}
 
 	public Thuoc() {
 	}

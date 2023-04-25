@@ -41,7 +41,7 @@ public class Thuoc_DAO {
 				int soLuong = rs.getInt("soLuong");
 				double dongia = rs.getDouble("donGia");
 				NhaCungCap ncc = new NhaCungCap(rs.getString("maNCC"));
-				
+
 				Thuoc thuoc = new Thuoc(ma, ten, phanLoai, ngayHH, donViTinh, soLuong, dongia, ngaySX, ncc);
 				dsThuoc.add(thuoc);
 			}
@@ -91,42 +91,95 @@ public class Thuoc_DAO {
 		}
 		return ds;
 	}
-	
+
 	/*
 	 * them nhan vien
 	 */
 	public boolean createThuoc(Thuoc t) {
-		 ConnectDB.getInstance();
-		 Connection con = ConnectDB.getConnection();
-		 PreparedStatement stmt = null;
-		 int n = 0;
-		 try {
-			 stmt = con.prepareStatement("insert into" +" Thuoc values (?,?,?,?,?,?,?,?,?)");
-			 stmt.setString(1, t.getMaThuoc());
-			 stmt.setString(2, t.getTenThuoc());
-			 stmt.setString(3, t.getPhanLoai());
-			 stmt.setDate(4,  (java.sql.Date) t.getNgaySX());
-			 stmt.setDate(5,  (java.sql.Date) t.getNgayHetHan());
-			 stmt.setString(6, t.getDonViTinh());
-			 stmt.setDouble(7, t.getDonGia());
-			 stmt.setInt(8, t.getSoLuong());
-			 stmt.setString(9, t.getNhaCC().getMaNCC());
-			 n = stmt.executeUpdate();
-			 
-			 
+		ConnectDB.getInstance();
+		Connection con = ConnectDB.getConnection();
+		PreparedStatement stmt = null;
+		int n = 0;
+		try {
+			stmt = con.prepareStatement("insert into" + " Thuoc values (?,?,?,?,?,?,?,?,?)");
+			stmt.setString(1, t.getMaThuoc());
+			stmt.setString(2, t.getTenThuoc());
+			stmt.setString(3, t.getPhanLoai());
+			stmt.setDate(4, (java.sql.Date) t.getNgaySX());
+			stmt.setDate(5, (java.sql.Date) t.getNgayHetHan());
+			stmt.setString(6, t.getDonViTinh());
+			stmt.setDouble(7, t.getDonGia());
+			stmt.setInt(8, t.getSoLuong());
+			stmt.setString(9, t.getNhaCC().getMaNCC());
+			n = stmt.executeUpdate();
+
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		 finally {
-			 try {
+		} finally {
+			try {
 				stmt.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		 }
-		 return n> 0;
+		}
+		return n > 0;
 	}
-	
-	
-	
+
+	/*
+	 * update thuốc
+	 */
+	public boolean update(Thuoc t) {
+		ConnectDB.getInstance();
+		Connection con = ConnectDB.getConnection();
+		PreparedStatement stmt = null;
+		int n = 0;
+		try {
+			stmt = con.prepareStatement(
+					"update Thuoc set tenThuoc = ?, phanLoai = ?,ngaySX =?,ngayHetHan=?,donViTinh=?,donGia=?,soLuong=?, maNCC = ? where maThuoc = ?");
+			stmt.setString(1, t.getMaThuoc());
+			stmt.setString(2, t.getTenThuoc());
+			stmt.setString(3, t.getPhanLoai());
+			stmt.setDate(4, (java.sql.Date) t.getNgaySX());
+			stmt.setDate(5, (java.sql.Date) t.getNgayHetHan());
+			stmt.setString(6, t.getDonViTinh());
+			stmt.setDouble(7, t.getDonGia());
+			stmt.setInt(8, t.getSoLuong());
+			stmt.setString(9, t.getNhaCC().getMaNCC());
+			n = stmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return n > 0;
+	}
+	/*
+	 * xóa thuốc
+	 */
+	public boolean delete(Thuoc t) {
+		ConnectDB.getInstance();
+		Connection con = ConnectDB.getConnection();
+		PreparedStatement stmt = null;
+		int n= 0;
+		try {
+			stmt = con.prepareStatement("delete Thuoc where maThuoc = ?");
+			stmt.setString(1, t.getMaThuoc());
+			n = stmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				stmt.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return n>0;
+	}
+
 }
