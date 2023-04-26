@@ -21,6 +21,13 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import connect.ConnectDB;
+
+import java.util.*;
+
+import dao.HoaDon_DAO;
+import entity.HoaDon;
+
 public class FrmQLThongKe extends JFrame {
 	/**
 	 * 
@@ -40,8 +47,17 @@ public class FrmQLThongKe extends JFrame {
 	private JTable table_1;
 	String s;
 	private JComboBox cmbThang, cmbMaNV, cmbMaKH, cmbNgay, cmbMaHD;
+	private HoaDon_DAO hd_DAO;
 
 	public FrmQLThongKe() {
+		
+		
+		try {
+			ConnectDB.getInstance().connect();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		hd_DAO = new HoaDon_DAO();
 		setTitle("Quản Lí Hiệu Thuốc");
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setLocationRelativeTo(null);
@@ -305,13 +321,12 @@ public class FrmQLThongKe extends JFrame {
 
 		// danh sách thống kê và nút báo cáo
 		JScrollPane scrDSTK;
-		String[] tb1 = new String[] { "STT", "Mã Hóa đơn", "Ngày lập Hóa Đơn", "Mã Nhân Viên", "Họ Nhân Viên",
-				"Mã Khách Hàng", "Thành Tiền" };
+		String[] tb1 = new String[] { "STT", "Mã Hóa đơn", "Ngày lập Hóa Đơn", "Mã Khách Hàng" ,"Mã Nhân Viên", "Thành Tiền"};
 		tablemodel = new DefaultTableModel(tb1, 0);
 		table_1 = new JTable(tablemodel);
 		table_1.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
-		table_1.setBackground(new Color(255, 250, 205));
-		table_1.setForeground(new Color(0, 0, 205));
+//		table_1.setBackground(new Color(255, 250, 205));
+//		table_1.setForeground(new Color(0, 0, 205));
 		getContentPane().add(scrDSTK = new JScrollPane(table_1, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS), BorderLayout.CENTER);
 		table_1.setRowHeight(20);
@@ -331,6 +346,8 @@ public class FrmQLThongKe extends JFrame {
 		panel_8.setBackground(new Color(175, 238, 238));
 		panel_8.setLayout(null);
 		getContentPane().add(tabbedPane);
+		
+		
 
 		// South
 		panel_BaoCao = new JPanel();
@@ -347,6 +364,23 @@ public class FrmQLThongKe extends JFrame {
 		btnBaoCao.setForeground(Color.BLACK);
 		btnBaoCao.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnBaoCao.setBackground(SystemColor.controlHighlight);
+		
+		addData();
+	}
+	
+	
+	
+	public void addData() {
+		HoaDon h = new HoaDon();
+		int stt = 0;
+		hd_DAO = new HoaDon_DAO();
+		List<HoaDon> listHd = hd_DAO.getAllHoaDon();
+		for(HoaDon hd : listHd)
+		{
+			tablemodel.addRow(new Object[] {++stt, hd.getMaHD(), hd.getNgayLapHD(), hd.getNhanVien().getMaNV(), 
+					hd.getKhachHang().getMaKH()});
+		}
+		
 	}
 
 	public static void main(String[] args) {
