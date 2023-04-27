@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -26,9 +29,11 @@ import connect.ConnectDB;
 import java.util.*;
 
 import dao.HoaDon_DAO;
+import dao.KhachHang_DAO;
 import entity.HoaDon;
+import entity.KhachHang;
 
-public class FrmQLThongKe extends JFrame {
+public class FrmQLThongKe extends JFrame implements ActionListener  {
 	/**
 	 * 
 	 */
@@ -46,8 +51,9 @@ public class FrmQLThongKe extends JFrame {
 	DefaultTableModel tablemodel2 = new DefaultTableModel();
 	private JTable table_1;
 	String s;
-	private JComboBox cmbThang, cmbMaNV, cmbMaKH, cmbNgay, cmbMaHD;
+	private JComboBox<Object> cmbThang, cmbMaNV, cmbMaKH, cmbNgay, cmbMaHD;
 	private HoaDon_DAO hd_DAO;
+	private KhachHang_DAO kh_DAO;
 
 	public FrmQLThongKe() {
 		
@@ -113,7 +119,11 @@ public class FrmQLThongKe extends JFrame {
 		// Chi tiết ô tìm kiếm
 		cmbMaKH = new JComboBox<>();
 		pnlTimKiem.add(cmbMaKH);
-		cmbMaKH.addItem("Tất cả");
+		List<HoaDon> listHD = hd_DAO.getAllHoaDon();
+		for (HoaDon hd: listHD)
+		{
+			cmbMaKH.addItem(hd.getKhachHang().getMaKH());
+		}
 		cmbMaKH.setBounds(20, 30, 120, 30);
 
 		btnMaKH = new JButton("Tìm mã KH");
@@ -366,6 +376,11 @@ public class FrmQLThongKe extends JFrame {
 		btnBaoCao.setBackground(SystemColor.controlHighlight);
 		
 		addData();
+		
+		
+		
+		//thêm sự kiện
+		btnMaKH.addActionListener(this);
 	}
 	
 	
@@ -385,6 +400,24 @@ public class FrmQLThongKe extends JFrame {
 
 	public static void main(String[] args) {
 		new FrmQLThongKe().setVisible(true);
+	}
+
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    Object o = e.getSource();
+	    if (o.equals(btnMaKH)) {
+	    	String maKH = cmbMaKH.getSelectedItem().toString();
+	    	List<HoaDon> listHd = hd_DAO.getHDtheoKH(maKH);
+	    	tablemodel.setRowCount(0);
+	    	int stt = 0;
+	    	for (HoaDon hd : listHd) {
+	    	    tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(), hd.getNhanVien().getMaNV(),
+	    	            hd.getKhachHang().getMaKH() });
+	    	}
+
+	    }
 	}
 
 }
