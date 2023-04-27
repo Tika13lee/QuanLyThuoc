@@ -24,6 +24,8 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import com.toedter.components.JTitlePanel;
+
 import connect.ConnectDB;
 
 import java.util.*;
@@ -39,12 +41,12 @@ public class FrmQLThongKe extends JFrame implements ActionListener  {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JTabbedPane tabbedPane;
-	private JPanel pnlToanPhan, panel_1, panel_BaoCao;
+	private JPanel pnlToanPhan, panel_1;
 	private JLabel lblThongTinKhachHang, lblDiaChi, lblThngKTheo, lblTongSLThuocBan, lblMaNV, lblTenNV, lblSDT, lblNN,
 			lblMakh, lblNgay, lblDonthuoc, lblTongHD;
 	private JTextField txtDiaChi, txtTenKH, txtMaKH, txtNN, txtSDT, txtMakn, txtNam, txtTenNV, txtTongSoHD,
 			txtTongDoanhThu, txtTongSoHD1, txtTongDoanhThu1;
-	private JButton btnMaKH, btnMaHD, btnXoa, btnXoa2, btnReload, btnThoat, btnXemKQ1, btnXemKQ2, btnBaoCao;
+	private JButton btnMaKH, btnMaHD, btnXoa, btnXoa2, btnReload, btnThoat, btnXemKQ1, btnXemKQ2;
 	private JScrollPane scrDSTK;
 	public static DefaultTableModel tablemodel = new DefaultTableModel();
 	public static DefaultTableModel tablemodel1 = new DefaultTableModel();
@@ -75,7 +77,7 @@ public class FrmQLThongKe extends JFrame implements ActionListener  {
 		tabbedPane.setBounds(0, 0, 1535, 840);
 		tabbedPane.setBorder(null);
 
-		// North
+		// NORTH
 
 		// panel tổng
 		pnlToanPhan = new JPanel();
@@ -92,14 +94,16 @@ public class FrmQLThongKe extends JFrame implements ActionListener  {
 		JLabel lblTieuDeTKHDTKH = new JLabel("QUẢN LÍ BÁN HÀNG");
 		lblTieuDeTKHDTKH.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTieuDeTKHDTKH.setForeground(Color.BLUE);
-		lblTieuDeTKHDTKH.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		lblTieuDeTKHDTKH.setBounds(480, 11, 538, 37);
+		lblTieuDeTKHDTKH.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblTieuDeTKHDTKH.setBounds(480, 20, 538, 37);
 		pnlTieuDeTKHDTHV.add(lblTieuDeTKHDTKH);
 
 		tabbedPane.addTab("Thống kê", pnlToanPhan);
 		pnlToanPhan.setLayout(null);
 
-		// center
+		// CENTER
+		
+		//LEFT
 
 		// Các ô thao thác chức năng
 		JPanel panel_1 = new JPanel();
@@ -132,7 +136,11 @@ public class FrmQLThongKe extends JFrame implements ActionListener  {
 
 		cmbMaHD = new JComboBox<>();
 		pnlTimKiem.add(cmbMaHD);
-		cmbMaHD.addItem("Tất cả");
+		List<HoaDon> listHD1 = hd_DAO.getAllHoaDon();
+		for (HoaDon hd: listHD1)
+		{
+			cmbMaHD.addItem(hd.getMaHD());
+		}
 		cmbMaHD.setBounds(20, 90, 120, 30);
 
 		btnMaHD = new JButton("Tìm mã HD");
@@ -165,7 +173,7 @@ public class FrmQLThongKe extends JFrame implements ActionListener  {
 
 		// Các ô thống kê
 		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(10, 260, 650, 300);
+		panel_2.setBounds(10, 260, 650, 355);
 		panel_2.setBackground(SystemColor.controlHighlight);
 		panel_2.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		pnlToanPhan.add(panel_2);
@@ -256,7 +264,7 @@ public class FrmQLThongKe extends JFrame implements ActionListener  {
 		JPanel pnlKetQua = new JPanel();
 		pnlKetQua.setBackground(SystemColor.controlHighlight);
 		pnlKetQua.setBorder(new TitledBorder(null, "Kết quả", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		pnlKetQua.setBounds(10, 190, 620, 100);
+		pnlKetQua.setBounds(10, 190, 620, 155);
 		panel_2.add(pnlKetQua);
 		pnlKetQua.setLayout(null);
 
@@ -264,31 +272,31 @@ public class FrmQLThongKe extends JFrame implements ActionListener  {
 
 		JLabel lblTongHD = new JLabel("Tổng số hóa đơn:");
 		lblTongHD.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblTongHD.setBounds(60, 20, 150, 28);
+		lblTongHD.setBounds(60, 40, 150, 28);
 		pnlKetQua.add(lblTongHD);
 
 		txtTongSoHD = new JTextField();
 		txtTongSoHD.setForeground(new Color(0, 0, 255));
 		txtTongSoHD.setEditable(false);
-		txtTongSoHD.setBounds(200, 20, 150, 28);
+		txtTongSoHD.setBounds(200, 40, 150, 28);
 		pnlKetQua.add(txtTongSoHD);
 		txtTongSoHD.setColumns(10);
 
 		JLabel lblTongDT = new JLabel("Tổng doanh thu:");
 		lblTongDT.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblTongDT.setBounds(60, 60, 150, 28);
+		lblTongDT.setBounds(60, 100, 150, 28);
 		pnlKetQua.add(lblTongDT);
 
 		txtTongDoanhThu = new JTextField();
 		txtTongDoanhThu.setForeground(new Color(0, 0, 255));
 		txtTongDoanhThu.setEditable(false);
-		txtTongDoanhThu.setBounds(200, 60, 150, 28);
+		txtTongDoanhThu.setBounds(200, 100, 150, 28);
 		pnlKetQua.add(txtTongDoanhThu);
 		txtTongDoanhThu.setColumns(10);
 
 		// Ô thống kê tổng quát (khung)
 		JPanel panel_3 = new JPanel();
-		panel_3.setBounds(10, 570, 650, 175);
+		panel_3.setBounds(10, 626, 650, 175);
 		panel_3.setBackground(SystemColor.controlHighlight);
 		panel_3.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		pnlToanPhan.add(panel_3);
@@ -329,6 +337,9 @@ public class FrmQLThongKe extends JFrame implements ActionListener  {
 		pnlThongKeTongQuat.add(txtTongDoanhThu1);
 		txtTongDoanhThu1.setColumns(10);
 
+		
+		//RIGHT
+		
 		// danh sách thống kê và nút báo cáo
 		JScrollPane scrDSTK;
 		String[] tb1 = new String[] { "STT", "Mã Hóa đơn", "Ngày lập Hóa Đơn", "Mã Khách Hàng" ,"Mã Nhân Viên", "Thành Tiền"};
@@ -342,15 +353,16 @@ public class FrmQLThongKe extends JFrame implements ActionListener  {
 		table_1.setRowHeight(20);
 
 		javax.swing.border.Border southbordert = BorderFactory.createLineBorder(Color.blue);
-		TitledBorder southTitleBordert = new TitledBorder(southbordert, "Thông tin chung về thuốc");
+		TitledBorder southTitleBordert = new TitledBorder(southbordert, "Thông tin chung về hoá đơn");
 		southTitleBordert.setTitleColor(Color.blue);
 		scrDSTK.setBorder(
 				new TitledBorder(null, "Danh sách thống kê", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 
+		
 		pnlToanPhan.add(scrDSTK);
 		scrDSTK.setPreferredSize(new Dimension(0, 250));
 		pnlToanPhan.setLayout(null);
-		scrDSTK.setBounds(670, 90, 850, 658);
+		scrDSTK.setBounds(670, 90, 850, 720);
 		JPanel panel_8 = new JPanel();
 		scrDSTK.setColumnHeaderView(panel_8);
 		panel_8.setBackground(new Color(175, 238, 238));
@@ -358,22 +370,6 @@ public class FrmQLThongKe extends JFrame implements ActionListener  {
 		getContentPane().add(tabbedPane);
 		
 		
-
-		// South
-		panel_BaoCao = new JPanel();
-		panel_BaoCao.setBackground(SystemColor.controlHighlight);
-		panel_BaoCao.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel_BaoCao.setBounds(10, 750, 1510, 60);
-		pnlToanPhan.add(panel_BaoCao);
-		panel_BaoCao.setLayout(null);
-
-		btnBaoCao = new JButton("Xem Báo Cáo");
-		btnBaoCao.setBounds(610, 8, 255, 45);
-		panel_BaoCao.add(btnBaoCao);
-
-		btnBaoCao.setForeground(Color.BLACK);
-		btnBaoCao.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnBaoCao.setBackground(SystemColor.controlHighlight);
 		
 		addData();
 		
@@ -381,6 +377,9 @@ public class FrmQLThongKe extends JFrame implements ActionListener  {
 		
 		//thêm sự kiện
 		btnMaKH.addActionListener(this);
+		btnMaHD.addActionListener(this);
+		btnReload.addActionListener(this);
+		btnThoat.addActionListener(this);
 	}
 	
 	
@@ -396,6 +395,16 @@ public class FrmQLThongKe extends JFrame implements ActionListener  {
 					hd.getKhachHang().getMaKH()});
 		}
 		
+	}
+	public void reloadData() {
+	    tablemodel.setRowCount(0); // Xóa hết các dòng trong bảng
+	    int stt = 0;
+	    hd_DAO = new HoaDon_DAO();
+	    List<HoaDon> listHd = hd_DAO.getAllHoaDon();
+	    for (HoaDon hd : listHd) {
+	    	tablemodel.addRow(new Object[] {++stt, hd.getMaHD(), hd.getNgayLapHD(), hd.getNhanVien().getMaNV(), 
+					hd.getKhachHang().getMaKH()});// Thêm dòng vào bảng
+	    }
 	}
 
 	public static void main(String[] args) {
@@ -418,6 +427,25 @@ public class FrmQLThongKe extends JFrame implements ActionListener  {
 	    	}
 
 	    }
+	    if (o.equals(btnMaHD)) {
+	    	String maHD = cmbMaHD.getSelectedItem().toString();
+	    	List<HoaDon> listHd = hd_DAO.getHDTheoHD(maHD);
+	    	tablemodel.setRowCount(0);
+	    	int stt = 0;
+	    	for (HoaDon hd : listHd) {
+	    	    tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(), hd.getNhanVien().getMaNV(),
+	    	            hd.getKhachHang().getMaKH() });
+	    	}
+
+	    }
+	    if (o.equals(btnReload)) {
+	    	 reloadData();
+	    }
+	    if(o.equals(btnThoat)) {
+	    	setVisible(false);
+	    	new FrmManHinhChinh().setVisible(true);
+	    }
 	}
+	
 
 }

@@ -90,6 +90,28 @@ public class HoaDon_DAO {
 		}
 		return true;
 	}
+	public int getSoluong() {
+//		ArrayList<Thuoc> dsThuoc = new ArrayList<Thuoc>();
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+
+			String sql = "SELECT TOP 1 maHD FROM HoaDon ORDER BY maHD desc";
+			Statement statement = con.createStatement();
+			ResultSet rs = statement.executeQuery(sql);
+			if (rs.next()) {
+				String temp = rs.getString("maHD");
+				temp = temp.replace("HD", "");
+				return Integer.parseInt(temp);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
+	
+	
 	
 	public ArrayList<HoaDon> getHDtheoKH(String ma) {
 	    ArrayList<HoaDon> dsHD = new ArrayList<HoaDon>();
@@ -121,5 +143,37 @@ public class HoaDon_DAO {
 	        }
 	    }
 	    return dsHD;
+	}
+	
+	public ArrayList<HoaDon> getHDTheoHD(String ma) {
+		ArrayList<HoaDon> dsHD = new ArrayList<HoaDon>();
+		ConnectDB.getInstance();
+		Connection con = ConnectDB.getConnection();
+		PreparedStatement ps = null;
+		try {
+			String sql = "select * from HoaDon where maHD = ?";
+			ps = con.prepareStatement(sql);
+			ps.setString(1, ma);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				String maHD = rs.getString("maHD");
+				Date ngay = rs.getDate("ngayLapHD");
+				String maKH = rs.getString("maKH");
+				String maNV = rs.getString("maNV");
+				KhachHang kh = new KhachHang(maKH);
+				NhanVien nv = new NhanVien(maNV);
+				HoaDon hd = new HoaDon(maHD, ngay, kh, nv);
+				dsHD.add(hd);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return dsHD;
 	}
 }
