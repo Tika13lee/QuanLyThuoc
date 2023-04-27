@@ -18,7 +18,6 @@ public class Thuoc_DAO {
 	public Thuoc_DAO() {
 
 	}
-
 	/*
 	 * lấy data từ sql lên table;
 	 */
@@ -157,6 +156,7 @@ public class Thuoc_DAO {
 		}
 		return n > 0;
 	}
+
 	/*
 	 * xóa thuốc
 	 */
@@ -164,22 +164,43 @@ public class Thuoc_DAO {
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stmt = null;
-		int n= 0;
+		int n = 0;
 		try {
 			stmt = con.prepareStatement("delete Thuoc where maThuoc = ?");
 			stmt.setString(1, t.getMaThuoc());
 			n = stmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		finally {
+		} finally {
 			try {
 				stmt.close();
 			} catch (Exception e2) {
 				e2.printStackTrace();
 			}
 		}
-		return n>0;
+		return n > 0;
+	}
+	/*
+	 * lấy số lượng thuốc
+	 */
+	public int getSoluong() {
+//		ArrayList<Thuoc> dsThuoc = new ArrayList<Thuoc>();
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+
+			String sql = "SELECT TOP 1 mathuoc FROM Thuoc ORDER BY mathuoc desc";
+			Statement statement = con.createStatement();
+			ResultSet rs = statement.executeQuery(sql);
+			if (rs.next()) {
+				String temp = rs.getString("mathuoc");
+				temp = temp.replace("T", "");
+				return Integer.parseInt(temp);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
 	}
 
 }
