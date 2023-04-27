@@ -202,5 +202,43 @@ public class Thuoc_DAO {
 		}
 		return -1;
 	}
+	
+	public ArrayList<Thuoc> getAllThuocTheoMaThuoc(String maT) {
+		ArrayList<Thuoc> ds = new ArrayList<Thuoc>();
+		ConnectDB.getInstance();
+		Connection con = ConnectDB.getConnection();
+		PreparedStatement statement = null;
+		String sql = "Select * from Thuoc where maThuoc = ?";
+
+		try {
+			statement = con.prepareStatement(sql);
+			statement.setString(1,maT);
+			ResultSet rs = statement.executeQuery();
+			while (rs.next()){
+				String ma = rs.getString("maThuoc");
+				String ten = rs.getString("tenThuoc");
+				String phanLoai = rs.getString("phanLoai");
+				Date ngaySX = rs.getDate("ngaySX");
+				Date ngayHH = rs.getDate("ngayHetHan");
+				String donViTinh = rs.getString("donViTinh");
+				int soLuong = rs.getInt("soLuong");
+				double dongia = rs.getDouble("donGia");
+				NhaCungCap ncc = new NhaCungCap(rs.getString("maNCC"));
+				Thuoc thuoc = new Thuoc(ma, ten, phanLoai, ngayHH, donViTinh, soLuong, dongia, ngaySX, ncc);
+				ds.add(thuoc);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+		}finally {
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return ds;
+	}
 
 }

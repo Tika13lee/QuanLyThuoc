@@ -30,9 +30,9 @@ public class NhanVien_DAO {
 				nv.setDiaChi(rs.getString("diaChi"));
 				dsNhanViens.add(nv);
 			}
-			rs.close();
+			//rs.close();
 			statement.close();
-			con.close();
+			//con.close();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

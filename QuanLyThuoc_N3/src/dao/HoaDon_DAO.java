@@ -90,4 +90,24 @@ public class HoaDon_DAO {
 		}
 		return true;
 	}
+	
+	public int getSoluong() {
+//		ArrayList<Thuoc> dsThuoc = new ArrayList<Thuoc>();
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+
+			String sql = "SELECT TOP 1 maHD FROM HoaDon ORDER BY maHD desc";
+			Statement statement = con.createStatement();
+			ResultSet rs = statement.executeQuery(sql);
+			if (rs.next()) {
+				String temp = rs.getString("maHD");
+				temp = temp.replace("HD", "");
+				return Integer.parseInt(temp);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
 }

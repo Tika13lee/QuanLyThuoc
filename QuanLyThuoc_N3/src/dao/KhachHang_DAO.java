@@ -31,9 +31,9 @@ public class KhachHang_DAO {
 				dsKhachHangs.add(kh);
 				
 			}
-			rs.close();
+			//rs.close();
 			statement.close();
-			con.close();
+			//con.close();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -52,6 +52,25 @@ public class KhachHang_DAO {
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
+	}
+	// Phat sinh ma
+	public int getSoluong() {
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+
+			String sql = "SELECT TOP 1 maKH FROM KhachHang ORDER BY maKH desc";
+			Statement statement = con.createStatement();
+			ResultSet rs = statement.executeQuery(sql);
+			if (rs.next()) {
+				String temp = rs.getString("maKH");
+				temp = temp.replace("KH", "");
+				return Integer.parseInt(temp);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
 	}
 
 }

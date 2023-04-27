@@ -10,6 +10,7 @@ import java.awt.event.ItemEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -20,12 +21,14 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
@@ -48,6 +51,7 @@ import entity.Thuoc;
 
 public class FrmQLHoaDon extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
+	private static final double VAT = 0.05;
 	private JLabel lblMaHD, lblNgayLap, lblSDT, lblHoKH, lblTenKH, lblGioiTinh, lblDiaChi, lblNgaySinh,lblMaKH;
 	private JLabel lblMaNV, lblHoTenNV, lblSDTNV, lblDiaChiNV; // nhan vien
 	private JTextField txtMaNV, txtHoTenNV, txtSDTNV, txtDiaChiNV;// nhan vien
@@ -57,13 +61,15 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 	private JRadioButton radNam;
 	private DefaultTableModel model;
 	private JTable table;
-	private JButton btnThem, btnXoa, btnLamMoi, btnThanhToan, btnTimThuoc;
+	private JButton btnThemMoi,btnThanhToan, btnThemThuoc ,btnThoat;
 	private JTabbedPane tabbedPane;
+	private JComboBox<String> cboAddThuoc;
+	private JComboBox<String> cboMaNV; // Nhan viên
 	//quan ly hoa don
 	private JLabel lblTimHDTheoMa,lblTimHDTheoNV;
 	private JComboBox<String> cboTimHDTheoMa;
 	private JComboBox<String> cboTimHDTheoNV;
-	private JButton btnXoaHD,btnThoat;
+	private JButton btnXoaHD;
 	private DefaultTableModel model1;
 	private JTable table1;
 	//thanh toan
@@ -71,11 +77,11 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 	private JTextField txtTongThanhToan,txtTienKhachDua,txtTienTraLai;
 	private JComboBox cboPhuongThucThanhToan;
 	//Goi DAO
-	private HoaDon_DAO hd_DAO;
-	private Thuoc_DAO t_DAO;
-	private NhanVien_DAO nv_DAO;
-	private KhachHang_DAO kh_DAO;
-	private ChiTietHoaDon_DAO cthd_DAO;
+	private Thuoc_DAO thuoc_dao = new Thuoc_DAO();
+	private NhanVien_DAO nv_DAO = new NhanVien_DAO();
+	private HoaDon_DAO hd_dao = new HoaDon_DAO();
+	private KhachHang_DAO kh_dao = new KhachHang_DAO();
+	//private ChiTietHoaDon_DAO cthd_DAO;
 
 
 	public FrmQLHoaDon() {
@@ -85,9 +91,6 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		t_DAO = new Thuoc_DAO();
-		hd_DAO = new HoaDon_DAO();
-		cthd_DAO = new ChiTietHoaDon_DAO();
 
 		//Giao dien
 		JPanel pBorder = new JPanel();
@@ -98,21 +101,27 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		setLocationRelativeTo(null);
 		setResizable(false);
 		JPanel pNorth = new JPanel();
-		JLabel lblTitle = new JLabel("LẬP HÓA ĐƠN");
+		JLabel lblTitle = new JLabel("HÓA ĐƠN");
 		lblTitle.setForeground(Color.BLUE);
 		Font font = new Font("Arial", Font.BOLD, 25);
 		lblTitle.setFont(font);
 		pNorth.add(lblTitle);
-		pNorth.setBorder(new EmptyBorder(30, 0, 0, 0));
+		pNorth.setBorder(new EmptyBorder(0, 0, 0, 0));
+		pNorth.setBorder(new BevelBorder(BevelBorder.RAISED,null,null,null,null));
+		
 		pBorder.add(pNorth, BorderLayout.NORTH);
-
+		
 		JPanel pCenter = new JPanel();
 		pCenter.setLayout(new BoxLayout(pCenter, BoxLayout.Y_AXIS));
+		JPanel pText = new JPanel();
+		pText.setLayout(new BoxLayout(pText, BoxLayout.Y_AXIS));
 
 		Box b1 = Box.createHorizontalBox();
+		b1.add(Box.createHorizontalStrut(10));
 		b1.add(Box.createVerticalStrut(15));
 		b1.add(lblMaHD = new JLabel("Mã hóa đơn:"));
 		b1.add(txtMaHD = new JTextField(15));
+		txtMaHD.setEditable(false); // set chỉ được đọc
 		b1.add(Box.createHorizontalStrut(50));
 
 		b1.add(lblNgayLap = new JLabel("Ngày lập hóa đơn:"));
@@ -121,27 +130,31 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		dcrNgayLap.setDateFormatString("dd/MM/yyyy");
 		dcrNgayLap.setDate(new Date(System.currentTimeMillis()));
 		b1.add(Box.createHorizontalStrut(50));
-		pCenter.add(Box.createVerticalStrut(20));
+		pText.add(Box.createVerticalStrut(20));
 		b1.add(lblMaKH = new JLabel("Mã khách hàng:"));
 		b1.add(txtMaKH = new JTextField(15));
-		pCenter.add(b1);
+		txtMaKH.setEditable(false); // set chỉ được đọc
+		b1.add(Box.createHorizontalStrut(20));
+		pText.add(b1);
 
 		Box b2 = Box.createHorizontalBox();
+		b2.add(Box.createHorizontalStrut(10));
 		b2.add(lblHoKH = new JLabel("Họ KH:"));
 		b2.add(txtHoKH = new JTextField(15));
 		b2.add(Box.createHorizontalStrut(125));
 		b2.add(lblTenKH = new JLabel("Tên KH:"));
 		b2.add(txtTenKH = new JTextField(15));
-		b2.add(Box.createHorizontalStrut(50));
+		b2.add(Box.createHorizontalStrut(55));
 		b2.add(lblGioiTinh = new JLabel("Giới tính:"));
 		radNam = new JRadioButton("Nam",true);
 		b2.add(radNam);
 		//b2.add(Box.createHorizontalStrut(200));
-		b2.add(Box.createHorizontalStrut(290));
-		pCenter.add(Box.createVerticalStrut(20));
-		pCenter.add(b2);
+		b2.add(Box.createHorizontalStrut(300));
+		pText.add(Box.createVerticalStrut(20));
+		pText.add(b2);
 
 		Box b3 = Box.createHorizontalBox();
+		b3.add(Box.createHorizontalStrut(10));
 		b3.add(lblSDT = new JLabel("Số điện thoại KH:"));
 		b3.add(txtSDT = new JTextField(15));
 		b3.add(Box.createHorizontalStrut(50));
@@ -151,16 +164,22 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		dcrNgaySinh.setLocale(new Locale("vi", "VN"));
 		dcrNgaySinh.setDateFormatString("dd/MM/yyyy");
 		b3.add(Box.createHorizontalStrut(50));
-		b3.add(btnTimThuoc = new JButton("Tìm thuốc"));
-		b3.add(Box.createHorizontalStrut(340));
-		pCenter.add(Box.createVerticalStrut(20));
-		pCenter.add(b3);
+		b3.add(cboAddThuoc = new JComboBox<String>());
+		cboAddThuoc.setPreferredSize(new Dimension(200,15));
+		b3.add(Box .createHorizontalStrut(20));
+		b3.add(btnThemThuoc = new JButton("Thêm thuốc"));
+		b3.add(Box.createHorizontalStrut(130));
+		
+		pText.add(Box.createVerticalStrut(20));
+		pText.add(b3);
 
 		Box b4 = Box.createHorizontalBox();
+		b4.add(Box.createHorizontalStrut(10));
 		b4.add(lblDiaChi = new JLabel("Địa chỉ:"));
 		b4.add(txtDiaChi = new JTextField(30));
-		pCenter.add(Box.createVerticalStrut(20));
-		pCenter.add(b4);
+		b4.add(Box.createHorizontalStrut(10));
+		pText.add(Box.createVerticalStrut(20));
+		pText.add(b4);
 
 		lblMaHD.setPreferredSize(new Dimension(150, 20));
 		lblNgayLap.setPreferredSize(new Dimension(150, 20));
@@ -172,15 +191,18 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 
 		lblSDT.setPreferredSize(lblMaHD.getPreferredSize());
 		lblNgaySinh.setPreferredSize(lblMaKH.getPreferredSize());
-		btnTimThuoc.setPreferredSize(lblMaKH.getPreferredSize());
+		btnThemThuoc.setPreferredSize(lblMaKH.getPreferredSize());
 
 		lblDiaChi.setPreferredSize(lblMaHD.getPreferredSize());
+		
+		pText.setBorder(new BevelBorder(BevelBorder.LOWERED,null,null,null,null));
+		pCenter.add(pText);
 
 		//		Dimension dms_lbl = new Dimension(100, 20);
 		//		Arrays.stream(new JLabel[] { lblMaHD,lblNgayLap,lblSDT,lblHoTenKH,lblGioiTinh,lblDiaChi,lblCMND,lblNgaySinh,lblTenThuoc,lblTuoi,lblTimThuoc })
 		//		.forEach(item -> item.setPreferredSize(dms_lbl));
 
-		String[] tb = new String[] { "STT", "Mã thuốc","Tên thuốc","Mô tả","Đơn vị tính","Đơn giá bán","Số lượng","%VAT","Thành tiền" };
+		String[] tb = new String[] { "STT", "Mã thuốc","Tên thuốc","Đơn vị tính","Đơn giá bán","Số lượng","%VAT","Thành tiền" };
 		model = new DefaultTableModel(tb, 0);
 		table = new JTable(model);
 		JScrollPane sp = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
@@ -188,7 +210,8 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		sp.setPreferredSize(new Dimension(0, 350));
 		pCenter.add(Box.createVerticalStrut(20));
 		pCenter.add(sp);
-		pCenter.setBorder(new EmptyBorder(10, 0, 0, 0));
+		pCenter.setBorder(new EmptyBorder(10, 0, 15, 0));
+		
 
 		pBorder.add(pCenter, BorderLayout.CENTER);
 
@@ -201,7 +224,8 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		Box b5 = Box.createHorizontalBox();
 		b5.add(Box.createHorizontalStrut(15));
 		b5.add(lblMaNV = new JLabel("Mã nhân viên:"));
-		b5.add(txtMaNV = new JTextField(15));
+		b5.add(cboMaNV = new JComboBox<String>());
+		cboMaNV.setPreferredSize(new Dimension(80, 20));
 		b5.add(Box.createHorizontalStrut(15));
 		// pWest.add(b5);
 
@@ -260,7 +284,7 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		bh1.add(Box.createHorizontalStrut(20));
 		Box bh2 = Box.createHorizontalBox();
 		bh2.add(Box.createHorizontalStrut(20));
-		bh2.add(lblPhuongThucThanhToan = new JLabel("Phương thức thanh toán"));
+		bh2.add(lblPhuongThucThanhToan = new JLabel("Phương thức thanh toán:"));
 		cboPhuongThucThanhToan = new JComboBox<String>(new String[] {"Tiền mặt","Thẻ tín dụng"});
 		bh2.add(cboPhuongThucThanhToan);
 		bh2.add(Box.createHorizontalStrut(20));
@@ -283,7 +307,7 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		bv.add(Box.createVerticalStrut(15));
 		bv.add(bh4);
 		bv.add(Box.createVerticalStrut(15));
-		lblTongThanhToan.setPreferredSize(new Dimension(150,20));
+		lblTongThanhToan.setPreferredSize(new Dimension(200,20));
 		lblPhuongThucThanhToan.setPreferredSize(lblTongThanhToan.getPreferredSize());
 		lblTienKhachDua.setPreferredSize(lblTongThanhToan.getPreferredSize());
 		lblTienTraLai.setPreferredSize(lblTongThanhToan.getPreferredSize());
@@ -296,6 +320,8 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		pSouth.add(Box.createHorizontalStrut(75));
 		pSouth.add(pThanhToan,BorderLayout.CENTER);
 		pSouth.add(Box.createHorizontalStrut(75));
+		pSouth.setBorder(new BevelBorder(BevelBorder.LOWERED,null,null,null,null));
+
 
 
 
@@ -304,33 +330,37 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		pChucNang.setLayout(new BoxLayout(pChucNang, BoxLayout.Y_AXIS));
 		Box bp = Box.createVerticalBox();
 		Box bp1 = Box.createHorizontalBox();
-		// bp1.add(Box.createHorizontalStrut(50));
-		bp1.add(btnThem = new JButton("Thêm hóa đơn"));
-		bp1.add(Box.createHorizontalStrut(50));
-		bp1.add(btnXoa = new JButton("Xóa hóa đơn"));
+		bp1.add(Box.createHorizontalStrut(40));
+		bp1.add(btnThemMoi = new JButton("Thêm hóa đơn"));
+		bp1.add(Box.createHorizontalStrut(40));
 		// bp1.add(Box.createHorizontalStrut(50));
 		// bp.add(Box.createHorizontalStrut(50));
 		Box bp2 = Box.createHorizontalBox();
-		bp2.add(btnLamMoi = new JButton("Làm mới"));
-		bp2.add(Box.createHorizontalStrut(50));
 		bp2.add(btnThanhToan = new JButton("Thanh toán"));
 		// bp2.add(Box.createHorizontalStrut(50));
-
-		bp.add(Box.createVerticalStrut(40));
+		bp2.add(Box.createHorizontalStrut(20));
+		Box bp3 = Box.createHorizontalBox();
+		bp3.add(btnThoat = new JButton("Thoát"));
+		bp3.add(Box.createHorizontalStrut(50));
+		
+		
+		bp.add(Box.createVerticalStrut(15));
 		bp.add(bp1);
 		bp.add(Box.createVerticalStrut(20));
 		bp.add(bp2);
-		bp.add(Box.createVerticalStrut(40));
+		bp.add(Box.createVerticalStrut(20));
+		bp.add(bp3);
+		bp.add(Box.createVerticalStrut(15));
 
-		btnThem.setPreferredSize(new Dimension(200, 30));
-		btnXoa.setPreferredSize(new Dimension(200, 30));
-		btnLamMoi.setPreferredSize(btnThem.getPreferredSize());
-		btnThanhToan.setPreferredSize(btnXoa.getPreferredSize());
+		btnThemMoi.setPreferredSize(new Dimension(200, 30));
+		btnThanhToan.setPreferredSize(btnThemMoi.getPreferredSize());
+		btnThoat.setPreferredSize(btnThemMoi.getPreferredSize());
+		
 
-		btnThem.setFont(new Font("Arial", font.PLAIN, 15));
-		btnXoa.setFont(new Font("Arial", font.PLAIN, 15));
-		btnLamMoi.setFont(new Font("Arial", font.PLAIN, 15));
-		btnThanhToan.setFont(new Font("Arial", font.PLAIN, 15));
+//		btnThem.setFont(new Font("Arial", font.PLAIN, 15));
+//		btnXoa.setFont(new Font("Arial", font.PLAIN, 15));
+//		btnLamMoi.setFont(new Font("Arial", font.PLAIN, 15));
+//		btnThanhToan.setFont(new Font("Arial", font.PLAIN, 15));
 		pChucNang.add(bp);
 		pSouth.add(pChucNang, BorderLayout.EAST);
 		Border borderCN = BorderFactory.createLineBorder(Color.BLUE, font.BOLD);
@@ -340,111 +370,188 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 
 		pBorder.add(pSouth, BorderLayout.SOUTH);
 		pBorder.setBorder(new EmptyBorder(10, 20, 10, 20));
+		
 
 		this.add(pBorder);
-		btnTimThuoc.addActionListener(this);
-		btnThem.addActionListener(this);
-		btnXoa.addActionListener(this);
-		btnLamMoi.addActionListener(this);
+		btnThemThuoc.addActionListener(this);
+		btnThemMoi.addActionListener(this);
+		btnThoat.addActionListener(this);
 		btnThanhToan.addActionListener(this);
 
 
 		//frm quan ly hoa don
-		JPanel pBorder1 = new JPanel();
-		pBorder1.setLayout(new BorderLayout());
-
-		JPanel pNorth1 = new JPanel();
-		JLabel lblTitle1 = new JLabel("QUẢN LÝ HÓA ĐƠN");
-		lblTitle1.setForeground(Color.BLUE);
-		Font font1 = new Font("Arial", Font.BOLD, 30);
-		lblTitle1.setFont(font1);
-		pNorth1.add(lblTitle1);
-		pNorth1.setBorder(new EmptyBorder(20, 0, 0, 0));
-		pBorder1.add(pNorth1, BorderLayout.NORTH);
-
-		JPanel pCenter1 = new JPanel();
-		pCenter1.setLayout(new BoxLayout(pCenter1, BoxLayout.Y_AXIS));
-
-		Box b11 = Box.createHorizontalBox();
-		b11.add(lblTimHDTheoMa= new JLabel("Tìm theo mã hóa đơn:"));
-		b11.add(cboTimHDTheoMa = new JComboBox<String>());
-		cboTimHDTheoMa.setPreferredSize(new Dimension(200, 20));
-		b11.add(Box.createHorizontalStrut(500));
-		b11.add(btnXoaHD = new JButton("Xóa hóa đơn"));
-		pCenter1.add(Box.createVerticalStrut(50));
-		pCenter1.add(b11);
-
-		Box b21 = Box.createHorizontalBox();
-		b21.add(lblTimHDTheoNV= new JLabel("Tìm theo mã nhân viên:"));
-		b21.add(cboTimHDTheoNV = new JComboBox<String>());
-		cboTimHDTheoNV.setPreferredSize(new Dimension(200, 20));
-		b21.add(Box.createHorizontalStrut(500));
-		b21.add(btnThoat = new JButton("Thoát"));
-		pCenter1.add(Box.createVerticalStrut(20));
-		pCenter1.add(b21);
-		pCenter1.add(Box.createVerticalStrut(20));
-
-		lblTimHDTheoMa.setPreferredSize(new Dimension(200,20));
-		lblTimHDTheoNV.setPreferredSize(lblTimHDTheoMa.getPreferredSize());
-
-		//table
-		String[] tb1 = new String[] { "STT", "Mã hóa đơn","Ngày lập hóa đơn","Mã nhân viên","Mã khách hàng"};
-		model1 = new DefaultTableModel(tb1, 0);
-		table1 = new JTable(model1);
-		JScrollPane sp1 = new JScrollPane(table1, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		sp1.setPreferredSize(new Dimension(0, 600));
-		pCenter1.add(Box.createVerticalStrut(20));
-		pCenter1.add(sp1);
-
-		pBorder1.add(pCenter1,BorderLayout.CENTER);
-		pBorder1.setBorder(new EmptyBorder(20, 50, 20, 50));
-
-
-		this.add(pBorder1);
-		cboTimHDTheoMa.addActionListener(this);
-		cboTimHDTheoNV.addActionListener(this);
-		btnThoat.addActionListener(this);
-		btnXoaHD.addActionListener(this);
+//		JPanel pBorder1 = new JPanel();
+//		pBorder1.setLayout(new BorderLayout());
+//
+//		JPanel pNorth1 = new JPanel();
+//		JLabel lblTitle1 = new JLabel("QUẢN LÝ HÓA ĐƠN");
+//		lblTitle1.setForeground(Color.BLUE);
+//		Font font1 = new Font("Arial", Font.BOLD, 30);
+//		lblTitle1.setFont(font1);
+//		pNorth1.add(lblTitle1);
+//		pNorth1.setBorder(new EmptyBorder(20, 0, 0, 0));
+//		pBorder1.add(pNorth1, BorderLayout.NORTH);
+//
+//		JPanel pCenter1 = new JPanel();
+//		pCenter1.setLayout(new BoxLayout(pCenter1, BoxLayout.Y_AXIS));
+//
+//		Box b11 = Box.createHorizontalBox();
+//		b11.add(lblTimHDTheoMa= new JLabel("Tìm theo mã hóa đơn:"));
+//		b11.add(cboTimHDTheoMa = new JComboBox<String>());
+//		cboTimHDTheoMa.setPreferredSize(new Dimension(200, 20));
+//		b11.add(Box.createHorizontalStrut(500));
+//		b11.add(btnXoaHD = new JButton("Xóa hóa đơn"));
+//		pCenter1.add(Box.createVerticalStrut(50));
+//		pCenter1.add(b11);
+//
+//		Box b21 = Box.createHorizontalBox();
+//		b21.add(lblTimHDTheoNV= new JLabel("Tìm theo mã nhân viên:"));
+//		b21.add(cboTimHDTheoNV = new JComboBox<String>());
+//		cboTimHDTheoNV.setPreferredSize(new Dimension(200, 20));
+//		b21.add(Box.createHorizontalStrut(500));
+//		b21.add(btnThoat = new JButton("Thoát"));
+//		pCenter1.add(Box.createVerticalStrut(20));
+//		pCenter1.add(b21);
+//		pCenter1.add(Box.createVerticalStrut(20));
+//
+//		lblTimHDTheoMa.setPreferredSize(new Dimension(200,20));
+//		lblTimHDTheoNV.setPreferredSize(lblTimHDTheoMa.getPreferredSize());
+//
+//		//table
+//		String[] tb1 = new String[] { "STT", "Mã hóa đơn","Ngày lập hóa đơn","Mã nhân viên","Mã khách hàng"};
+//		model1 = new DefaultTableModel(tb1, 0);
+//		table1 = new JTable(model1);
+//		JScrollPane sp1 = new JScrollPane(table1, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+//				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+//		sp1.setPreferredSize(new Dimension(0, 600));
+//		pCenter1.add(Box.createVerticalStrut(20));
+//		pCenter1.add(sp1);
+//
+//		pBorder1.add(pCenter1,BorderLayout.CENTER);
+//		pBorder1.setBorder(new EmptyBorder(20, 50, 20, 50));
+//
+//
+//		this.add(pBorder1);
+//		cboTimHDTheoMa.addActionListener(this);
+//		cboTimHDTheoNV.addActionListener(this);
+//		btnThoat.addActionListener(this);
+//		btnXoaHD.addActionListener(this);
 
 		//tao tab
-		tabbedPane = new JTabbedPane();
-		tabbedPane.setForeground(new Color(0, 128, 128));
-		tabbedPane.setBounds(0, 0, 1535, 840);
-		tabbedPane.setBorder(null);
-
-		tabbedPane.addTab("Lập hóa đơn", pBorder);
-		//tabbedPane.setBackground(Color.GRAY);
-		getContentPane().add(tabbedPane);
-		tabbedPane.add("Quản lý hóa đơn",pBorder1);
-		getContentPane().add(tabbedPane);
+//		tabbedPane = new JTabbedPane();
+//		tabbedPane.setForeground(new Color(0, 128, 128));
+//		tabbedPane.setBounds(0, 0, 1535, 840);
+//		tabbedPane.setBorder(null);
+//
+//		tabbedPane.addTab("Lập hóa đơn", pBorder);
+//		//tabbedPane.setBackground(Color.GRAY);
+//		getContentPane().add(tabbedPane);
+//		tabbedPane.add("Quản lý hóa đơn",pBorder1);
+//		getContentPane().add(tabbedPane);
 
 
 		//Đưa database và table 
-		DocDuLieuDBVaoTable();
+		//DocDuLieuDBVaoTable();
+		ArrayList<Thuoc> listThuoc ;
+		listThuoc = thuoc_dao.getAllThuoc();
+		for(Thuoc t : listThuoc) {
+			cboAddThuoc.addItem(t.getMaThuoc());
+		}
+		//dua du liue vao cbo nhan vien
+		DuaNVVaoCBO();
 
 
 
 	}
 	// Doc dux lieu len table
-	public void DocDuLieuDBVaoTable() {
-		ChiTietHoaDon t = new ChiTietHoaDon();
-		int stt = 0;
-		cthd_DAO = new ChiTietHoaDon_DAO();
-		List<ChiTietHoaDon> listCTHD = cthd_DAO.getAllChiTietHoaDon();
-		for (ChiTietHoaDon ct : listCTHD) {
-			model.addRow(new Object[] {++stt,ct.getThuoc().getMaThuoc(),ct.getThuoc().getTenThuoc(),ct.getMoTa(),ct.getDonViTinh(),ct.getDonGia(),ct.getSoLuong(),ct.getPhiVAT(),t.soTienPhaiTra()});
+//	public void DocDuLieuDBVaoTable() {
+//		ChiTietHoaDon t = new ChiTietHoaDon();
+//		int stt = 0;
+//		cthd_DAO = new ChiTietHoaDon_DAO();
+//		List<ChiTietHoaDon> listCTHD = cthd_DAO.getAllChiTietHoaDon();
+//		for (ChiTietHoaDon ct : listCTHD) {
+//			model.addRow(new Object[] {++stt,ct.getThuoc().getMaThuoc(),ct.getThuoc().getTenThuoc(),ct.getMoTa(),ct.getDonViTinh(),ct.getDonGia(),ct.getSoLuong(),ct.getPhiVAT(),t.soTienPhaiTra()});
+//		}
+//	}
+	
+	private HoaDon createHD() {
+		HoaDon temp = new HoaDon();
+		//phat sinh ma hd
+		int soHD = hd_dao.getSoluong();
+		if(soHD ==-1) {
+			JOptionPane.showMessageDialog(null, "Phát sinh mã thất bại - Vui lòng kiểm tra kết nối database!!");
+			return null;
 		}
+		String maHD = String.format("HD%03d", soHD+1);
+		txtMaHD.setText(maHD);
+		//phat sinh ma kh
+		int soKH = kh_dao.getSoluong();
+		if(soKH ==-1) {
+			JOptionPane.showMessageDialog(null, "Phát sinh mã thất bại - Vui lòng kiểm tra kết nối database!!");
+			return null;
+		}
+		String maKH = String.format("KH%03d", soKH+1);
+		txtMaKH.setText(maKH);
+		
+		
+		return temp;
 	}
-	//Tinh tong thanh tien
+	
+	
+	
 
-	public static void main(String[] args) {
-		new FrmQLHoaDon().setVisible(true);
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		Object o = e.getSource();
+		if(o.equals(btnThoat)) {
+			System.exit(EXIT_ON_CLOSE);
+		}
+		if(o.equals(btnThemMoi)) {
+			txtMaHD.setText("");
+			txtMaKH.setText("");
+			txtHoKH.setText("");
+			txtTenKH.setText("");
+			txtSDT.setText("");
+			txtDiaChi.setText("");
+			txtMaKH.requestFocus();
+		}
+		if(o.equals(btnThemThuoc)) {
+			String soLuong = JOptionPane.showInputDialog("Nhập số lương thuốc:");
+			double soL = Double.parseDouble(soLuong);
+			int stt=0;
+			double thanhTien = 0;
+			double dongia;
+			String maThuoc = (String) cboAddThuoc.getSelectedItem();
+			ArrayList<Thuoc> ds = thuoc_dao.getAllThuocTheoMaThuoc(maThuoc);
+			for (Thuoc t : ds) {
+				dongia=t.getDonGia();
+				thanhTien = dongia*soL +dongia*soL*VAT;
+				model.addRow(new Object[] {++stt,maThuoc,t.getTenThuoc(),t.getDonViTinh(),t.getDonGia(),soLuong,VAT,thanhTien+""});
+			}
+			createHD();
+		}
+		
 
+	}
+	public static void main(String[] args) {
+		new FrmQLHoaDon().setVisible(true);
+	}
+	
+	public void DuaNVVaoCBO() {
+		ArrayList<NhanVien> listNV = nv_DAO.getAllNhanVien();
+		for(NhanVien nv : listNV) {
+			cboMaNV.addItem(nv.getMaNV());
+			for(NhanVien nv1 :listNV) {
+				if(cboMaNV.getSelectedItem().toString().equals(nv1.getMaNV())) {
+					txtHoTenNV.setText(nv1.getHoNV()+" "+nv1.getTenNV());
+					txtSDTNV.setText(nv1.getSoDT());
+					txtDiaChiNV.setText(nv1.getDiaChi());
+					
+				}
+				
+			}
+		}
 	}
 }
