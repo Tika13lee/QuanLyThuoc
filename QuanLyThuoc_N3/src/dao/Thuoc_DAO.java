@@ -248,7 +248,7 @@ public class Thuoc_DAO {
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement statement = null;
-		String sql = "Select * from Thuoc where tenThuoc = ?";
+		String sql = "Select * from Thuoc where maThuoc = ?";
 
 		try {
 			statement = con.prepareStatement(sql);
@@ -280,5 +280,6 @@ public class Thuoc_DAO {
 		}
 		return ds;
 	}
+	
 
 }

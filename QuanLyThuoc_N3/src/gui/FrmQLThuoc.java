@@ -279,20 +279,10 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 		btnLamMoi.addActionListener(this);
 		btnThoat.addActionListener(this);
 		btnTaiLai.addActionListener(this);
+		btnTimKiem.addActionListener(this);
 	}
 
-	/*
-	 * hàm DocDuLieuDBVaoTable() đổ dữ liều từ sql vào table
-	 */
-	public void DocDuLieuDBVaoTable() {
-		int stt = 0;
-		thuoc_dao = new Thuoc_DAO();
-		List<Thuoc> list = thuoc_dao.getAllThuoc();
-		for (Thuoc t : list) {
-			model.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getDonGia(),
-					t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(), t.getDonViTinh() });
-		}
-	}
+	
 
 	public static void main(String[] args) {
 		new FrmQLThuoc().setVisible(true);
@@ -399,7 +389,32 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 			clearDataOnTable();
 			DocDuLieuDBVaoTable();
 		}
+		
+		if(o.equals(btnTimKiem)) {
+			String tenThuoc = cboTenThuoc.getSelectedItem().toString();
+			int stt = 0;
+			thuoc_dao = new Thuoc_DAO();
+			List<Thuoc> list = thuoc_dao.getAllThuocTheoTenThuoc(tenThuoc);
+			clearDataOnTable();
+			for (Thuoc t : list) {
+				model.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getDonGia(),
+						t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(), t.getDonViTinh() });
+			}
+		}
 
+	}
+	
+	/*
+	 * hàm DocDuLieuDBVaoTable() đổ dữ liều từ sql vào table
+	 */
+	public void DocDuLieuDBVaoTable() {
+		int stt = 0;
+		thuoc_dao = new Thuoc_DAO();
+		List<Thuoc> list = thuoc_dao.getAllThuoc();
+		for (Thuoc t : list) {
+			model.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getDonGia(),
+					t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(), t.getDonViTinh() });
+		}
 	}
 
 	/*
