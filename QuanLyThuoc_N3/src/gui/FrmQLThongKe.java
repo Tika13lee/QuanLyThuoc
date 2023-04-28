@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -54,12 +55,8 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 	private JButton btnMaKH, btnMaHD, btnXoa, btnXoa2, btnReload, btnThoat, btnXemKQ1, btnXemKQ2;
 	private JScrollPane scrDSTK;
 	public static DefaultTableModel tablemodel = new DefaultTableModel();
-	public static DefaultTableModel tablemodel1 = new DefaultTableModel();
-	DefaultTableModel tablemodel2 = new DefaultTableModel();
 	private JTable table_1;
-	String s;
-	private JComboBox<Object> cboThang, cboMaNV, cboMaKH, cboNgay, cboMaHD;
-	
+	private JComboBox<Object> cboThang, cboMaNV, cboMaKH, cboMaHD;
 	private HoaDon_DAO hd_DAO;
 	private KhachHang_DAO kh_DAO;
 	private NhanVien_DAO nv_dao;
@@ -166,10 +163,6 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 		btnXoa = new JButton("XÓA HÓA ĐƠN ");
 		pnlChucNang.add(btnXoa);
 		btnXoa.setBounds(75, 30, 150, 30);
-
-//		btnXoa2 = new JButton("???");
-//		pnlChucNang.add(btnXoa2);
-//		btnXoa2.setBounds(160, 30, 120, 30);
 
 		btnReload = new JButton("TẢI LẠI");
 		pnlChucNang.add(btnReload);
@@ -399,8 +392,8 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 		btnThoat.addActionListener(this);
 		btnXemKQ1.addActionListener(this);
 		btnXemKQ2.addActionListener(this);
-//		cboMaNV.addItemListener(this);
 		cboMaNV.addActionListener(this);
+		btnXoa.addActionListener(this);
 	}
 
 	// Thêm data
@@ -468,6 +461,9 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 		if (o.equals(btnReload)) {
 			reloadData();
 			thongKeHoaDon();
+			txtTongSoHD.setText(null);
+			txtNam.setText("");
+			txtTenNV.setText("");
 		}
 		if (o.equals(btnThoat)) {
 			setVisible(false);
@@ -475,16 +471,26 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 		}
 		if (o.equals(btnXemKQ1)) {
 			int month = Integer.parseInt((String) cboThang.getSelectedItem());
-			int year = Integer.parseInt(txtNam.getText());
-			List<HoaDon> listHd = hd_DAO.getHoaDonTheoThangNam(month, year);
-			tablemodel.setRowCount(0);
-			int stt = 0;
-			for (HoaDon hd : listHd) {
-				tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(), hd.getKhachHang().getMaKH(),
-						hd.getNhanVien().getMaNV() });
+			if (txtNam.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "Vui lòng nhập năm!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+			} else {
+				int year = Integer.parseInt(txtNam.getText());
+				List<HoaDon> listHd = hd_DAO.getHoaDonTheoThangNam(month, year);
+				tablemodel.setRowCount(0);
+				int stt = 0;
+				if (listHd.size() == 0) {
+					JOptionPane.showMessageDialog(null, "Không tìm thấy hóa đơn nào trong tháng và năm đã chọn!",
+							"Thông báo", JOptionPane.INFORMATION_MESSAGE);
+				} else {
+					for (HoaDon hd : listHd) {
+						tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(),
+								hd.getKhachHang().getMaKH(), hd.getNhanVien().getMaNV() });
+					}
+					thongKeHoaDon();
+					thongKeHoaDonKQ();
+				}
+
 			}
-			thongKeHoaDon();
-			thongKeHoaDonKQ();
 		}
 
 		if (o.equals(btnXemKQ2)) {
@@ -509,17 +515,25 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 			}
 
 		}
-
+		if (o.equals(btnXoa)) {
+			int row = table_1.getSelectedRow(); // Lấy dòng được chọn trong bảng
+			if (row >= 0) {
+				String maHD = String.valueOf(table_1.getValueAt(row, 0)); // Lấy mã hóa đơn của dòng được chọn dưới dạng
+																			// String
+				if (hd_DAO.xoaTheoMaHD(maHD)) { // Xóa hóa đơn khỏi cơ sở dữ liệu
+					tablemodel.removeRow(row); // Xóa dòng được chọn khỏi bảng
+					JOptionPane.showMessageDialog(null, "Xóa hóa đơn thành công!", "Thông báo",
+							JOptionPane.INFORMATION_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(null, "Xóa hóa đơn thất bại!", "Thông báo",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			} else { // Nếu không có dòng nào được chọn
+				JOptionPane.showMessageDialog(null, "Vui lòng chọn hóa đơn cần xóa!", "Thông báo",
+						JOptionPane.WARNING_MESSAGE);
+			}
+		}
 	}
-
-//	@Override
-//	public void itemStateChanged(ItemEvent e) {
-//		if (e.getSource() == cboMaNV && e.getStateChange() == ItemEvent.SELECTED) {
-//			String maNV = cboMaNV.getSelectedItem().toString();
-//			String tenNV = nv_DAO.getTenNhanVienByMaNV(maNV);
-//			txtTenNV.setText(tenNV);
-//		}
-//	}
 
 	public static void main(String[] args) {
 		new FrmQLThongKe().setVisible(true);
