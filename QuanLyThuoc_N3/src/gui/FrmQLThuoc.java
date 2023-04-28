@@ -98,13 +98,20 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 		Box b = new Box(BoxLayout.X_AXIS);
 
 		// box bb bên trái
-		JPanel pnLeft = new JPanel();
-		pnLeft.setBorder(BorderFactory.createTitledBorder("Thông tin thuốc"));
+		Box bLeftCha = new Box(BoxLayout.X_AXIS);
+		bLeftCha.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		
 		Box bLeft = new Box(BoxLayout.Y_AXIS);
+		bLeftCha.add(bLeft);
+		
 		// box ba bên phải (chức năng tìm kiếm)
+		Box bRightCha = new Box(BoxLayout.X_AXIS);
+		bRightCha.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		
 		Box bRight = new Box(BoxLayout.Y_AXIS);
 		bRight.setBorder(BorderFactory.createTitledBorder("Tìm kiếm thông tin:"));
-		bLeft.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		bRightCha.add(bRight);
+		bLeft.setBorder(BorderFactory.createTitledBorder("Thông tin thuốc"));
 
 		// tạo 4 box con bb
 		Box b1 = new Box(BoxLayout.X_AXIS);
@@ -166,11 +173,9 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 
 		bLeft.add(Box.createVerticalStrut(15));
 
-		b.add(bLeft);
+		b.add(bLeftCha);
 
 		// chức năng tìm kiếm
-//		bRight.add(lblTimKiem = new JLabel("Tìm theo tên thuốc:"));
-		bRight.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 
 		Box ba1 = new Box(BoxLayout.X_AXIS);
 		ba1.add(cboTenThuoc = new JComboBox<>());
@@ -196,12 +201,12 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 
 		//
 		b.add(Box.createHorizontalStrut(50));
-		b.add(bRight);
+		b.add(bRightCha);
 		b.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		bAll.add(pnTieuDe);
 		bAll.add(Box.createVerticalStrut(10));
 		bAll.add(b);
-		bAll.add(Box.createVerticalStrut(30)); // ngăn cách giữa bảng và textField
+//		bAll.add(Box.createVerticalStrut(30)); // ngăn cách giữa bảng và textField
 		bAll.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 
 		// design kích thước
@@ -238,12 +243,17 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 
 		// south
 		JPanel pnSouth = new JPanel();
-		pnSouth.add(btnThem = new JButton("THÊM THUỐC"));
-		pnSouth.add(btnXoa = new JButton("XÓA THUỐC"));
-		pnSouth.add(btnSua = new JButton("CẬP NHẬT"));
-		pnSouth.add(btnLamMoi = new JButton("LÀM MỚI"));
-		pnSouth.add(btnTaiLai = new JButton("TẢI LẠI"));
-		pnSouth.add(btnThoat = new JButton("THOÁT"));
+		pnSouth.setBorder(new BevelBorder(BevelBorder.LOWERED,null,null,null,null));
+		
+		JPanel pnChucnang = new JPanel();
+		pnChucnang.setBorder(BorderFactory.createTitledBorder("Chức năng"));
+		pnChucnang.add(btnThem = new JButton("THÊM THUỐC"));
+		pnChucnang.add(btnXoa = new JButton("XÓA THUỐC"));
+		pnChucnang.add(btnSua = new JButton("CẬP NHẬT"));
+		pnChucnang.add(btnLamMoi = new JButton("LÀM MỚI"));
+		pnChucnang.add(btnTaiLai = new JButton("TẢI LẠI"));
+		pnChucnang.add(btnThoat = new JButton("THOÁT"));
+		pnSouth.add(pnChucnang);
 
 		// set Icon
 		btnThem.setIcon(new ImageIcon("src/img/them.png"));
