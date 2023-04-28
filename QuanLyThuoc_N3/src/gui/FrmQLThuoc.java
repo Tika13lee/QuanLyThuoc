@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -49,7 +50,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 	private JLabel lblMaThuoc, lblTenThuoc, lblPhanLoai, lblhanSD, lbldonViTinh, lblSoLuong, lblDonGia, lblngaySX,
 			lblnhaCC, lblDonViTinh;
 	private JTextField txtMaThuoc, txtTenThuoc, txtDonViTinh, txtSoLuong, txtDonGia, txtnhaCC, txtTimKiem, txtngaySX;
-//	private JDateChooser jdcNgaySX;
+	private JDateChooser jdcNgaySX, jdcNgayHH;
 	private JTextField txtNgayHH;
 	private JComboBox<String> cboPhanLoai, cboNhaCC, cboDonViTinh, cboTenThuoc;
 
@@ -139,10 +140,15 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 		b2.add(txtDonGia = new JTextField());
 
 		b3.add(lblngaySX = new JLabel("Ngày sản xuất:"));
-		b3.add(txtngaySX = new JTextField());
-//		jdcNgaySX.setCalendar(Calendar.getInstance());
+//		b3.add(txtngaySX = new JTextField());
+		b3.add(jdcNgaySX = new JDateChooser());
+		jdcNgaySX.setLocale(new Locale("vi", "VN"));
+		jdcNgaySX.setDateFormatString("yyyy-MM-dd");
 		b3.add(lblhanSD = new JLabel("Ngày hết hạn:"));
-		b3.add(txtNgayHH = new JTextField());
+//		b3.add(txtNgayHH = new JTextField());
+		b3.add(jdcNgayHH = new JDateChooser());
+		jdcNgayHH.setLocale(new Locale("vi", "VN"));
+		jdcNgayHH.setDateFormatString("yyyy-MM-dd");
 
 		cboPhanLoai = new JComboBox<String>();
 
@@ -239,6 +245,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 		for (Thuoc t : listThuoc) {
 			cboNhaCC.addItem(t.getNhaCC().getMaNCC());
 			cboTenThuoc.addItem(t.getTenThuoc());
+			cboMaThuoc.addItem(t.getMaThuoc());
 		}
 
 		// south
@@ -280,6 +287,9 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 		btnThoat.addActionListener(this);
 		btnTaiLai.addActionListener(this);
 		btnTimKiem.addActionListener(this);
+		btnTimKiem2.addActionListener(this);
+		btnCheck.addActionListener(this);
+		
 	}
 
 	
@@ -298,11 +308,36 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 		txtTenThuoc.setText(model.getValueAt(row, 2).toString());
 		txtSoLuong.setText(model.getValueAt(row, 3).toString());
 		txtDonGia.setText(model.getValueAt(row, 4).toString());
-		txtNgayHH.setText(model.getValueAt(row, 6).toString());
 		cboNhaCC.setSelectedItem(model.getValueAt(row, 7).toString());
-		txtngaySX.setText(model.getValueAt(row, 5).toString());
+	
 		cboPhanLoai.setSelectedItem(model.getValueAt(row, 8).toString());
 		cboDonViTinh.setSelectedItem(model.getValueAt(row, 9).toString());
+		
+		// Lấy giá trị ngày sản xuất từ model
+        String dateSx = model.getValueAt(row, 5).toString();
+        try {
+            // Tạo đối tượng SimpleDateFormat để định dạng ngày
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            // Chuyển đổi chuỗi thành đối tượng Date
+            Date ngaySx = sdf.parse(dateSx);
+            // Thiết lập giá trị cho JDateChooser
+            jdcNgaySX.setDate(ngaySx);
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
+        
+     // Lấy giá trị ngày hết hạn từ model
+        String dateHh = model.getValueAt(row, 6).toString();
+        try {
+            // Tạo đối tượng SimpleDateFormat để định dạng ngày
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            // Chuyển đổi chuỗi thành đối tượng Date
+            Date ngayHh = sdf.parse(dateHh);
+            // Thiết lập giá trị cho JDateChooser
+            jdcNgayHH.setDate(ngayHh);
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
 
 	}
 
@@ -362,6 +397,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 
 		if (o.equals(btnSua)) {
 			replaceID();
+			
 		}
 
 		if (o.equals(btnXoa)) {
@@ -393,10 +429,30 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 		if(o.equals(btnTimKiem)) {
 			String tenThuoc = cboTenThuoc.getSelectedItem().toString();
 			int stt = 0;
-			thuoc_dao = new Thuoc_DAO();
 			List<Thuoc> list = thuoc_dao.getAllThuocTheoTenThuoc(tenThuoc);
 			clearDataOnTable();
 			for (Thuoc t : list) {
+				model.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getDonGia(),
+						t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(), t.getDonViTinh() });
+			}
+		}
+		
+		if(o.equals(btnTimKiem2)) {
+			String maThuoc = cboMaThuoc.getSelectedItem().toString();
+			int stt = 0;
+			List<Thuoc> list = thuoc_dao.getAllThuocTheoMaThuoc(maThuoc);
+			clearDataOnTable();
+			for (Thuoc t : list) {
+				model.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getDonGia(),
+						t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(), t.getDonViTinh() });
+			}
+		}
+		
+		if(o.equals(btnCheck)) {
+			int stt = 0;
+			List<Thuoc> list = thuoc_dao.getThuocHetHan();
+			clearDataOnTable();
+			for(Thuoc t : list) {
 				model.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getDonGia(),
 						t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(), t.getDonViTinh() });
 			}
@@ -418,15 +474,12 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 	}
 
 	/*
+	 * hàm genarateOBJThuoc()
 	 * có chức năng lấy dữ liệu từ field chuyển thành obj Thuốc
 	 */
 	private Thuoc genarateOBJThuoc() {
 		Thuoc temp;
 
-//		if(txtMaThuoc.getText().isEmpty()) {
-//			JOptionPane.showMessageDialog(null, "vui lòng nhập mã!!");
-//			return null;
-//		}
 		int soLuong = thuoc_dao.getSoluong();
 		if (soLuong == -1) {
 			JOptionPane.showMessageDialog(null, "Phát sinh mã thất bại - Vui lòng kiểm tra kết nối database!!");
@@ -453,17 +506,17 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 		}
 		double dongianhap = Double.parseDouble(txtDonGia.getText());
 
-		String nsxString = txtngaySX.getText();
-		String nhhString = txtNgayHH.getText();
-		java.sql.Date datensx = java.sql.Date.valueOf(nsxString);
-		java.sql.Date datenhh = java.sql.Date.valueOf(nhhString);
+		Date dateNsx = jdcNgaySX.getDate();
+		java.sql.Date sqlNsx = new java.sql.Date(dateNsx.getTime());
+		Date dateNhh = jdcNgayHH.getDate();
+		java.sql.Date sqlNhh = new java.sql.Date(dateNhh.getTime());
 
 		String nhacc = cboNhaCC.getSelectedItem().toString();
 		String phanloai = cboPhanLoai.getSelectedItem().toString();
 		String doviTinh = cboDonViTinh.getSelectedItem().toString();
 		NhaCungCap ncc = new NhaCungCap(nhacc);
 		try {
-			temp = new Thuoc(ma, tenthuoc, phanloai, datenhh, doviTinh, soluong, dongianhap, datensx, ncc);
+			temp = new Thuoc(ma, tenthuoc, phanloai, sqlNsx, doviTinh, soluong, dongianhap, sqlNhh, ncc);
 			return temp;
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
@@ -481,15 +534,30 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 			JOptionPane.showMessageDialog(this, "vui lòng chọn dòng cần sửa");
 			return;
 		}
-
-		Thuoc t = genarateOBJThuoc();
-
+		//lấy dữ liệu từ textField chuyển đổi sang objThuoc
+		String maThuoc = txtMaThuoc.getText();
+		String tenthuoc = txtTenThuoc.getText();
+		int soluong = Integer.parseInt(txtSoLuong.getText());
+		double dongianhap = Double.parseDouble(txtDonGia.getText());
+		
+		// xử lí dữ liệu Date
+		Date dateNsx = jdcNgaySX.getDate();
+		java.sql.Date sqlNsx = new java.sql.Date(dateNsx.getTime());
+		Date dateNhh = jdcNgayHH.getDate();
+		java.sql.Date sqlNhh = new java.sql.Date(dateNhh.getTime());
+		String nhacc = cboNhaCC.getSelectedItem().toString();
+		String phanloai = cboPhanLoai.getSelectedItem().toString();
+		String doviTinh = cboDonViTinh.getSelectedItem().toString();
+		NhaCungCap ncc = new NhaCungCap(nhacc);
+		
+		Thuoc t = new Thuoc(maThuoc, tenthuoc, phanloai, dateNhh, doviTinh, soluong, dongianhap, sqlNhh, ncc);
+		
 		try {
-			if (thuoc_dao.update(t)) {
+			thuoc_dao.update(t);
 				clearDataOnTable();
 				DocDuLieuDBVaoTable();
 				JOptionPane.showMessageDialog(this, "sửa thành công");
-			}
+			
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			return;
@@ -513,8 +581,8 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 		txtTenThuoc.setText("");
 		txtSoLuong.setText("");
 		txtDonGia.setText("");
-		txtngaySX.setText("");
-		txtNgayHH.setText("");
+		jdcNgaySX.setDateFormatString("");
+		jdcNgayHH.setDateFormatString("");
 		cboNhaCC.setSelectedIndex(0);
 		cboPhanLoai.setSelectedIndex(0);
 		cboDonViTinh.setSelectedIndex(0);

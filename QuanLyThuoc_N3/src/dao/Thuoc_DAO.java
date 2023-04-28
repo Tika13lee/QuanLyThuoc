@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 //import java.sql.Date;
+import java.util.List;
 
 import connect.ConnectDB;
 import entity.NhaCungCap;
@@ -18,6 +19,7 @@ public class Thuoc_DAO {
 	public Thuoc_DAO() {
 
 	}
+
 	/*
 	 * lấy tất cả data từ sql lên table;
 	 */
@@ -125,26 +127,35 @@ public class Thuoc_DAO {
 	}
 
 	/*
-	 * update thuốc
+	 * update Thuoc
 	 */
-	public boolean update(Thuoc t) {
+	public void update(Thuoc t) {
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stmt = null;
-		int n = 0;
 		try {
 			stmt = con.prepareStatement(
-					"update Thuoc set tenThuoc = ?, phanLoai = ?,ngaySX =?,ngayHetHan=?,donViTinh=?,donGia=?,soLuong=?, maNCC = ? where maThuoc = ?");
-			stmt.setString(1, t.getMaThuoc());
-			stmt.setString(2, t.getTenThuoc());
-			stmt.setString(3, t.getPhanLoai());
-			stmt.setDate(4, (java.sql.Date) t.getNgaySX());
-			stmt.setDate(5, (java.sql.Date) t.getNgayHetHan());
-			stmt.setString(6, t.getDonViTinh());
-			stmt.setDouble(7, t.getDonGia());
-			stmt.setInt(8, t.getSoLuong());
-			stmt.setString(9, t.getNhaCC().getMaNCC());
-			n = stmt.executeUpdate();
+					"update Thuoc set tenThuoc = ?, phanLoai = ?, ngaySX = ?, ngayHetHan = ?, donViTinh = ?, donGia = ?, soLuong = ?, maNCC = ? where maThuoc = ?");
+			stmt.setString(1, t.getTenThuoc());
+			stmt.setString(2, t.getPhanLoai());
+
+			java.sql.Date sqlNgaysx = new java.sql.Date(t.getNgaySX().getTime());
+			java.sql.Date sqlNgayHH = new java.sql.Date(t.getNgayHetHan().getTime());
+			stmt.setDate(3, sqlNgaysx);
+			stmt.setDate(4, sqlNgayHH);
+			stmt.setString(5, t.getDonViTinh());
+			stmt.setDouble(6, t.getDonGia());
+			stmt.setInt(7, t.getSoLuong());
+			stmt.setString(8, t.getNhaCC().getMaNCC());
+			stmt.setString(9, t.getMaThuoc()); // sửa đổi giá trị của đối số này
+
+			int n = stmt.executeUpdate();
+			if (n > 0) {
+				System.out.println("Cập nhật thông tin thuốc thành công.");
+			} else {
+				System.out.println("Không tìm thấy thuốc để cập nhật.");
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -154,7 +165,6 @@ public class Thuoc_DAO {
 				e2.printStackTrace();
 			}
 		}
-		return n > 0;
 	}
 
 	/*
@@ -180,6 +190,7 @@ public class Thuoc_DAO {
 		}
 		return n > 0;
 	}
+
 	/*
 	 * lấy số lượng thuốc
 	 */
@@ -202,7 +213,10 @@ public class Thuoc_DAO {
 		}
 		return -1;
 	}
-	
+	/*
+	 * get all Thuốc theo Tên
+	 */
+
 	public ArrayList<Thuoc> getAllThuocTheoTenThuoc(String tenThuoc) {
 		ArrayList<Thuoc> ds = new ArrayList<Thuoc>();
 		ConnectDB.getInstance();
@@ -212,9 +226,9 @@ public class Thuoc_DAO {
 
 		try {
 			statement = con.prepareStatement(sql);
-			statement.setString(1,tenThuoc);
+			statement.setString(1, tenThuoc);
 			ResultSet rs = statement.executeQuery();
-			while (rs.next()){
+			while (rs.next()) {
 				String ma = rs.getString("maThuoc");
 				String ten = rs.getString("tenThuoc");
 				String phanLoai = rs.getString("phanLoai");
@@ -227,11 +241,11 @@ public class Thuoc_DAO {
 				Thuoc thuoc = new Thuoc(ma, ten, phanLoai, ngayHH, donViTinh, soLuong, dongia, ngaySX, ncc);
 				ds.add(thuoc);
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 
-		}finally {
+		} finally {
 			try {
 				statement.close();
 			} catch (SQLException e) {
@@ -240,6 +254,7 @@ public class Thuoc_DAO {
 		}
 		return ds;
 	}
+
 	/*
 	 * get thuốc theo mã thuôc
 	 */
@@ -252,9 +267,9 @@ public class Thuoc_DAO {
 
 		try {
 			statement = con.prepareStatement(sql);
-			statement.setString(1,maThuoc);
+			statement.setString(1, maThuoc);
 			ResultSet rs = statement.executeQuery();
-			while (rs.next()){
+			while (rs.next()) {
 				String ma = rs.getString("maThuoc");
 				String ten = rs.getString("tenThuoc");
 				String phanLoai = rs.getString("phanLoai");
@@ -267,11 +282,11 @@ public class Thuoc_DAO {
 				Thuoc thuoc = new Thuoc(ma, ten, phanLoai, ngayHH, donViTinh, soLuong, dongia, ngaySX, ncc);
 				ds.add(thuoc);
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 
-		}finally {
+		} finally {
 			try {
 				statement.close();
 			} catch (SQLException e) {
@@ -280,6 +295,37 @@ public class Thuoc_DAO {
 		}
 		return ds;
 	}
-	
+
+	/*
+	 * get all thuốc hết hạn sử dụng
+	 */
+	public ArrayList<Thuoc> getThuocHetHan() {
+		ArrayList<Thuoc> dsThuoc = new ArrayList<Thuoc>();
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+
+			String sql = "SELECT * FROM Thuoc WHERE ngayHetHan < GETDATE()";
+			Statement statement = con.createStatement();
+			ResultSet rs = statement.executeQuery(sql);
+			while (rs.next()) {
+				String ma = rs.getString("maThuoc");
+				String ten = rs.getString("tenThuoc");
+				String phanLoai = rs.getString("phanLoai");
+				Date ngaySX = rs.getDate("ngaySX");
+				Date ngayHH = rs.getDate("ngayHetHan");
+				String donViTinh = rs.getString("donViTinh");
+				int soLuong = rs.getInt("soLuong");
+				double dongia = rs.getDouble("donGia");
+				NhaCungCap ncc = new NhaCungCap(rs.getString("maNCC"));
+
+				Thuoc thuoc = new Thuoc(ma, ten, phanLoai, ngayHH, donViTinh, soLuong, dongia, ngaySX, ncc);
+				dsThuoc.add(thuoc);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dsThuoc;
+	}
 
 }
