@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -35,7 +36,7 @@ import dao.KhachHang_DAO;
 import entity.HoaDon;
 import entity.KhachHang;
 
-public class FrmQLThongKe extends JFrame implements ActionListener  {
+public class FrmQLThongKe extends JFrame implements ActionListener {
 	/**
 	 * 
 	 */
@@ -58,16 +59,17 @@ public class FrmQLThongKe extends JFrame implements ActionListener  {
 	private KhachHang_DAO kh_DAO;
 
 	public FrmQLThongKe() {
-		
-		
+
 		try {
 			ConnectDB.getInstance().connect();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		hd_DAO = new HoaDon_DAO();
-		setTitle("Quản Lí Hiệu Thuốc");
+
+		setTitle("QuanLyThongKe");
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setResizable(false);
 
@@ -91,10 +93,10 @@ public class FrmQLThongKe extends JFrame implements ActionListener  {
 		pnlToanPhan.add(pnlTieuDeTKHDTHV);
 		pnlTieuDeTKHDTHV.setLayout(null);
 
-		JLabel lblTieuDeTKHDTKH = new JLabel("QUẢN LÍ BÁN HÀNG");
+		JLabel lblTieuDeTKHDTKH = new JLabel("QUẢN LÍ THỐNG KÊ");
 		lblTieuDeTKHDTKH.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTieuDeTKHDTKH.setForeground(Color.BLUE);
-		lblTieuDeTKHDTKH.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblTieuDeTKHDTKH.setFont(new Font("Tahoma", Font.BOLD, 24));
 		lblTieuDeTKHDTKH.setBounds(480, 20, 538, 37);
 		pnlTieuDeTKHDTHV.add(lblTieuDeTKHDTKH);
 
@@ -102,8 +104,8 @@ public class FrmQLThongKe extends JFrame implements ActionListener  {
 		pnlToanPhan.setLayout(null);
 
 		// CENTER
-		
-		//LEFT
+
+		// LEFT
 
 		// Các ô thao thác chức năng
 		JPanel panel_1 = new JPanel();
@@ -112,6 +114,7 @@ public class FrmQLThongKe extends JFrame implements ActionListener  {
 		panel_1.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		pnlToanPhan.add(panel_1);
 		panel_1.setLayout(null);
+
 		// Ô tìm kiếm
 		JPanel pnlTimKiem = new JPanel();
 		pnlTimKiem.setBackground(SystemColor.controlHighlight);
@@ -124,8 +127,7 @@ public class FrmQLThongKe extends JFrame implements ActionListener  {
 		cmbMaKH = new JComboBox<>();
 		pnlTimKiem.add(cmbMaKH);
 		List<HoaDon> listHD = hd_DAO.getAllHoaDon();
-		for (HoaDon hd: listHD)
-		{
+		for (HoaDon hd : listHD) {
 			cmbMaKH.addItem(hd.getKhachHang().getMaKH());
 		}
 		cmbMaKH.setBounds(20, 30, 120, 30);
@@ -137,8 +139,7 @@ public class FrmQLThongKe extends JFrame implements ActionListener  {
 		cmbMaHD = new JComboBox<>();
 		pnlTimKiem.add(cmbMaHD);
 		List<HoaDon> listHD1 = hd_DAO.getAllHoaDon();
-		for (HoaDon hd: listHD1)
-		{
+		for (HoaDon hd : listHD1) {
 			cmbMaHD.addItem(hd.getMaHD());
 		}
 		cmbMaHD.setBounds(20, 90, 120, 30);
@@ -155,19 +156,19 @@ public class FrmQLThongKe extends JFrame implements ActionListener  {
 		panel_1.add(pnlChucNang);
 		pnlChucNang.setLayout(null);
 
-		btnXoa = new JButton("Xóa");
+		btnXoa = new JButton("XÓA HÓA ĐƠN ");
 		pnlChucNang.add(btnXoa);
-		btnXoa.setBounds(20, 30, 120, 30);
+		btnXoa.setBounds(75, 30, 150, 30);
 
-		btnXoa2 = new JButton("???");
-		pnlChucNang.add(btnXoa2);
-		btnXoa2.setBounds(160, 30, 120, 30);
+//		btnXoa2 = new JButton("???");
+//		pnlChucNang.add(btnXoa2);
+//		btnXoa2.setBounds(160, 30, 120, 30);
 
-		btnReload = new JButton("Tải lại");
+		btnReload = new JButton("TẢI LẠI");
 		pnlChucNang.add(btnReload);
 		btnReload.setBounds(20, 90, 120, 30);
 
-		btnThoat = new JButton("Thoát");
+		btnThoat = new JButton("THOÁT");
 		pnlChucNang.add(btnThoat);
 		btnThoat.setBounds(160, 90, 120, 30);
 
@@ -221,9 +222,9 @@ public class FrmQLThongKe extends JFrame implements ActionListener  {
 		pnlThongKeThang.add(txtNam);
 		txtNam.setColumns(10);
 
-		btnXemKQ1 = new JButton("Xem Kết Quả");
+		btnXemKQ1 = new JButton("XEM KẾT QUẢ");
 		pnlThongKeThang.add(btnXemKQ1);
-		btnXemKQ1.setBounds(80, 135, 120, 30);
+		btnXemKQ1.setBounds(80, 135, 150, 30);
 
 		// Ô thống kê theo nhân viên
 		JPanel pnlThongKeNV = new JPanel();
@@ -256,9 +257,9 @@ public class FrmQLThongKe extends JFrame implements ActionListener  {
 		pnlThongKeNV.add(txtTenNV);
 		txtTenNV.setColumns(50);
 
-		btnXemKQ2 = new JButton("Xem Kết Quả");
+		btnXemKQ2 = new JButton("XEM KẾT QUẢ");
 		pnlThongKeNV.add(btnXemKQ2);
-		btnXemKQ2.setBounds(80, 135, 120, 30);
+		btnXemKQ2.setBounds(80, 135, 150, 30);
 
 		// Ô kết quả
 		JPanel pnlKetQua = new JPanel();
@@ -337,12 +338,21 @@ public class FrmQLThongKe extends JFrame implements ActionListener  {
 		pnlThongKeTongQuat.add(txtTongDoanhThu1);
 		txtTongDoanhThu1.setColumns(10);
 
-		
-		//RIGHT
-		
+		// set icon
+		btnMaKH.setIcon(new ImageIcon("src/img/Search-icon.png"));
+		btnMaHD.setIcon(new ImageIcon("src/img/Search-icon.png"));
+		btnXoa.setIcon(new ImageIcon("src/img/xoa.png"));
+		btnReload.setIcon(new ImageIcon("src/img/taiLai.png"));
+		btnThoat.setIcon(new ImageIcon("src/img/thoat.png"));
+		btnXemKQ1.setIcon(new ImageIcon("src/img/xem.png"));
+		btnXemKQ2.setIcon(new ImageIcon("src/img/xem.png"));
+
+		// RIGHT
+
 		// danh sách thống kê và nút báo cáo
 		JScrollPane scrDSTK;
-		String[] tb1 = new String[] { "STT", "Mã Hóa đơn", "Ngày lập Hóa Đơn", "Mã Khách Hàng" ,"Mã Nhân Viên", "Thành Tiền"};
+		String[] tb1 = new String[] { "STT", "Mã Hóa đơn", "Ngày lập Hóa Đơn", "Mã Khách Hàng", "Mã Nhân Viên",
+				"Thành Tiền" };
 		tablemodel = new DefaultTableModel(tb1, 0);
 		table_1 = new JTable(tablemodel);
 		table_1.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
@@ -358,7 +368,6 @@ public class FrmQLThongKe extends JFrame implements ActionListener  {
 		scrDSTK.setBorder(
 				new TitledBorder(null, "Danh sách thống kê", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 
-		
 		pnlToanPhan.add(scrDSTK);
 		scrDSTK.setPreferredSize(new Dimension(0, 250));
 		pnlToanPhan.setLayout(null);
@@ -368,84 +377,75 @@ public class FrmQLThongKe extends JFrame implements ActionListener  {
 		panel_8.setBackground(new Color(175, 238, 238));
 		panel_8.setLayout(null);
 		getContentPane().add(tabbedPane);
-		
-		
-		
+
 		addData();
-		
-		
-		
-		//thêm sự kiện
+
+		// thêm sự kiện
 		btnMaKH.addActionListener(this);
 		btnMaHD.addActionListener(this);
 		btnReload.addActionListener(this);
 		btnThoat.addActionListener(this);
 	}
-	
-	
-	
+
 	public void addData() {
 		HoaDon h = new HoaDon();
 		int stt = 0;
 		hd_DAO = new HoaDon_DAO();
 		List<HoaDon> listHd = hd_DAO.getAllHoaDon();
-		for(HoaDon hd : listHd)
-		{
-			tablemodel.addRow(new Object[] {++stt, hd.getMaHD(), hd.getNgayLapHD(), hd.getNhanVien().getMaNV(), 
-					hd.getKhachHang().getMaKH()});
+		for (HoaDon hd : listHd) {
+			tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(), hd.getNhanVien().getMaNV(),
+					hd.getKhachHang().getMaKH() });
 		}
-		
+
 	}
+
 	public void reloadData() {
-	    tablemodel.setRowCount(0); // Xóa hết các dòng trong bảng
-	    int stt = 0;
-	    hd_DAO = new HoaDon_DAO();
-	    List<HoaDon> listHd = hd_DAO.getAllHoaDon();
-	    for (HoaDon hd : listHd) {
-	    	tablemodel.addRow(new Object[] {++stt, hd.getMaHD(), hd.getNgayLapHD(), hd.getNhanVien().getMaNV(), 
-					hd.getKhachHang().getMaKH()});// Thêm dòng vào bảng
-	    }
+		tablemodel.setRowCount(0); // Xóa hết các dòng trong bảng
+		int stt = 0;
+		hd_DAO = new HoaDon_DAO();
+		List<HoaDon> listHd = hd_DAO.getAllHoaDon();
+		for (HoaDon hd : listHd) {
+			tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(), hd.getNhanVien().getMaNV(),
+					hd.getKhachHang().getMaKH() });// Thêm dòng vào bảng
+		}
 	}
 
 	public static void main(String[] args) {
 		new FrmQLThongKe().setVisible(true);
 	}
 
-
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    Object o = e.getSource();
-	    if (o.equals(btnMaKH)) {
-	    	String maKH = cmbMaKH.getSelectedItem().toString();
-	    	List<HoaDon> listHd = hd_DAO.getHDtheoKH(maKH);
-	    	tablemodel.setRowCount(0);
-	    	int stt = 0;
-	    	for (HoaDon hd : listHd) {
-	    	    tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(), hd.getNhanVien().getMaNV(),
-	    	            hd.getKhachHang().getMaKH() });
-	    	}
+		Object o = e.getSource();
+		if (o.equals(btnMaKH)) {
+			String maKH = cmbMaKH.getSelectedItem().toString();
+			List<HoaDon> listHd = hd_DAO.getHDtheoKH(maKH);
+			tablemodel.setRowCount(0);
+			int stt = 0;
+			for (HoaDon hd : listHd) {
+				tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(), hd.getNhanVien().getMaNV(),
+						hd.getKhachHang().getMaKH() });
+			}
 
-	    }
-	    if (o.equals(btnMaHD)) {
-	    	String maHD = cmbMaHD.getSelectedItem().toString();
-	    	List<HoaDon> listHd = hd_DAO.getHDTheoHD(maHD);
-	    	tablemodel.setRowCount(0);
-	    	int stt = 0;
-	    	for (HoaDon hd : listHd) {
-	    	    tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(), hd.getNhanVien().getMaNV(),
-	    	            hd.getKhachHang().getMaKH() });
-	    	}
+		}
+		if (o.equals(btnMaHD)) {
+			String maHD = cmbMaHD.getSelectedItem().toString();
+			List<HoaDon> listHd = hd_DAO.getHDTheoHD(maHD);
+			tablemodel.setRowCount(0);
+			int stt = 0;
+			for (HoaDon hd : listHd) {
+				tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(), hd.getNhanVien().getMaNV(),
+						hd.getKhachHang().getMaKH() });
+			}
 
-	    }
-	    if (o.equals(btnReload)) {
-	    	 reloadData();
-	    }
-	    if(o.equals(btnThoat)) {
-	    	setVisible(false);
-	    	new FrmManHinhChinh().setVisible(true);
-	    }
+		}
+		if (o.equals(btnReload)) {
+			reloadData();
+		}
+		if (o.equals(btnThoat)) {
+			setVisible(false);
+			new FrmManHinhChinh().setVisible(true);
+		}
 	}
-	
 
 }
