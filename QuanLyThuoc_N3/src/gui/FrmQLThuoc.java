@@ -53,7 +53,6 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 	private JLabel lblMaThuoc, lblTenThuoc, lblPhanLoai, lblhanSD, lbldonViTinh, lblSoLuong, lblDonGia, lblngaySX,
 			lblnhaCC, lblDonViTinh;
 	private JTextField txtMaThuoc, txtTenThuoc, txtDonViTinh, txtSoLuong, txtDonGia, txtnhaCC, txtTimKiem, txtngaySX;
-//	private JDateChooser jdcNgaySX;
 	private JTextField txtNgayHH;
 	private JComboBox cboPhanLoai, cboNhaCC, cboDonViTinh, cboTenThuoc;
 
@@ -98,14 +97,21 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 		Box bAll = new Box(BoxLayout.Y_AXIS);
 		Box b = new Box(BoxLayout.X_AXIS);
 
-		// box bb bên trái
-		JPanel pnLeft = new JPanel();
-		pnLeft.setBorder(BorderFactory.createTitledBorder("Thông tin thuốc"));
+		// box bLeft bên trái
+		Box bleftCha = new Box(BoxLayout.X_AXIS);
+		bleftCha.setBorder(new BevelBorder(BevelBorder.LOWERED,null,null,null,null));
+		
 		Box bLeft = new Box(BoxLayout.Y_AXIS);
-		// box ba bên phải (chức năng tìm kiếm)
+		bLeft.setBorder(BorderFactory.createTitledBorder("Thông tin thuốc:"));
+		bleftCha.add(bLeft);
+		
+		// box bRight bên phải (chức năng tìm kiếm)
+		Box bRightCha = new Box(BoxLayout.X_AXIS);
+		bRightCha.setBorder(new BevelBorder(BevelBorder.LOWERED,null,null,null,null));
+		
 		Box bRight = new Box(BoxLayout.Y_AXIS);
-		bRight.setBorder(BorderFactory.createTitledBorder("tìm kiếm thông tin:"));
-		bLeft.setBorder(new BevelBorder(BevelBorder.LOWERED,null,null,null,null));
+		bRight.setBorder(BorderFactory.createTitledBorder("Tìm kiếm thông tin:"));
+		bRightCha.add(bRight);
 		
 
 		// tạo 4 box con bb
@@ -115,13 +121,14 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 		Box b4 = new Box(BoxLayout.X_AXIS);
 
 		//tiêu đề
-		JPanel pnTieuDe = new JPanel();
+		JPanel pnTitle = new JPanel();
 		lbltitle = new JLabel("QUẢN LÝ THUỐC");
 		lbltitle.setFont(new Font("arial", Font.BOLD, 24));
 		lbltitle.setForeground(Color.blue);
-		pnTieuDe.add(lbltitle);
-		pnTieuDe.setBorder(new BevelBorder(BevelBorder.LOWERED,null,null,null,null));// 
+		pnTitle.add(lbltitle);
+		pnTitle.setBorder(new BevelBorder(BevelBorder.LOWERED,null,null,null,null));// 
 
+		// add các component vào các box
 		b1.add(lblMaThuoc = new JLabel("Mã thuốc:"));
 		b1.add(txtMaThuoc = new JTextField());
 		txtMaThuoc.setEditable(false); // set chỉ được đọc
@@ -135,12 +142,10 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 
 		b3.add(lblngaySX = new JLabel("Ngày sản xuất:"));
 		b3.add(txtngaySX = new JTextField());
-//		jdcNgaySX.setCalendar(Calendar.getInstance());
 		b3.add(lblhanSD = new JLabel("Ngày hết hạn:"));
 		b3.add(txtNgayHH = new JTextField());
 
 		cboPhanLoai = new JComboBox<>();
-
 		b4.add(lblnhaCC = new JLabel("Nhà cung cấp:"));
 		b4.add(cboNhaCC = new JComboBox<>());
 		b4.add(Box.createHorizontalStrut(30));
@@ -156,7 +161,6 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 		cboDonViTinh.addItem("Viên");
 
 		// thêm và design kích thước các component
-		b.add(Box.createVerticalStrut(15));
 		bLeft.add(b1);
 		bLeft.add(Box.createVerticalStrut(15));
 		bLeft.add(b2);
@@ -164,30 +168,25 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 		bLeft.add(b3);
 		bLeft.add(Box.createVerticalStrut(15));
 		bLeft.add(b4);
-		bLeft.add(Box.createVerticalStrut(15));
-
-		bLeft.add(Box.createVerticalStrut(15));
+		bLeft.add(Box.createVerticalStrut(50));// làm box to hơn
 		
-		b.add(bLeft);
+		b.add(bleftCha);
 
 		// chức năng tìm kiếm
-		bRight.add(lblTimKiem = new JLabel("Tìm theo tên thuốc:"));
-		bRight.setBorder(new BevelBorder(BevelBorder.LOWERED,null,null,null,null));
 		Box ba1 = new Box(BoxLayout.X_AXIS);
 		ba1.add(cboTenThuoc = new JComboBox<>());
-		ba1.add(btnTimKiem = new JButton("Tìm"));
+		ba1.add(btnTimKiem = new JButton("Tìm theo tên thuốc"));
 		bRight.add(ba1);
 		bRight.add(Box.createVerticalStrut(200));
 
 		//
 		
-		b.add(Box.createHorizontalStrut(50));
-		b.add(bRight);
-		b.setBorder(new BevelBorder(BevelBorder.RAISED,null,null,null,null));
-		bAll.add(pnTieuDe);
+		b.add(Box.createHorizontalStrut(20));// thêm box rỗng giữa bLeft và bRight
+		b.add(bRightCha);
+//		b.setBorder(new BevelBorder(BevelBorder.RAISED,null,null,null,null));
+		bAll.add(pnTitle);
 		bAll.add(Box.createVerticalStrut(10));
 		bAll.add(b);
-		bAll.add(Box.createVerticalStrut(15));	//ngăn cách giữa bảng và textField
 		bAll.setBorder(new BevelBorder(BevelBorder.RAISED,null,null,null,null));
 
 		// design kích thước
@@ -224,12 +223,16 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 
 		// south
 		JPanel pnSouth = new JPanel();
-		pnSouth.add(btnThem = new JButton("Thêm thuốc"));
-		pnSouth.add(btnXoa = new JButton("Xóa thuốc"));
-		pnSouth.add(btnSua = new JButton("Cập nhật"));
-		pnSouth.add(btnLamMoi = new JButton("Làm mới"));
-		pnSouth.add(btnThoat = new JButton("thoat"));
-		pnSouth.add(btnTaiLai = new JButton("tải lại"));
+		JPanel pnChucNang = new JPanel();
+		pnChucNang.setBorder(BorderFactory.createTitledBorder("Chức năng"));
+		pnSouth.setBorder(new BevelBorder(BevelBorder.LOWERED,null,null,null,null));
+		pnChucNang.add(btnThem = new JButton("Thêm thuốc"));
+		pnChucNang.add(btnXoa = new JButton("Xóa thuốc"));
+		pnChucNang.add(btnSua = new JButton("Cập nhật"));
+		pnChucNang.add(btnLamMoi = new JButton("Làm mới"));
+		pnChucNang.add(btnThoat = new JButton("thoat"));
+		pnChucNang.add(btnTaiLai = new JButton("Tải lại"));
+		pnSouth.add(pnChucNang);
 		
 		//set Icon
 		btnThem.setIcon(new ImageIcon("src/img/them.png"));
@@ -255,6 +258,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 		btnLamMoi.addActionListener(this);
 		btnThoat.addActionListener(this);
 		btnTaiLai.addActionListener(this);
+		btnTimKiem.addActionListener(this);
 	}
 
 	/*
@@ -319,6 +323,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
+		
 		if (o.equals(btnThem)) {
 			if (!txtMaThuoc.getText().isEmpty()) {
 				JOptionPane.showMessageDialog(null, "Đang trong chế độ chỉnh sửa.vui lòng làm mới.");
@@ -376,6 +381,18 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 			clearDataOnTable();
 			DocDuLieuDBVaoTable();
 		}
+		
+		if(o.equals(btnTimKiem)) {
+			String tenThuoc = cboTenThuoc.getSelectedItem().toString();
+			int stt = 0;
+			thuoc_dao = new Thuoc_DAO();
+			List<Thuoc> list = thuoc_dao.getAllThuocTheoTenThuoc(tenThuoc);
+			clearDataOnTable();
+			for (Thuoc t : list) {
+				model.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getDonGia(),
+						t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(), t.getDonViTinh() });
+			}
+		}
 
 	}
 
@@ -384,11 +401,6 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 	 */
 	private Thuoc genarateOBJThuoc() {
 		Thuoc temp;
-		
-//		if(txtMaThuoc.getText().isEmpty()) {
-//			JOptionPane.showMessageDialog(null, "vui lòng nhập mã!!");
-//			return null;
-//		}
 		int soLuong = thuoc_dao.getSoluong();
 		if (soLuong == -1){
 			JOptionPane.showMessageDialog(null, "Phát sinh mã thất bại - Vui lòng kiểm tra kết nối database!!");
@@ -443,9 +455,22 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 			JOptionPane.showMessageDialog(this, "vui lòng chọn dòng cần sửa");
 			return;
 		}
+		
+		String ma = txtMaThuoc.getText();
+		String tenthuoc = txtTenThuoc.getText();
+		int soluong = Integer.parseInt(txtSoLuong.getText());
+		double dongianhap = Double.parseDouble(txtDonGia.getText());
+		String nsxString = txtngaySX.getText();
+		String nhhString = txtNgayHH.getText();
+		java.sql.Date datensx = java.sql.Date.valueOf(nsxString);
+		java.sql.Date datenhh = java.sql.Date.valueOf(nhhString);
 
-		Thuoc t = genarateOBJThuoc();
-
+		String nhacc = cboNhaCC.getSelectedItem().toString();
+		String phanloai = cboPhanLoai.getSelectedItem().toString();
+		String doviTinh = cboDonViTinh.getSelectedItem().toString();
+		NhaCungCap ncc = new NhaCungCap(nhacc);
+		Thuoc t = new Thuoc(tenthuoc, tenthuoc, phanloai, datensx, doviTinh, soluong, dongianhap, datenhh, ncc);
+		
 		try {
 			if (thuoc_dao.update(t)) {
 				clearDataOnTable();
