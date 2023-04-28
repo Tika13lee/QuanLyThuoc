@@ -40,7 +40,7 @@ import entity.HoaDon;
 import entity.KhachHang;
 import entity.NhanVien;
 
-public class FrmQLThongKe extends JFrame implements ActionListener, ItemListener {
+public class FrmQLThongKe extends JFrame implements ActionListener {
 	/**
 	 * 
 	 */
@@ -58,10 +58,11 @@ public class FrmQLThongKe extends JFrame implements ActionListener, ItemListener
 	DefaultTableModel tablemodel2 = new DefaultTableModel();
 	private JTable table_1;
 	String s;
-	private JComboBox<Object> cmbThang, cmbMaNV, cmbMaKH, cmbNgay, cmbMaHD;
+	private JComboBox<Object> cboThang, cboMaNV, cboMaKH, cboNgay, cboMaHD;
+	
 	private HoaDon_DAO hd_DAO;
 	private KhachHang_DAO kh_DAO;
-	private NhanVien_DAO nv_DAO;
+	private NhanVien_DAO nv_dao;
 
 	public FrmQLThongKe() {
 
@@ -71,6 +72,7 @@ public class FrmQLThongKe extends JFrame implements ActionListener, ItemListener
 			e.printStackTrace();
 		}
 		hd_DAO = new HoaDon_DAO();
+		nv_dao = new NhanVien_DAO();
 
 		setTitle("QuanLyThongKe");
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -129,25 +131,25 @@ public class FrmQLThongKe extends JFrame implements ActionListener, ItemListener
 		pnlTimKiem.setLayout(null);
 
 		// Chi tiết ô tìm kiếm
-		cmbMaKH = new JComboBox<>();
-		pnlTimKiem.add(cmbMaKH);
+		cboMaKH = new JComboBox<>();
+		pnlTimKiem.add(cboMaKH);
 		List<HoaDon> listHD = hd_DAO.getAllHoaDon();
 		for (HoaDon hd : listHD) {
-			cmbMaKH.addItem(hd.getKhachHang().getMaKH());
+			cboMaKH.addItem(hd.getKhachHang().getMaKH());
 		}
-		cmbMaKH.setBounds(20, 30, 120, 30);
+		cboMaKH.setBounds(20, 30, 120, 30);
 
 		btnMaKH = new JButton("Tìm mã KH");
 		pnlTimKiem.add(btnMaKH);
 		btnMaKH.setBounds(160, 30, 120, 30);
 
-		cmbMaHD = new JComboBox<>();
-		pnlTimKiem.add(cmbMaHD);
+		cboMaHD = new JComboBox<>();
+		pnlTimKiem.add(cboMaHD);
 		List<HoaDon> listHD1 = hd_DAO.getAllHoaDon();
 		for (HoaDon hd : listHD1) {
-			cmbMaHD.addItem(hd.getMaHD());
+			cboMaHD.addItem(hd.getMaHD());
 		}
-		cmbMaHD.setBounds(20, 90, 120, 30);
+		cboMaHD.setBounds(20, 90, 120, 30);
 
 		btnMaHD = new JButton("Tìm mã HD");
 		pnlTimKiem.add(btnMaHD);
@@ -200,21 +202,21 @@ public class FrmQLThongKe extends JFrame implements ActionListener, ItemListener
 		lblThang.setBounds(20, 40, 59, 28);
 		pnlThongKeThang.add(lblThang);
 
-		cmbThang = new JComboBox();
-		cmbThang.setBounds(130, 40, 130, 28);
-		cmbThang.addItem("1");
-		cmbThang.addItem("2");
-		cmbThang.addItem("3");
-		cmbThang.addItem("4");
-		cmbThang.addItem("5");
-		cmbThang.addItem("6");
-		cmbThang.addItem("7");
-		cmbThang.addItem("8");
-		cmbThang.addItem("9");
-		cmbThang.addItem("10");
-		cmbThang.addItem("11");
-		cmbThang.addItem("12");
-		pnlThongKeThang.add(cmbThang);
+		cboThang = new JComboBox();
+		cboThang.setBounds(130, 40, 130, 28);
+		cboThang.addItem("1");
+		cboThang.addItem("2");
+		cboThang.addItem("3");
+		cboThang.addItem("4");
+		cboThang.addItem("5");
+		cboThang.addItem("6");
+		cboThang.addItem("7");
+		cboThang.addItem("8");
+		cboThang.addItem("9");
+		cboThang.addItem("10");
+		cboThang.addItem("11");
+		cboThang.addItem("12");
+		pnlThongKeThang.add(cboThang);
 
 		JLabel lblNam = new JLabel("Năm:");
 		lblNam.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -246,14 +248,14 @@ public class FrmQLThongKe extends JFrame implements ActionListener, ItemListener
 		lblMaNV.setBounds(20, 40, 100, 28);
 		pnlThongKeNV.add(lblMaNV);
 
-		cmbMaNV = new JComboBox<>();
-		pnlThongKeNV.add(cmbMaNV);
+		cboMaNV = new JComboBox<>();
+		pnlThongKeNV.add(cboMaNV);
 		List<HoaDon> listHD2 = hd_DAO.getAllHoaDon();
 		for (HoaDon hd : listHD2) {
-			cmbMaNV.addItem(hd.getNhanVien().getMaNV());
+			cboMaNV.addItem(hd.getNhanVien().getMaNV());
 		}
-		cmbMaNV.setBounds(160, 40, 130, 28);
-		pnlThongKeNV.add(cmbMaNV);
+		cboMaNV.setBounds(160, 40, 130, 28);
+		pnlThongKeNV.add(cboMaNV);
 
 		JLabel lbltenNV = new JLabel("Tên Nhân Viên:");
 		lbltenNV.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -323,7 +325,6 @@ public class FrmQLThongKe extends JFrame implements ActionListener, ItemListener
 		pnlThongKeTongQuat.setLayout(null);
 
 		// Chi tiết ô thống kê tổng quát
-
 		JLabel lblTongHD1 = new JLabel("Tổng số hóa đơn:");
 		lblTongHD1.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblTongHD1.setBounds(60, 40, 150, 28);
@@ -398,9 +399,11 @@ public class FrmQLThongKe extends JFrame implements ActionListener, ItemListener
 		btnThoat.addActionListener(this);
 		btnXemKQ1.addActionListener(this);
 		btnXemKQ2.addActionListener(this);
-		cmbMaNV.addItemListener(this);
+//		cboMaNV.addItemListener(this);
+		cboMaNV.addActionListener(this);
 	}
-	//Thêm data
+
+	// Thêm data
 	public void addData() {
 		HoaDon h = new HoaDon();
 		int stt = 0;
@@ -408,12 +411,12 @@ public class FrmQLThongKe extends JFrame implements ActionListener, ItemListener
 		List<HoaDon> listHd = hd_DAO.getAllHoaDon();
 		for (HoaDon hd : listHd) {
 			tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(), hd.getKhachHang().getMaKH(),
-					hd.getNhanVien().getMaNV(),
-					 });
+					hd.getNhanVien().getMaNV(), });
 		}
 
 	}
-	//Load lại data
+
+	// Load lại data
 	public void reloadData() {
 		tablemodel.setRowCount(0); // Xóa hết các dòng trong bảng
 		int stt = 0;
@@ -421,46 +424,44 @@ public class FrmQLThongKe extends JFrame implements ActionListener, ItemListener
 		List<HoaDon> listHd = hd_DAO.getAllHoaDon();
 		for (HoaDon hd : listHd) {
 			tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(), hd.getKhachHang().getMaKH(),
-					hd.getNhanVien().getMaNV()});// Thêm dòng vào bảng
+					hd.getNhanVien().getMaNV() });// Thêm dòng vào bảng
 		}
 	}
-	
-	//xử lý thống kê hóa đơn
-	public void thongKeHoaDon() {
-	    int rowCount = table_1.getRowCount(); // lấy số hàng của table_1
-	    txtTongSoHD1.setText(String.valueOf(rowCount)); // hiển thị tổng số hóa đơn
-	}
-	
-	//xử lý thống kê hóa đơn vào kết quả
-		public void thongKeHoaDonKQ() {
-		    int rowCount = table_1.getRowCount(); // lấy số hàng của table_1
-		    txtTongSoHD.setText(String.valueOf(rowCount)); // hiển thị tổng số hóa đơn
-		}
 
-	
+	// xử lý thống kê hóa đơn
+	public void thongKeHoaDon() {
+		int rowCount = table_1.getRowCount(); // lấy số hàng của table_1
+		txtTongSoHD1.setText(String.valueOf(rowCount)); // hiển thị tổng số hóa đơn
+	}
+
+	// xử lý thống kê hóa đơn vào kết quả
+	public void thongKeHoaDonKQ() {
+		int rowCount = table_1.getRowCount(); // lấy số hàng của table_1
+		txtTongSoHD.setText(String.valueOf(rowCount)); // hiển thị tổng số hóa đơn
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		if (o.equals(btnMaKH)) {
-			String maKH = cmbMaKH.getSelectedItem().toString();
+			String maKH = cboMaKH.getSelectedItem().toString();
 			List<HoaDon> listHd = hd_DAO.getHDtheoKH(maKH);
 			tablemodel.setRowCount(0);
 			int stt = 0;
 			for (HoaDon hd : listHd) {
-				tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(),hd.getKhachHang().getMaKH() ,
-						hd.getNhanVien().getMaNV()});
+				tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(), hd.getKhachHang().getMaKH(),
+						hd.getNhanVien().getMaNV() });
 			}
 			thongKeHoaDon();
 		}
 		if (o.equals(btnMaHD)) {
-			String maHD = cmbMaHD.getSelectedItem().toString();
+			String maHD = cboMaHD.getSelectedItem().toString();
 			List<HoaDon> listHd = hd_DAO.getHDTheoHD(maHD);
 			tablemodel.setRowCount(0);
 			int stt = 0;
 			for (HoaDon hd : listHd) {
-				tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(),hd.getKhachHang().getMaKH()
-						, hd.getNhanVien().getMaNV()});
+				tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(), hd.getKhachHang().getMaKH(),
+						hd.getNhanVien().getMaNV() });
 			}
 			thongKeHoaDon();
 		}
@@ -472,47 +473,53 @@ public class FrmQLThongKe extends JFrame implements ActionListener, ItemListener
 			setVisible(false);
 			new FrmManHinhChinh().setVisible(true);
 		}
-		if(o.equals(btnXemKQ1)) {
-			int month = Integer.parseInt((String) cmbThang.getSelectedItem());
-	        int year = Integer.parseInt(txtNam.getText());
-	        List<HoaDon> listHd = hd_DAO.getHoaDonTheoThangNam(month, year);
+		if (o.equals(btnXemKQ1)) {
+			int month = Integer.parseInt((String) cboThang.getSelectedItem());
+			int year = Integer.parseInt(txtNam.getText());
+			List<HoaDon> listHd = hd_DAO.getHoaDonTheoThangNam(month, year);
 			tablemodel.setRowCount(0);
 			int stt = 0;
 			for (HoaDon hd : listHd) {
-				tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(),hd.getKhachHang().getMaKH()
-						, hd.getNhanVien().getMaNV()});
+				tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(), hd.getKhachHang().getMaKH(),
+						hd.getNhanVien().getMaNV() });
 			}
 			thongKeHoaDon();
 			thongKeHoaDonKQ();
 		}
-		
-		
-		
-		if(o.equals(btnXemKQ2)) {
-			String maNV = cmbMaNV.getSelectedItem().toString();
+
+		if (o.equals(btnXemKQ2)) {
+			String maNV = cboMaNV.getSelectedItem().toString();
 			List<HoaDon> listHd = hd_DAO.getHDTheoNV(maNV);
 			tablemodel.setRowCount(0);
 			int stt = 0;
 			for (HoaDon hd : listHd) {
-				tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(),hd.getKhachHang().getMaKH() ,
-						hd.getNhanVien().getMaNV()});
+				tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(), hd.getKhachHang().getMaKH(),
+						hd.getNhanVien().getMaNV() });
 			}
 			thongKeHoaDon();
 			thongKeHoaDonKQ();
 		}
-		
+		if (o.equals(cboMaNV)) {
+			String ma = cboMaNV.getSelectedItem().toString();
+			ArrayList<NhanVien> dsNV = nv_dao.getAllNhanVien();
+			for (NhanVien nv : dsNV) {
+				if (nv.getMaNV().equals(ma)) {
+					txtTenNV.setText(nv.getHoNV() + " " + nv.getTenNV());
+				}
+			}
+
+		}
+
 	}
-	
-	
-	
-	@Override
-	public void itemStateChanged(ItemEvent e) {
-	    if (e.getSource() == cmbMaNV && e.getStateChange() == ItemEvent.SELECTED) {
-	        String maNV = cmbMaNV.getSelectedItem().toString();
-	        String tenNV = nv_DAO.getTenNhanVienByMaNV(maNV);
-	        txtTenNV.setText(tenNV);
-	    }
-	}
+
+//	@Override
+//	public void itemStateChanged(ItemEvent e) {
+//		if (e.getSource() == cboMaNV && e.getStateChange() == ItemEvent.SELECTED) {
+//			String maNV = cboMaNV.getSelectedItem().toString();
+//			String tenNV = nv_DAO.getTenNhanVienByMaNV(maNV);
+//			txtTenNV.setText(tenNV);
+//		}
+//	}
 
 	public static void main(String[] args) {
 		new FrmQLThongKe().setVisible(true);
