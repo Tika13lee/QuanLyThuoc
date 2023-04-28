@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -33,10 +35,12 @@ import java.util.*;
 
 import dao.HoaDon_DAO;
 import dao.KhachHang_DAO;
+import dao.NhanVien_DAO;
 import entity.HoaDon;
 import entity.KhachHang;
+import entity.NhanVien;
 
-public class FrmQLThongKe extends JFrame implements ActionListener {
+public class FrmQLThongKe extends JFrame implements ActionListener, ItemListener {
 	/**
 	 * 
 	 */
@@ -57,6 +61,7 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 	private JComboBox<Object> cmbThang, cmbMaNV, cmbMaKH, cmbNgay, cmbMaHD;
 	private HoaDon_DAO hd_DAO;
 	private KhachHang_DAO kh_DAO;
+	private NhanVien_DAO nv_DAO;
 
 	public FrmQLThongKe() {
 
@@ -241,9 +246,13 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 		lblMaNV.setBounds(20, 40, 100, 28);
 		pnlThongKeNV.add(lblMaNV);
 
-		cmbMaNV = new JComboBox();
+		cmbMaNV = new JComboBox<>();
+		pnlThongKeNV.add(cmbMaNV);
+		List<HoaDon> listHD2 = hd_DAO.getAllHoaDon();
+		for (HoaDon hd : listHD2) {
+			cmbMaNV.addItem(hd.getNhanVien().getMaNV());
+		}
 		cmbMaNV.setBounds(160, 40, 130, 28);
-		cmbMaNV.addItem("Tất cả");
 		pnlThongKeNV.add(cmbMaNV);
 
 		JLabel lbltenNV = new JLabel("Tên Nhân Viên:");
@@ -253,6 +262,7 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 
 		txtTenNV = new JTextField();
 		txtTenNV.setForeground(new Color(0, 0, 255));
+		txtTenNV.setEditable(false);
 		txtTenNV.setBounds(160, 90, 130, 28);
 		pnlThongKeNV.add(txtTenNV);
 		txtTenNV.setColumns(50);
@@ -379,40 +389,55 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 		getContentPane().add(tabbedPane);
 
 		addData();
+		thongKeHoaDon();
 
 		// thêm sự kiện
 		btnMaKH.addActionListener(this);
 		btnMaHD.addActionListener(this);
 		btnReload.addActionListener(this);
 		btnThoat.addActionListener(this);
+		btnXemKQ1.addActionListener(this);
+		btnXemKQ2.addActionListener(this);
+		cmbMaNV.addItemListener(this);
 	}
-
+	//Thêm data
 	public void addData() {
 		HoaDon h = new HoaDon();
 		int stt = 0;
 		hd_DAO = new HoaDon_DAO();
 		List<HoaDon> listHd = hd_DAO.getAllHoaDon();
 		for (HoaDon hd : listHd) {
-			tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(), hd.getNhanVien().getMaNV(),
-					hd.getKhachHang().getMaKH() });
+			tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(), hd.getKhachHang().getMaKH(),
+					hd.getNhanVien().getMaNV(),
+					 });
 		}
 
 	}
-
+	//Load lại data
 	public void reloadData() {
 		tablemodel.setRowCount(0); // Xóa hết các dòng trong bảng
 		int stt = 0;
 		hd_DAO = new HoaDon_DAO();
 		List<HoaDon> listHd = hd_DAO.getAllHoaDon();
 		for (HoaDon hd : listHd) {
-			tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(), hd.getNhanVien().getMaNV(),
-					hd.getKhachHang().getMaKH() });// Thêm dòng vào bảng
+			tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(), hd.getKhachHang().getMaKH(),
+					hd.getNhanVien().getMaNV()});// Thêm dòng vào bảng
 		}
 	}
-
-	public static void main(String[] args) {
-		new FrmQLThongKe().setVisible(true);
+	
+	//xử lý thống kê hóa đơn
+	public void thongKeHoaDon() {
+	    int rowCount = table_1.getRowCount(); // lấy số hàng của table_1
+	    txtTongSoHD1.setText(String.valueOf(rowCount)); // hiển thị tổng số hóa đơn
 	}
+	
+	//xử lý thống kê hóa đơn vào kết quả
+		public void thongKeHoaDonKQ() {
+		    int rowCount = table_1.getRowCount(); // lấy số hàng của table_1
+		    txtTongSoHD.setText(String.valueOf(rowCount)); // hiển thị tổng số hóa đơn
+		}
+
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -423,10 +448,10 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 			tablemodel.setRowCount(0);
 			int stt = 0;
 			for (HoaDon hd : listHd) {
-				tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(), hd.getNhanVien().getMaNV(),
-						hd.getKhachHang().getMaKH() });
+				tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(),hd.getKhachHang().getMaKH() ,
+						hd.getNhanVien().getMaNV()});
 			}
-
+			thongKeHoaDon();
 		}
 		if (o.equals(btnMaHD)) {
 			String maHD = cmbMaHD.getSelectedItem().toString();
@@ -434,18 +459,62 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 			tablemodel.setRowCount(0);
 			int stt = 0;
 			for (HoaDon hd : listHd) {
-				tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(), hd.getNhanVien().getMaNV(),
-						hd.getKhachHang().getMaKH() });
+				tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(),hd.getKhachHang().getMaKH()
+						, hd.getNhanVien().getMaNV()});
 			}
-
+			thongKeHoaDon();
 		}
 		if (o.equals(btnReload)) {
 			reloadData();
+			thongKeHoaDon();
 		}
 		if (o.equals(btnThoat)) {
 			setVisible(false);
 			new FrmManHinhChinh().setVisible(true);
 		}
+		if(o.equals(btnXemKQ1)) {
+			int month = Integer.parseInt((String) cmbThang.getSelectedItem());
+	        int year = Integer.parseInt(txtNam.getText());
+	        List<HoaDon> listHd = hd_DAO.getHoaDonTheoThangNam(month, year);
+			tablemodel.setRowCount(0);
+			int stt = 0;
+			for (HoaDon hd : listHd) {
+				tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(),hd.getKhachHang().getMaKH()
+						, hd.getNhanVien().getMaNV()});
+			}
+			thongKeHoaDon();
+			thongKeHoaDonKQ();
+		}
+		
+		
+		
+		if(o.equals(btnXemKQ2)) {
+			String maNV = cmbMaNV.getSelectedItem().toString();
+			List<HoaDon> listHd = hd_DAO.getHDTheoNV(maNV);
+			tablemodel.setRowCount(0);
+			int stt = 0;
+			for (HoaDon hd : listHd) {
+				tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(),hd.getKhachHang().getMaKH() ,
+						hd.getNhanVien().getMaNV()});
+			}
+			thongKeHoaDon();
+			thongKeHoaDonKQ();
+		}
+		
+	}
+	
+	
+	
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+	    if (e.getSource() == cmbMaNV && e.getStateChange() == ItemEvent.SELECTED) {
+	        String maNV = cmbMaNV.getSelectedItem().toString();
+	        String tenNV = nv_DAO.getTenNhanVienByMaNV(maNV);
+	        txtTenNV.setText(tenNV);
+	    }
 	}
 
+	public static void main(String[] args) {
+		new FrmQLThongKe().setVisible(true);
+	}
 }

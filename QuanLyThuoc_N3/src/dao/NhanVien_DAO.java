@@ -1,9 +1,11 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.naming.spi.DirStateFactory.Result;
 
@@ -38,4 +40,30 @@ public class NhanVien_DAO {
 		}
 		return dsNhanViens;
 	}
+	
+	public String getTenNhanVienByMaNV(String ma){
+	    String tenNhanVien = null;
+	    ConnectDB.getInstance();
+	    Connection con = ConnectDB.getConnection();
+	    PreparedStatement ps = null;
+	    try {
+	        String sql = "select tenNV from NhanVien where maNV = ?";
+	        ps = con.prepareStatement(sql);
+	        ps.setString(1, ma);
+	        ResultSet rs = ps.executeQuery();
+	        if (rs.next()) {
+	            tenNhanVien = rs.getString("tenNV");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            ps.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return tenNhanVien;
+	}
+
 }

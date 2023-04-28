@@ -176,4 +176,38 @@ public class HoaDon_DAO {
 		}
 		return dsHD;
 	}
+	
+	public ArrayList<HoaDon> getHoaDonTheoThangNam(int thang, int nam) {
+	    ArrayList<HoaDon> dsHD = new ArrayList<HoaDon>();
+	    ConnectDB.getInstance();
+	    Connection con = ConnectDB.getConnection();
+	    PreparedStatement ps = null;
+	    try {
+	        String sql = "SELECT * FROM HoaDon WHERE MONTH(ngayLapHD) = ? AND YEAR(ngayLapHD) = ?";
+	        ps = con.prepareStatement(sql);
+	        ps.setInt(1, thang);
+	        ps.setInt(2, nam);
+	        ResultSet rs = ps.executeQuery();
+	        while (rs.next()) {
+	            String maHD = rs.getString("maHD");
+	            Date ngay = rs.getDate("ngayLapHD");
+	            String maKH = rs.getString("maKH");
+	            String maNV = rs.getString("maNV");
+	            KhachHang kh = new KhachHang(maKH);
+	            NhanVien nv = new NhanVien(maNV);
+	            HoaDon hd = new HoaDon(maHD, ngay, kh, nv);
+	            dsHD.add(hd);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            ps.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return dsHD;
+	}
+
 }
