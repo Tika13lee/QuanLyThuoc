@@ -49,6 +49,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 	private JLabel lblMaThuoc, lblTenThuoc, lblPhanLoai, lblhanSD, lbldonViTinh, lblSoLuong, lblDonGia, lblngaySX,
 			lblnhaCC, lblDonViTinh;
 	private JTextField txtMaThuoc, txtTenThuoc, txtDonViTinh, txtSoLuong, txtDonGia, txtnhaCC, txtTimKiem, txtngaySX;
+//	private JDateChooser jdcNgaySX;
 	private JTextField txtNgayHH;
 	private JComboBox<String> cboPhanLoai, cboNhaCC, cboDonViTinh, cboTenThuoc;
 
@@ -68,7 +69,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 	public FrmQLThuoc() {
 		setTitle("QuanLyThuoc");
 		setSize(900, 600);
-//		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setExtendedState(MAXIMIZED_BOTH);
 		setResizable(false);
@@ -96,26 +97,14 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 		Box bAll = new Box(BoxLayout.Y_AXIS);
 		Box b = new Box(BoxLayout.X_AXIS);
 
-		// box bLeft bên trái
-		Box bleftCha = new Box(BoxLayout.X_AXIS);
-		bleftCha.setBorder(new BevelBorder(BevelBorder.LOWERED,null,null,null,null));
-		
+		// box bb bên trái
+		JPanel pnLeft = new JPanel();
+		pnLeft.setBorder(BorderFactory.createTitledBorder("Thông tin thuốc"));
 		Box bLeft = new Box(BoxLayout.Y_AXIS);
-		bLeft.setBorder(BorderFactory.createTitledBorder("Thông tin thuốc:"));
-		bleftCha.add(bLeft);
-		
-		// box bRight bên phải (chức năng tìm kiếm)
-		Box bRightCha = new Box(BoxLayout.X_AXIS);
-		bRightCha.setBorder(new BevelBorder(BevelBorder.LOWERED,null,null,null,null));
-		
+		// box ba bên phải (chức năng tìm kiếm)
 		Box bRight = new Box(BoxLayout.Y_AXIS);
 		bRight.setBorder(BorderFactory.createTitledBorder("Tìm kiếm thông tin:"));
-<<<<<<< HEAD
-		bRightCha.add(bRight);
-		
-=======
 		bLeft.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
->>>>>>> 485ce94c82ae750f950776280ac4e1dc9504a595
 
 		// tạo 4 box con bb
 		Box b1 = new Box(BoxLayout.X_AXIS);
@@ -123,25 +112,14 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 		Box b3 = new Box(BoxLayout.X_AXIS);
 		Box b4 = new Box(BoxLayout.X_AXIS);
 
-<<<<<<< HEAD
-		//tiêu đề
-		JPanel pnTitle = new JPanel();
-=======
 		// tiêu đề
 		JPanel pnTieuDe = new JPanel();
->>>>>>> 485ce94c82ae750f950776280ac4e1dc9504a595
 		lbltitle = new JLabel("QUẢN LÝ THUỐC");
 		lbltitle.setFont(new Font("Tahoma", Font.BOLD, 24));
 		lbltitle.setForeground(Color.blue);
-<<<<<<< HEAD
-		pnTitle.add(lbltitle);
-		pnTitle.setBorder(new BevelBorder(BevelBorder.LOWERED,null,null,null,null));// 
-=======
 		pnTieuDe.add(lbltitle);
 		pnTieuDe.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));//
->>>>>>> 485ce94c82ae750f950776280ac4e1dc9504a595
 
-		// add các component vào các box
 		b1.add(lblMaThuoc = new JLabel("Mã thuốc:"));
 		b1.add(txtMaThuoc = new JTextField());
 		txtMaThuoc.setEditable(false); // set chỉ được đọc
@@ -155,15 +133,12 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 
 		b3.add(lblngaySX = new JLabel("Ngày sản xuất:"));
 		b3.add(txtngaySX = new JTextField());
+//		jdcNgaySX.setCalendar(Calendar.getInstance());
 		b3.add(lblhanSD = new JLabel("Ngày hết hạn:"));
 		b3.add(txtNgayHH = new JTextField());
 
-<<<<<<< HEAD
-		cboPhanLoai = new JComboBox<>();
-=======
 		cboPhanLoai = new JComboBox<String>();
 
->>>>>>> 485ce94c82ae750f950776280ac4e1dc9504a595
 		b4.add(lblnhaCC = new JLabel("Nhà cung cấp:"));
 		b4.add(cboNhaCC = new JComboBox<>());
 		b4.add(Box.createHorizontalStrut(30));
@@ -179,6 +154,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 		cboDonViTinh.addItem("Viên");
 
 		// thêm và design kích thước các component
+		b.add(Box.createVerticalStrut(15));
 		bLeft.add(b1);
 		bLeft.add(Box.createVerticalStrut(15));
 		bLeft.add(b2);
@@ -186,16 +162,6 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 		bLeft.add(b3);
 		bLeft.add(Box.createVerticalStrut(15));
 		bLeft.add(b4);
-<<<<<<< HEAD
-		bLeft.add(Box.createVerticalStrut(50));// làm box to hơn
-		
-		b.add(bleftCha);
-
-		// chức năng tìm kiếm
-		Box ba1 = new Box(BoxLayout.X_AXIS);
-		ba1.add(cboTenThuoc = new JComboBox<>());
-		ba1.add(btnTimKiem = new JButton("Tìm theo tên thuốc"));
-=======
 		bLeft.add(Box.createVerticalStrut(15));
 
 		bLeft.add(Box.createVerticalStrut(15));
@@ -221,7 +187,6 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 		ba3.add(btnCheck = new JButton("Kiểm tra tình trạng thuốc"));
 		ba3.add(Box.createHorizontalStrut(20));
 
->>>>>>> 485ce94c82ae750f950776280ac4e1dc9504a595
 		bRight.add(ba1);
 		bRight.add(Box.createVerticalStrut(20));
 		bRight.add(ba2);
@@ -230,16 +195,6 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 		bRight.add(Box.createVerticalStrut(100));
 
 		//
-<<<<<<< HEAD
-		
-		b.add(Box.createHorizontalStrut(20));// thêm box rỗng giữa bLeft và bRight
-		b.add(bRightCha);
-//		b.setBorder(new BevelBorder(BevelBorder.RAISED,null,null,null,null));
-		bAll.add(pnTitle);
-		bAll.add(Box.createVerticalStrut(10));
-		bAll.add(b);
-		bAll.setBorder(new BevelBorder(BevelBorder.RAISED,null,null,null,null));
-=======
 		b.add(Box.createHorizontalStrut(50));
 		b.add(bRight);
 		b.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
@@ -248,7 +203,6 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 		bAll.add(b);
 		bAll.add(Box.createVerticalStrut(30)); // ngăn cách giữa bảng và textField
 		bAll.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
->>>>>>> 485ce94c82ae750f950776280ac4e1dc9504a595
 
 		// design kích thước
 		lblMaThuoc.setPreferredSize(new Dimension(100, 20));
@@ -284,20 +238,6 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 
 		// south
 		JPanel pnSouth = new JPanel();
-<<<<<<< HEAD
-		JPanel pnChucNang = new JPanel();
-		pnChucNang.setBorder(BorderFactory.createTitledBorder("Chức năng"));
-		pnSouth.setBorder(new BevelBorder(BevelBorder.LOWERED,null,null,null,null));
-		pnChucNang.add(btnThem = new JButton("Thêm thuốc"));
-		pnChucNang.add(btnXoa = new JButton("Xóa thuốc"));
-		pnChucNang.add(btnSua = new JButton("Cập nhật"));
-		pnChucNang.add(btnLamMoi = new JButton("Làm mới"));
-		pnChucNang.add(btnThoat = new JButton("thoat"));
-		pnChucNang.add(btnTaiLai = new JButton("Tải lại"));
-		pnSouth.add(pnChucNang);
-		
-		//set Icon
-=======
 		pnSouth.add(btnThem = new JButton("THÊM THUỐC"));
 		pnSouth.add(btnXoa = new JButton("XÓA THUỐC"));
 		pnSouth.add(btnSua = new JButton("CẬP NHẬT"));
@@ -306,7 +246,6 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 		pnSouth.add(btnThoat = new JButton("THOÁT"));
 
 		// set Icon
->>>>>>> 485ce94c82ae750f950776280ac4e1dc9504a595
 		btnThem.setIcon(new ImageIcon("src/img/them.png"));
 		btnXoa.setIcon(new ImageIcon("src/img/xoa.png"));
 		btnSua.setIcon(new ImageIcon("src/img/capNhat.png"));
@@ -330,7 +269,6 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 		btnLamMoi.addActionListener(this);
 		btnThoat.addActionListener(this);
 		btnTaiLai.addActionListener(this);
-		btnTimKiem.addActionListener(this);
 	}
 
 	/*
@@ -395,7 +333,6 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
-		
 		if (o.equals(btnThem)) {
 			if (!txtMaThuoc.getText().isEmpty()) {
 				JOptionPane.showMessageDialog(null, "Đang trong chế độ chỉnh sửa.vui lòng làm mới.");
@@ -452,18 +389,6 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 			clearDataOnTable();
 			DocDuLieuDBVaoTable();
 		}
-		
-		if(o.equals(btnTimKiem)) {
-			String tenThuoc = cboTenThuoc.getSelectedItem().toString();
-			int stt = 0;
-			thuoc_dao = new Thuoc_DAO();
-			List<Thuoc> list = thuoc_dao.getAllThuocTheoTenThuoc(tenThuoc);
-			clearDataOnTable();
-			for (Thuoc t : list) {
-				model.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getDonGia(),
-						t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(), t.getDonViTinh() });
-			}
-		}
 
 	}
 
@@ -472,14 +397,11 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 	 */
 	private Thuoc genarateOBJThuoc() {
 		Thuoc temp;
-<<<<<<< HEAD
-=======
 
 //		if(txtMaThuoc.getText().isEmpty()) {
 //			JOptionPane.showMessageDialog(null, "vui lòng nhập mã!!");
 //			return null;
 //		}
->>>>>>> 485ce94c82ae750f950776280ac4e1dc9504a595
 		int soLuong = thuoc_dao.getSoluong();
 		if (soLuong == -1) {
 			JOptionPane.showMessageDialog(null, "Phát sinh mã thất bại - Vui lòng kiểm tra kết nối database!!");
@@ -534,22 +456,9 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 			JOptionPane.showMessageDialog(this, "vui lòng chọn dòng cần sửa");
 			return;
 		}
-		
-		String ma = txtMaThuoc.getText();
-		String tenthuoc = txtTenThuoc.getText();
-		int soluong = Integer.parseInt(txtSoLuong.getText());
-		double dongianhap = Double.parseDouble(txtDonGia.getText());
-		String nsxString = txtngaySX.getText();
-		String nhhString = txtNgayHH.getText();
-		java.sql.Date datensx = java.sql.Date.valueOf(nsxString);
-		java.sql.Date datenhh = java.sql.Date.valueOf(nhhString);
 
-		String nhacc = cboNhaCC.getSelectedItem().toString();
-		String phanloai = cboPhanLoai.getSelectedItem().toString();
-		String doviTinh = cboDonViTinh.getSelectedItem().toString();
-		NhaCungCap ncc = new NhaCungCap(nhacc);
-		Thuoc t = new Thuoc(tenthuoc, tenthuoc, phanloai, datensx, doviTinh, soluong, dongianhap, datenhh, ncc);
-		
+		Thuoc t = genarateOBJThuoc();
+
 		try {
 			if (thuoc_dao.update(t)) {
 				clearDataOnTable();
