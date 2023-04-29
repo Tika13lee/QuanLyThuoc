@@ -69,7 +69,6 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener 
 
 	public FrmQLThuoc() {
 		setTitle("QuanLyThuoc");
-		setSize(900, 600);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setExtendedState(MAXIMIZED_BOTH);

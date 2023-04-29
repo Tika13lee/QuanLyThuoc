@@ -99,6 +99,7 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setResizable(false);
+		
 		JPanel pNorth = new JPanel();
 		JLabel lblTitle = new JLabel("HÓA ĐƠN");
 		lblTitle.setForeground(Color.BLUE);
@@ -116,10 +117,10 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		pText.setLayout(new BoxLayout(pText, BoxLayout.Y_AXIS));
 
 		Box b1 = Box.createHorizontalBox();
-		b1.add(Box.createHorizontalStrut(10));
-		b1.add(Box.createVerticalStrut(15));
+		b1.add(Box.createHorizontalStrut(20));
+//		b1.add(Box.createVerticalStrut(15));
 		b1.add(lblMaHD = new JLabel("Mã hóa đơn:"));
-		b1.add(txtMaHD = new JTextField(15));
+		b1.add(txtMaHD = new JTextField());
 		txtMaHD.setEditable(false); // set chỉ được đọc
 		b1.add(Box.createHorizontalStrut(50));
 
@@ -131,65 +132,69 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		b1.add(Box.createHorizontalStrut(50));
 		pText.add(Box.createVerticalStrut(20));
 		b1.add(lblMaKH = new JLabel("Mã khách hàng:"));
-		b1.add(txtMaKH = new JTextField(15));
+		b1.add(txtMaKH = new JTextField());
 		txtMaKH.setEditable(false); // set chỉ được đọc
 		b1.add(Box.createHorizontalStrut(20));
 		pText.add(b1);
 
 		Box b2 = Box.createHorizontalBox();
-		b2.add(Box.createHorizontalStrut(10));
+		b2.add(Box.createHorizontalStrut(20));
 		b2.add(lblHoKH = new JLabel("Họ KH:"));
-		b2.add(txtHoKH = new JTextField(15));
-		b2.add(Box.createHorizontalStrut(125));
+		b2.add(txtHoKH = new JTextField());
+		b2.add(Box.createHorizontalStrut(50));
 		b2.add(lblTenKH = new JLabel("Tên KH:"));
-		b2.add(txtTenKH = new JTextField(15));
-		b2.add(Box.createHorizontalStrut(55));
+		b2.add(txtTenKH = new JTextField());
+		b2.add(Box.createHorizontalStrut(316));
 		b2.add(lblGioiTinh = new JLabel("Giới tính:"));
 		radNam = new JRadioButton("Nam", true);
 		b2.add(radNam);
-		// b2.add(Box.createHorizontalStrut(200));
-		b2.add(Box.createHorizontalStrut(300));
+		b2.add(Box.createHorizontalStrut(20));
 		pText.add(Box.createVerticalStrut(20));
 		pText.add(b2);
 
+		txtHoKH.setPreferredSize(txtMaHD.getPreferredSize());
+		txtTenKH.setPreferredSize(dcrNgayLap.getPreferredSize());
+//		radNam.setPreferredSize(txtMaKH.getPreferredSize());
+		
 		Box b3 = Box.createHorizontalBox();
-		b3.add(Box.createHorizontalStrut(10));
+		b3.add(Box.createHorizontalStrut(20));
 		b3.add(lblSDT = new JLabel("Số điện thoại KH:"));
-		b3.add(txtSDT = new JTextField(15));
+		b3.add(txtSDT = new JTextField());
 		b3.add(Box.createHorizontalStrut(50));
 		b3.add(lblNgaySinh = new JLabel("Ngày sinh KH:"));
-		// b3.add(txtNgaySinh = new JTextField(15));
+//		 b3.add(txtNgaySinh = new JTextField(15));
 		b3.add(dcrNgaySinh = new JDateChooser());
 		dcrNgaySinh.setLocale(new Locale("vi", "VN"));
 		dcrNgaySinh.setDateFormatString("dd/MM/yyyy");
-		b3.add(Box.createHorizontalStrut(50));
+		b3.add(Box.createHorizontalStrut(140));
 		b3.add(cboAddThuoc = new JComboBox<String>());
 		cboAddThuoc.setPreferredSize(new Dimension(200, 15));
 		b3.add(Box.createHorizontalStrut(20));
 		b3.add(btnThemThuoc = new JButton("Thêm thuốc"));
-		b3.add(Box.createHorizontalStrut(130));
+		b3.add(Box.createHorizontalStrut(20));
 
 		pText.add(Box.createVerticalStrut(20));
 		pText.add(b3);
 
 		Box b4 = Box.createHorizontalBox();
-		b4.add(Box.createHorizontalStrut(10));
+		b4.add(Box.createHorizontalStrut(20));
 		b4.add(lblDiaChi = new JLabel("Địa chỉ:"));
 		b4.add(txtDiaChi = new JTextField(30));
 		b4.add(Box.createHorizontalStrut(10));
 		pText.add(Box.createVerticalStrut(20));
 		pText.add(b4);
+		pText.add(Box.createVerticalStrut(20));
 
-		lblMaHD.setPreferredSize(new Dimension(150, 20));
-		lblNgayLap.setPreferredSize(new Dimension(150, 20));
-		lblMaKH.setPreferredSize(new Dimension(150, 20));
+		lblMaHD.setPreferredSize(new Dimension(110, 20));
+		lblNgayLap.setPreferredSize(new Dimension(110, 20));
+		lblMaKH.setPreferredSize(new Dimension(110, 20));
 
 		lblHoKH.setPreferredSize(lblMaHD.getPreferredSize());
 		lblTenKH.setPreferredSize(lblNgayLap.getPreferredSize());
 		lblGioiTinh.setPreferredSize(lblMaKH.getPreferredSize());
 
 		lblSDT.setPreferredSize(lblMaHD.getPreferredSize());
-		lblNgaySinh.setPreferredSize(lblMaKH.getPreferredSize());
+		lblNgaySinh.setPreferredSize(lblNgayLap.getPreferredSize());
 		btnThemThuoc.setPreferredSize(lblMaKH.getPreferredSize());
 
 		lblDiaChi.setPreferredSize(lblMaHD.getPreferredSize());
