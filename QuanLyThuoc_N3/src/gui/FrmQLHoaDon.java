@@ -103,7 +103,7 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setResizable(false);
-		
+
 		JPanel pNorth = new JPanel();
 		JLabel lblTitle = new JLabel("HÓA ĐƠN");
 		lblTitle.setForeground(Color.BLUE);
@@ -159,7 +159,7 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		txtHoKH.setPreferredSize(txtMaHD.getPreferredSize());
 		txtTenKH.setPreferredSize(dcrNgayLap.getPreferredSize());
 //		radNam.setPreferredSize(txtMaKH.getPreferredSize());
-		
+
 		Box b3 = Box.createHorizontalBox();
 		b3.add(Box.createHorizontalStrut(20));
 		b3.add(lblSDT = new JLabel("Số điện thoại KH:"));
@@ -235,7 +235,7 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		b5.add(Box.createHorizontalStrut(15));
 		b5.add(lblMaNV = new JLabel("Mã nhân viên:"));
 		b5.add(txtMaNV = new JTextField(15));
-		
+
 		b5.add(Box.createHorizontalStrut(15));
 		// pWest.add(b5);
 
@@ -258,22 +258,21 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		b8.add(lblDiaChiNV = new JLabel("Địa chỉ:"));
 		b8.add(txtDiaChiNV = new JTextField(30));
 		b8.add(Box.createHorizontalStrut(15));
-		
+
 		txtMaNV.setEditable(false);
 		txtHoTenNV.setEditable(false);
 		txtSDTNV.setEditable(false);
 		txtDiaChiNV.setEditable(false);
-		
-		//lấy thông tin nhân viên đã đăng nhập đưa vào JTextField
+
+		// lấy thông tin nhân viên đã đăng nhập đưa vào JTextField
 		dn = new FrmDangNhap();
 		String user = dn.getUser();
-		String ma;
 		tk_dao = new TaiKhoan_DAO();
 		nv_dao = new NhanVien_DAO();
 		ArrayList<TaiKhoan> dsTK = tk_dao.getAllTaiKhoan();
 		for (TaiKhoan tk : dsTK) {
-			if(tk.getTenTK().equals(user)) {
-				ma = tk.getMaTK();
+			if (tk.getTenTK().equals(user)) {
+				String ma = tk.getMaTK();
 				ArrayList<NhanVien> dsNV = nv_dao.getAllNVTheoMaTK(ma);
 				for (NhanVien nv : dsNV) {
 					txtMaNV.setText(nv.getMaNV());
@@ -283,7 +282,7 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 				}
 			}
 		}
-		
+
 		// pWest.add(b8);
 		lblMaNV.setPreferredSize(new Dimension(150, 20));
 		lblHoTenNV.setPreferredSize(lblMaNV.getPreferredSize());
@@ -416,13 +415,13 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 
 		// Đưa database và table
 		// DocDuLieuDBVaoTable();
-		
+
 		ArrayList<Thuoc> listThuoc;
 		listThuoc = thuoc_dao.getAllThuoc();
 		for (Thuoc t : listThuoc) {
 			cboAddThuoc.addItem(t.getMaThuoc());
 		}
-		
+
 		// dua du liue vao cbo nhan vien
 //		DuaNVVaoCBO();
 

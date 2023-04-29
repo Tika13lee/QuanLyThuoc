@@ -115,10 +115,6 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 		return txtUser.getText();
 	}
 
-	public String getPass() {
-		return String.valueOf(txtPass.getPassword());
-	}
-
 	public static void main(String[] args) {
 		new FrmDangNhap().setVisible(true);
 	}
@@ -129,7 +125,6 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 		if (o.equals(btnLogIn)) {
 			int flag = 0;
 			String user = txtUser.getText().trim();
-//			String pass = txtPass.getText().trim();
 			String pass = String.valueOf(txtPass.getPassword());
 			if (user.equals("") || pass.equals("")) {
 				JOptionPane.showMessageDialog(this, "Vui lòng nhập đủ thông tin");
@@ -147,7 +142,8 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 			if (flag == 0) {
 				JOptionPane.showMessageDialog(this, "Tên đăng nhập hoặc mật khẩu không đúng");
 			}
-		} else if (o.equals(btnExit)) {
+		}
+		if (o.equals(btnExit)) {
 			System.exit(0);
 		}
 	}
