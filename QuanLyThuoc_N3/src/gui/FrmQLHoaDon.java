@@ -43,11 +43,13 @@ import dao.HoaDon_DAO;
 import dao.KhachHang_DAO;
 import dao.NhaCungCap_DAO;
 import dao.NhanVien_DAO;
+import dao.TaiKhoan_DAO;
 import dao.Thuoc_DAO;
 import entity.ChiTietHoaDon;
 import entity.HoaDon;
 import entity.KhachHang;
 import entity.NhanVien;
+import entity.TaiKhoan;
 import entity.Thuoc;
 
 public class FrmQLHoaDon extends JFrame implements ActionListener {
@@ -79,9 +81,11 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 	private JComboBox cboPhuongThucThanhToan;
 	// Goi DAO
 	private Thuoc_DAO thuoc_dao = new Thuoc_DAO();
-	private NhanVien_DAO nv_DAO = new NhanVien_DAO();
 	private HoaDon_DAO hd_dao = new HoaDon_DAO();
 	private KhachHang_DAO kh_dao = new KhachHang_DAO();
+	private FrmDangNhap dn;
+	private TaiKhoan_DAO tk_dao;
+	private NhanVien_DAO nv_dao;
 	// private ChiTietHoaDon_DAO cthd_DAO;
 
 	public FrmQLHoaDon() {
@@ -230,8 +234,8 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		Box b5 = Box.createHorizontalBox();
 		b5.add(Box.createHorizontalStrut(15));
 		b5.add(lblMaNV = new JLabel("Mã nhân viên:"));
-		b5.add(cboMaNV = new JComboBox<String>());
-		cboMaNV.setPreferredSize(new Dimension(80, 20));
+		b5.add(txtMaNV = new JTextField(15));
+		
 		b5.add(Box.createHorizontalStrut(15));
 		// pWest.add(b5);
 
@@ -254,6 +258,32 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		b8.add(lblDiaChiNV = new JLabel("Địa chỉ:"));
 		b8.add(txtDiaChiNV = new JTextField(30));
 		b8.add(Box.createHorizontalStrut(15));
+		
+		txtMaNV.setEditable(false);
+		txtHoTenNV.setEditable(false);
+		txtSDTNV.setEditable(false);
+		txtDiaChiNV.setEditable(false);
+		
+		//lấy thông tin nhân viên đã đăng nhập đưa vào JTextField
+		dn = new FrmDangNhap();
+		String user = dn.getUser();
+		String ma;
+		tk_dao = new TaiKhoan_DAO();
+		nv_dao = new NhanVien_DAO();
+		ArrayList<TaiKhoan> dsTK = tk_dao.getAllTaiKhoan();
+		for (TaiKhoan tk : dsTK) {
+			if(tk.getTenTK().equals(user)) {
+				ma = tk.getMaTK();
+				ArrayList<NhanVien> dsNV = nv_dao.getAllNVTheoMaTK(ma);
+				for (NhanVien nv : dsNV) {
+					txtMaNV.setText(nv.getMaNV());
+					txtHoTenNV.setText(nv.getHoNV() + " " + nv.getTenNV());
+					txtSDTNV.setText(nv.getSoDT());
+					txtDiaChiNV.setText(nv.getDiaChi());
+				}
+			}
+		}
+		
 		// pWest.add(b8);
 		lblMaNV.setPreferredSize(new Dimension(150, 20));
 		lblHoTenNV.setPreferredSize(lblMaNV.getPreferredSize());
@@ -386,13 +416,15 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 
 		// Đưa database và table
 		// DocDuLieuDBVaoTable();
+		
 		ArrayList<Thuoc> listThuoc;
 		listThuoc = thuoc_dao.getAllThuoc();
 		for (Thuoc t : listThuoc) {
 			cboAddThuoc.addItem(t.getMaThuoc());
 		}
+		
 		// dua du liue vao cbo nhan vien
-		DuaNVVaoCBO();
+//		DuaNVVaoCBO();
 
 	}
 	// Doc dux lieu len table
@@ -468,19 +500,19 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		new FrmQLHoaDon().setVisible(true);
 	}
 
-	public void DuaNVVaoCBO() {
-		ArrayList<NhanVien> listNV = nv_DAO.getAllNhanVien();
-		for (NhanVien nv : listNV) {
-			cboMaNV.addItem(nv.getMaNV());
-			for (NhanVien nv1 : listNV) {
-				if (cboMaNV.getSelectedItem().toString().equals(nv1.getMaNV())) {
-					txtHoTenNV.setText(nv1.getHoNV() + " " + nv1.getTenNV());
-					txtSDTNV.setText(nv1.getSoDT());
-					txtDiaChiNV.setText(nv1.getDiaChi());
-
-				}
-
-			}
-		}
-	}
+//	public void DuaNVVaoCBO() {
+//		ArrayList<NhanVien> listNV = .getAllNhanVien();
+//		for (NhanVien nv : listNV) {
+//			cboMaNV.addItem(nv.getMaNV());
+//			for (NhanVien nv1 : listNV) {
+//				if (cboMaNV.getSelectedItem().toString().equals(nv1.getMaNV())) {
+//					txtHoTenNV.setText(nv1.getHoNV() + " " + nv1.getTenNV());
+//					txtSDTNV.setText(nv1.getSoDT());
+//					txtDiaChiNV.setText(nv1.getDiaChi());
+//
+//				}
+//
+//			}
+//		}
+//	}
 }

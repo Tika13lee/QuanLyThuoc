@@ -21,6 +21,10 @@ public class TaiKhoan {
 		// TODO Auto-generated constructor stub
 	}
 
+	public TaiKhoan(String maTK) {
+		this.maTK = maTK;
+	}
+
 	public String getMaTK() {
 		return maTK;
 	}

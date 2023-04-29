@@ -84,7 +84,7 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 		btnLogIn.setBounds(480, 270, 100, 30);
 
 		btnExit = new JButton("Thoát");
-		
+
 		btnExit.setBorder(BorderFactory.createRaisedBevelBorder());
 		btnExit.setBounds(630, 270, 90, 30);
 
@@ -103,12 +103,20 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 		add(lblImg);
 
 		// set data
-		txtUser.setText("user1");
-		txtPass.setText("password1");
+//		txtUser.setText("user1");
+//		txtPass.setText("password1");
 
 		// event
 		btnLogIn.addActionListener(this);
 		btnExit.addActionListener(this);
+	}
+
+	public String getUser() {
+		return txtUser.getText();
+	}
+
+	public String getPass() {
+		return String.valueOf(txtPass.getPassword());
 	}
 
 	public static void main(String[] args) {
@@ -121,13 +129,15 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 		if (o.equals(btnLogIn)) {
 			int flag = 0;
 			String user = txtUser.getText().trim();
-			String pass = txtPass.getText().trim();
+//			String pass = txtPass.getText().trim();
+			String pass = String.valueOf(txtPass.getPassword());
 			if (user.equals("") || pass.equals("")) {
 				JOptionPane.showMessageDialog(this, "Vui lòng nhập đủ thông tin");
 			} else {
 				ArrayList<TaiKhoan> dsTK = tk_dao.getAllTaiKhoan();
 				for (TaiKhoan tk : dsTK) {
 					if (tk.getTenTK().equals(user) && tk.getMatKhau().equals(pass)) {
+						JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
 						setVisible(false);
 						new FrmManHinhChinh().setVisible(true);
 					}
