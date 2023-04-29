@@ -429,11 +429,19 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 			}
 			String ma = model.getValueAt(row, 1).toString();
 			Thuoc t = new Thuoc(ma);
-			if (thuoc_dao.delete(t)) {
-				clearDataOnTable();
-				DocDuLieuDBVaoTable();
-				JOptionPane.showMessageDialog(this, "xóa thành công thuốc có mã:" + ma);
+			if (JOptionPane.showConfirmDialog(this, "bạn có chắc muốn xóa thuốc có mã:" + ma, "cảnh báo",
+					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				if (thuoc_dao.delete(t)) {
+					clearDataOnTable();
+					DocDuLieuDBVaoTable();
+					JOptionPane.showMessageDialog(this, "xóa thành công thuốc có mã:" + ma);
+				}
 			}
+//			if (thuoc_dao.delete(t)) {
+//				clearDataOnTable();
+//				DocDuLieuDBVaoTable();
+//				JOptionPane.showMessageDialog(this, "xóa thành công thuốc có mã:" + ma);
+//			}
 		}
 
 		if (o.equals(btnThoat)) {
@@ -616,8 +624,8 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 		txtTenThuoc.setText("");
 		txtSoLuong.setText("");
 		txtDonGia.setText("");
-		jdcNgaySX.setDateFormatString("");
-		jdcNgayHH.setDateFormatString("");
+//		jdcNgaySX.setDateFormatString("");
+//		jdcNgayHH.setDateFormatString("");
 		cboNhaCC.setSelectedIndex(0);
 		cboPhanLoai.setSelectedIndex(0);
 		cboDonViTinh.setSelectedIndex(0);

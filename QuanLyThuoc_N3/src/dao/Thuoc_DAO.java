@@ -191,11 +191,11 @@ public class Thuoc_DAO {
 			stmt.setString(9, t.getMaThuoc()); // sửa đổi giá trị của đối số này
 
 			int n = stmt.executeUpdate();
-			if (n > 0) {
-				System.out.println("Cập nhật thông tin thuốc thành công.");
-			} else {
-				System.out.println("Không tìm thấy thuốc để cập nhật.");
-			}
+//			if (n > 0) {
+//				System.out.println("Cập nhật thông tin thuốc thành công.");
+//			} else {
+//				System.out.println("Không tìm thấy thuốc để cập nhật.");
+//			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
