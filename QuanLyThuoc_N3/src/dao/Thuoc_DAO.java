@@ -236,7 +236,6 @@ public class Thuoc_DAO {
 	 * lấy số lượng thuốc
 	 */
 	public int getSoluong() {
-//		ArrayList<Thuoc> dsThuoc = new ArrayList<Thuoc>();
 		try {
 			ConnectDB.getInstance();
 			Connection con = ConnectDB.getConnection();

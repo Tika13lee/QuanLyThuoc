@@ -1,7 +1,5 @@
 package entity;
 
-
-
 import java.time.LocalDate;
 import java.util.Date;
 //import java.sql.Date;
@@ -17,11 +15,8 @@ public class Thuoc {
 	private double donGia;
 	private Date ngaySX;
 	private NhaCungCap nhaCC;
-	
-//	public Object[] getOBJThuoc() {
-//		Object[] obj = {t
-//	}
 
+	// -------<<constructor>>--------
 	public Thuoc() {
 	}
 
@@ -47,12 +42,15 @@ public class Thuoc {
 		this.tenThuoc = tenThuoc;
 	}
 
+	// ------<<get/set>>---------
 	public String getMaThuoc() {
 		return maThuoc;
 	}
 
 	public void setMaThuoc(String maThuoc) {
+
 		this.maThuoc = maThuoc;
+
 	}
 
 	public String getTenThuoc() {
@@ -60,6 +58,7 @@ public class Thuoc {
 	}
 
 	public void setTenThuoc(String tenThuoc) {
+
 		this.tenThuoc = tenThuoc;
 	}
 
@@ -77,6 +76,7 @@ public class Thuoc {
 
 	public void setNgayHetHan(Date ngayHetHan) {
 		this.ngayHetHan = ngayHetHan;
+
 	}
 
 	public String getDonViTinh() {
@@ -93,6 +93,7 @@ public class Thuoc {
 
 	public void setSoLuong(int soLuong) {
 		this.soLuong = soLuong;
+
 	}
 
 	public double getDonGia() {
@@ -109,6 +110,7 @@ public class Thuoc {
 
 	public void setNgaySX(Date ngaySX) {
 		this.ngaySX = ngaySX;
+
 	}
 
 	public NhaCungCap getNhaCC() {

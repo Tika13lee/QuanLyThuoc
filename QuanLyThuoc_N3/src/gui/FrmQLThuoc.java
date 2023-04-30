@@ -394,20 +394,23 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 				JOptionPane.showMessageDialog(null, "Đang trong chế độ chỉnh sửa.vui lòng làm mới.");
 				return;
 			}
-			Thuoc t = genarateOBJThuoc();
-			try {
-				if (!thuoc_dao.createThuoc(t)) {
-					JOptionPane.showMessageDialog(null, "trùng mã .kiểm tra lại");
-					return;
-				} else {
-					clearTextField();
-					clearDataOnTable();
-					DocDuLieuDBVaoTable();
-					JOptionPane.showMessageDialog(this, "thêm thành công !!");
+			
+			if(validData()) {
+				Thuoc t = genarateOBJThuoc();
+				try {
+					if (!thuoc_dao.createThuoc(t)) {
+						JOptionPane.showMessageDialog(null, "trùng mã .kiểm tra lại");
+						return;
+					} else {
+						clearTextField();
+						clearDataOnTable();
+						DocDuLieuDBVaoTable();
+						JOptionPane.showMessageDialog(this, "thêm thành công !!");
 
+					}
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(null, e2.getMessage());
 				}
-			} catch (Exception e2) {
-				JOptionPane.showMessageDialog(null, e2.getMessage());
 			}
 
 		}
@@ -495,6 +498,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 			int stt = 0;
 			List<Thuoc> list = thuoc_dao.getThuocHetHan();
 			clearDataOnTable();
+			JOptionPane.showMessageDialog(this,"Danh sách thuốc hết hạn sử dụng.");
 			for (Thuoc t : list) {
 				model.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getDonGia(),
 						t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(), t.getDonViTinh() });
@@ -515,7 +519,54 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 					t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(), t.getDonViTinh() });
 		}
 	}
+	/*
+	 * kiểm tra dữ liệu
+	 */
+	private boolean validData() {
+		String tenThuoc = txtTenThuoc.getText().trim();
+		int soluong = Integer.parseInt(txtSoLuong.getText().trim()); 
+		int donGia = Integer.parseInt(txtDonGia.getText().trim());
+		
+		Date now = new Date();
+		Date nsx = jdcNgaySX.getDate();
+		Date nhh = jdcNgayHH.getDate();
+		
+		if(!(tenThuoc.matches("[a-zA-Z ]+") && tenThuoc.length()> 0)) {
+			JOptionPane.showMessageDialog(this, "tên thuốc không được rỗng, là kí tự");
+			txtTenThuoc.requestFocus();
+			return false;
+		}
+		
+		if(soluong <= 0) {
+	        JOptionPane.showMessageDialog(this, "Số lượng phải > 0");
+	        txtSoLuong.requestFocus();
+	        return false;
+	    }
 
+	    if(donGia <= 0) {
+	        JOptionPane.showMessageDialog(this, "Đơn giá phải > 0");
+	        txtDonGia.requestFocus();
+	        return false;
+	    }
+	    
+	    if(nsx.after(now)) {
+	        JOptionPane.showMessageDialog(this, "ngày sản xuất phải trước ngày hiện tại");
+	        jdcNgaySX.requestFocus();
+	        return false;
+	    }
+
+	    if(nhh.before(nsx)) {
+	    	JOptionPane.showMessageDialog(this, "ngày hết hạn phải sau ngày sản xuất");
+	    	jdcNgayHH.requestFocus();
+	    	return false;
+	    }
+
+	    // Kiểm tra dữ liệu các trường thông tin khác nếu có
+
+	    return true;
+		
+	}
+	
 	/*
 	 * hàm genarateOBJThuoc() có chức năng lấy dữ liệu từ field chuyển thành obj
 	 * Thuốc
@@ -529,7 +580,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 			return null;
 		}
 
-		String ma = String.format("T%03d", soLuong + 1);
+		String ma = String.format("T%01d", soLuong + 1);
 
 		if (txtTenThuoc.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "vui lòng nhập tên!!!");
