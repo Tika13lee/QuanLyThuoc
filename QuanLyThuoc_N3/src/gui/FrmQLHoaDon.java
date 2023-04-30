@@ -6,12 +6,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 
 import javax.swing.BorderFactory;
@@ -41,7 +37,6 @@ import connect.ConnectDB;
 import dao.ChiTietHoaDon_DAO;
 import dao.HoaDon_DAO;
 import dao.KhachHang_DAO;
-import dao.NhaCungCap_DAO;
 import dao.NhanVien_DAO;
 import dao.TaiKhoan_DAO;
 import dao.Thuoc_DAO;
@@ -59,31 +54,21 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 	private JLabel lblMaNV, lblHoTenNV, lblSDTNV, lblDiaChiNV; // nhan vien
 	private JTextField txtMaNV, txtHoTenNV, txtSDTNV, txtDiaChiNV;// nhan vien
 	private JTextField txtMaHD, txtSDT, txtHoKH, txtTenKH, txtDiaChi, txtMaKH;// KH
-	private JDateChooser dcrNgayLap;
-	private JDateChooser dcrNgaySinh;
+	private JDateChooser dcrNgayLap, dcrNgaySinh;
 	private JRadioButton radNam;
 	private DefaultTableModel model;
 	private JTable table;
 	private JButton btnThemMoi, btnThanhToan, btnThemThuoc, btnThoat;
 	private JTabbedPane tabbedPane;
 	private JComboBox<String> cboAddThuoc;
-	private JComboBox<String> cboMaNV; // Nhan viên
-	// quan ly hoa don
-	private JLabel lblTimHDTheoMa, lblTimHDTheoNV;
-	private JComboBox<String> cboTimHDTheoMa;
-	private JComboBox<String> cboTimHDTheoNV;
-	private JButton btnXoaHD;
-	private DefaultTableModel model1;
-	private JTable table1;
 	// thanh toan
 	private JLabel lblTongThanhToan, lblPhuongThucThanhToan, lblTienKhachDua, lblTienTraLai;
 	private JTextField txtTongThanhToan, txtTienKhachDua, txtTienTraLai;
-	private JComboBox cboPhuongThucThanhToan;
+	private JComboBox<String> cboPhuongThucThanhToan;
 	// Goi DAO
 	private Thuoc_DAO thuoc_dao = new Thuoc_DAO();
 	private HoaDon_DAO hd_dao = new HoaDon_DAO();
 	private KhachHang_DAO kh_dao = new KhachHang_DAO();
-	private FrmDangNhap dn;
 	private TaiKhoan_DAO tk_dao;
 	private NhanVien_DAO nv_dao;
 	// private ChiTietHoaDon_DAO cthd_DAO;
@@ -364,16 +349,16 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		Box bp = Box.createVerticalBox();
 		Box bp1 = Box.createHorizontalBox();
 		bp1.add(Box.createHorizontalStrut(40));
-		bp1.add(btnThemMoi = new JButton("Thêm hóa đơn"));
+		bp1.add(btnThemMoi = new JButton("THÊM HÓA ĐƠN"));
 		bp1.add(Box.createHorizontalStrut(40));
 		// bp1.add(Box.createHorizontalStrut(50));
 		// bp.add(Box.createHorizontalStrut(50));
 		Box bp2 = Box.createHorizontalBox();
-		bp2.add(btnThanhToan = new JButton("Thanh toán"));
+		bp2.add(btnThanhToan = new JButton("THANH TOÁN"));
 		// bp2.add(Box.createHorizontalStrut(50));
 		bp2.add(Box.createHorizontalStrut(20));
 		Box bp3 = Box.createHorizontalBox();
-		bp3.add(btnThoat = new JButton("Thoát"));
+		bp3.add(btnThoat = new JButton("QUAY LẠI"));
 		bp3.add(Box.createHorizontalStrut(50));
 
 		bp.add(Box.createVerticalStrut(15));
@@ -406,7 +391,7 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 
 		// set icon
 		btnThemMoi.setIcon(new ImageIcon("src/img/them.png"));
-		btnThoat.setIcon(new ImageIcon("src/img/thoat.png"));
+		btnThoat.setIcon(new ImageIcon("src/img/quayLai.png"));
 		btnThanhToan.setIcon(new ImageIcon("src/img/thanhToan.png"));
 
 		// Đưa database và table
@@ -466,7 +451,6 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		Object o = e.getSource();
 		if (o.equals(txtHoKH)) {
 			txtTenKH.requestFocus();
@@ -508,20 +492,4 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		}
 
 	}
-
-//	public void DuaNVVaoCBO() {
-//		ArrayList<NhanVien> listNV = .getAllNhanVien();
-//		for (NhanVien nv : listNV) {
-//			cboMaNV.addItem(nv.getMaNV());
-//			for (NhanVien nv1 : listNV) {
-//				if (cboMaNV.getSelectedItem().toString().equals(nv1.getMaNV())) {
-//					txtHoTenNV.setText(nv1.getHoNV() + " " + nv1.getTenNV());
-//					txtSDTNV.setText(nv1.getSoDT());
-//					txtDiaChiNV.setText(nv1.getDiaChi());
-//
-//				}
-//
-//			}
-//		}
-//	}
 }

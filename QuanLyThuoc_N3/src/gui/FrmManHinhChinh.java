@@ -5,23 +5,24 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.border.BevelBorder;
 
 public class FrmManHinhChinh extends JFrame implements ActionListener {
 	private JLabel lblTitle;
+	private JLabel lblImg;
+	private JLabel lblUser;
 	private JButton btnQuanLyThuoc;
 	private JButton btnQuanLyThongKe;
 	private JButton btnQuanLyHoaDon;
-	private JLabel lblImg;
 	private JButton btnLogOut;
+	private String user;
 
 	private FrmDangNhap dn;
-	private String user;
 
 	public FrmManHinhChinh(FrmDangNhap dn, String user) {
 		this.dn = dn;
@@ -62,7 +63,12 @@ public class FrmManHinhChinh extends JFrame implements ActionListener {
 		btnQuanLyThongKe.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 
 		btnLogOut = new JButton("ĐĂNG XUẤT");
-		btnLogOut.setBounds(1370, 30, 110, 30);
+		btnLogOut.setBounds(1380, 30, 125, 30);
+		btnLogOut.setIcon(new ImageIcon("src/img/logout-icon.png"));
+
+		lblUser = new JLabel(user);
+		lblUser.setBounds(1250, 30, 110, 30);
+		lblUser.setFont(new Font("Tahoma", Font.PLAIN, 20));
 
 		lblImg = new JLabel();
 		ImageIcon img = new ImageIcon("src/img/bg-main.png");
@@ -73,8 +79,9 @@ public class FrmManHinhChinh extends JFrame implements ActionListener {
 		this.add(btnQuanLyThuoc);
 		this.add(btnQuanLyHoaDon);
 		this.add(btnQuanLyThongKe);
-		this.add(lblImg);
+		this.add(lblUser);
 		this.add(btnLogOut);
+		this.add(lblImg);
 
 		// event
 		btnQuanLyThuoc.addActionListener(this);
@@ -103,9 +110,13 @@ public class FrmManHinhChinh extends JFrame implements ActionListener {
 			setVisible(false);
 		}
 		if (o.equals(btnLogOut)) {
-			dn.display();
-			setVisible(false);
+			if (JOptionPane.showConfirmDialog(this, "Bạn chắc muốn đăng xuất?", "Cảnh báo",
+					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				dn.display();
+				setVisible(false);
+			}
 		}
+
 	}
 
 }

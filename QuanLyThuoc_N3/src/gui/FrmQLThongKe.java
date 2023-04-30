@@ -7,8 +7,6 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -35,10 +33,8 @@ import connect.ConnectDB;
 import java.util.*;
 
 import dao.HoaDon_DAO;
-import dao.KhachHang_DAO;
 import dao.NhanVien_DAO;
 import entity.HoaDon;
-import entity.KhachHang;
 import entity.NhanVien;
 
 public class FrmQLThongKe extends JFrame implements ActionListener {
@@ -49,16 +45,15 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 	private JTabbedPane tabbedPane;
 	private JPanel pnlToanPhan, panel_1;
 	private JLabel lblThongTinKhachHang, lblDiaChi, lblThngKTheo, lblTongSLThuocBan, lblMaNV, lblTenNV, lblSDT, lblNN,
-			lblMakh, lblNgay, lblDonthuoc, lblTongHD;
-	private JTextField txtDiaChi, txtTenKH, txtMaKH, txtNN, txtSDT, txtMakn, txtNam, txtTenNV, txtTongSoHD,
-			txtTongDoanhThu, txtTongSoHD1, txtTongDoanhThu1;
-	private JButton btnMaKH, btnMaHD, btnXoa, btnXoa2, btnReload, btnThoat, btnXemKQ1, btnXemKQ2;
+			lblMaKH, lblNgay, lblDonthuoc, lblTongHD;
+	private JTextField txtNam, txtTenNV, txtTongSoHD, txtTongDoanhThu, txtTongSoHD1, txtTongDoanhThu1;
+	private JButton btnMaKH, btnMaHD, btnXoa, btnReload, btnThoat, btnXemKQ1, btnXemKQ2;
 	private JScrollPane scrDSTK;
 	public static DefaultTableModel tablemodel = new DefaultTableModel();
 	private JTable table_1;
 	private JComboBox<Object> cboThang, cboMaNV, cboMaKH, cboMaHD;
+
 	private HoaDon_DAO hd_DAO;
-	private KhachHang_DAO kh_DAO;
 	private NhanVien_DAO nv_dao;
 
 	private FrmManHinhChinh mhc;
@@ -171,7 +166,7 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 		pnlChucNang.add(btnReload);
 		btnReload.setBounds(20, 90, 120, 30);
 
-		btnThoat = new JButton("THOÁT");
+		btnThoat = new JButton("QUAY LẠI");
 		pnlChucNang.add(btnThoat);
 		btnThoat.setBounds(160, 90, 120, 30);
 
@@ -246,9 +241,9 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 
 		cboMaNV = new JComboBox<>();
 		pnlThongKeNV.add(cboMaNV);
-		List<HoaDon> listHD2 = hd_DAO.getAllHoaDon();
-		for (HoaDon hd : listHD2) {
-			cboMaNV.addItem(hd.getNhanVien().getMaNV());
+		List<NhanVien> listHD2 = nv_dao.getAllNhanVien();
+		for (NhanVien nv : listHD2) {
+			cboMaNV.addItem(nv.getMaNV());
 		}
 		cboMaNV.setBounds(160, 40, 130, 28);
 		pnlThongKeNV.add(cboMaNV);
@@ -350,7 +345,7 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 		btnMaHD.setIcon(new ImageIcon("src/img/Search-icon.png"));
 		btnXoa.setIcon(new ImageIcon("src/img/xoa.png"));
 		btnReload.setIcon(new ImageIcon("src/img/taiLai.png"));
-		btnThoat.setIcon(new ImageIcon("src/img/thoat.png"));
+		btnThoat.setIcon(new ImageIcon("src/img/quayLai.png"));
 		btnXemKQ1.setIcon(new ImageIcon("src/img/xem.png"));
 		btnXemKQ2.setIcon(new ImageIcon("src/img/xem.png"));
 

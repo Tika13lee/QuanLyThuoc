@@ -6,8 +6,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 //import java.sql.Date;
@@ -48,34 +46,20 @@ import connect.ConnectDB;
 import dao.NhaCungCap_DAO;
 import dao.Thuoc_DAO;
 import entity.NhaCungCap;
-import entity.NhanVien;
 import entity.Thuoc;
 
 public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener, DocumentListener {
-	private JLabel lblMaThuoc, lblTenThuoc, lblPhanLoai, lblhanSD, lbldonViTinh, lblSoLuong, lblDonGia, lblngaySX,
-			lblnhaCC, lblDonViTinh;
-	private JTextField txtMaThuoc, txtTenThuoc, txtDonViTinh, txtSoLuong, txtDonGia, txtnhaCC, txtTimKiem, txtngaySX;
+	private JLabel lblTitle, lblMaThuoc, lblTenThuoc, lblPhanLoai, lblhanSD, lbldonViTinh, lblSoLuong, lblDonGia,
+			lblngaySX, lblnhaCC, lblDonViTinh, lblTimTheoMa, lblTimTheoTen;
+	private JTextField txtMaThuoc, txtTenThuoc, txtSoLuong, txtDonGia, txtTimKiem, txtngaySX, txtNgayHH, txtTimTheoTen;
+	private JButton btnLamMoi, btnThoat, btnThem, btnSua, btnXoa, btnTaiLai, btnCheck, btnLocMaNCC, btnLocPhanLoai;
 	private JDateChooser jdcNgaySX, jdcNgayHH;
-	private JTextField txtNgayHH;
-	private JComboBox<String> cboPhanLoai, cboNhaCC, cboDonViTinh, cboTenThuoc;
-
+	private JComboBox<String> cboPhanLoai, cboNhaCC, cboDonViTinh, cboMaThuoc;
 	private DefaultTableModel model;
 	private JTable table;
 
-	private JButton btnTimKiem, btnLamMoi, btnThoat, btnThem, btnSua, btnXoa, btnTaiLai;
-	private JLabel lblTimKiem;
-	private JLabel lbltitle;
-	private JRadioButton radTheoMa, radHsd, radTen;
 	private Thuoc_DAO thuoc_dao;
 	private NhaCungCap_DAO ncc_dao;
-	private JButton btnTimKiem2;
-	private JComboBox cboMaThuoc;
-	private JButton btnCheck;
-	private JButton btnLocMaNCC;
-	private JButton btnLocPhanLoai;
-	private JLabel lblTimTheoMa;
-	private JLabel lblTimTheoTen;
-	private JTextField txtTimTheoTen;
 
 	private FrmManHinhChinh mhc;
 
@@ -135,10 +119,10 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 
 		// tiêu đề
 		JPanel pnTieuDe = new JPanel();
-		lbltitle = new JLabel("QUẢN LÝ THUỐC");
-		lbltitle.setFont(new Font("Tahoma", Font.BOLD, 24));
-		lbltitle.setForeground(Color.blue);
-		pnTieuDe.add(lbltitle);
+		lblTitle = new JLabel("QUẢN LÝ THUỐC");
+		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 24));
+		lblTitle.setForeground(Color.blue);
+		pnTieuDe.add(lblTitle);
 		pnTieuDe.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));//
 
 		b1.add(lblMaThuoc = new JLabel("Mã thuốc:"));
@@ -208,7 +192,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 		Box ba2 = new Box(BoxLayout.X_AXIS);
 		ba2.add(lblTimTheoMa = new JLabel("Tìm theo mã:"));
 		ba2.add(Box.createHorizontalStrut(10));
-		ba2.add(cboMaThuoc = new JComboBox<>());
+		ba2.add(cboMaThuoc = new JComboBox<String>());
 		ba2.add(Box.createHorizontalStrut(20));
 
 		Box ba3 = new Box(BoxLayout.X_AXIS);
@@ -297,8 +281,6 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 		btnThoat.setIcon(new ImageIcon("src/img/quayLai.png"));
 		btnTaiLai.setIcon(new ImageIcon("src/img/taiLai.png"));
 		btnLamMoi.setIcon(new ImageIcon("src/img/xoaTrang.png"));
-//		btnTimKiem.setIcon(new ImageIcon("src/img/Search-icon.png"));
-//		btnTimKiem2.setIcon(new ImageIcon("src/img/Search-icon.png"));
 		btnCheck.setIcon(new ImageIcon("src/img/canhBao.png"));
 
 		pn.add(bAll, BorderLayout.NORTH);
@@ -401,21 +383,21 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 		}
 		if (o.equals(btnThem)) {
 			if (!txtMaThuoc.getText().isEmpty()) {
-				JOptionPane.showMessageDialog(null, "Đang trong chế độ chỉnh sửa.vui lòng làm mới.");
+				JOptionPane.showMessageDialog(null, "Đang trong chế độ chỉnh sửa - Vui lòng làm mới.");
 				return;
 			}
-			
-			if(validData()) {
+
+			if (validData()) {
 				Thuoc t = genarateOBJThuoc();
 				try {
 					if (!thuoc_dao.createThuoc(t)) {
-						JOptionPane.showMessageDialog(null, "trùng mã .kiểm tra lại");
+						JOptionPane.showMessageDialog(null, "Trùng mã - Kiểm tra lại");
 						return;
 					} else {
 						clearTextField();
 						clearDataOnTable();
 						DocDuLieuDBVaoTable();
-						JOptionPane.showMessageDialog(this, "thêm thành công !!");
+						JOptionPane.showMessageDialog(this, "Thêm thành công !!");
 
 					}
 				} catch (Exception e2) {
@@ -437,24 +419,19 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 			int row = table.getSelectedRow();
 
 			if (row < 0) {
-				JOptionPane.showMessageDialog(this, "bạn chưa chọn dòng để xóa");
+				JOptionPane.showMessageDialog(this, "Bạn chưa chọn dòng để xóa");
 				return;
 			}
 			String ma = model.getValueAt(row, 1).toString();
 			Thuoc t = new Thuoc(ma);
-			if (JOptionPane.showConfirmDialog(this, "bạn có chắc muốn xóa thuốc có mã:" + ma, "cảnh báo",
+			if (JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa thuốc có mã:" + ma, "Cảnh báo",
 					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 				if (thuoc_dao.delete(t)) {
 					clearDataOnTable();
 					DocDuLieuDBVaoTable();
-					JOptionPane.showMessageDialog(this, "xóa thành công thuốc có mã:" + ma);
+					JOptionPane.showMessageDialog(this, "Xóa thành công thuốc có mã:" + ma);
 				}
 			}
-//			if (thuoc_dao.delete(t)) {
-//				clearDataOnTable();
-//				DocDuLieuDBVaoTable();
-//				JOptionPane.showMessageDialog(this, "xóa thành công thuốc có mã:" + ma);
-//			}
 		}
 
 		if (o.equals(btnThoat)) {
@@ -508,7 +485,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 			int stt = 0;
 			List<Thuoc> list = thuoc_dao.getThuocHetHan();
 			clearDataOnTable();
-			JOptionPane.showMessageDialog(this,"Danh sách thuốc hết hạn sử dụng.");
+			JOptionPane.showMessageDialog(this, "Danh sách thuốc hết hạn sử dụng.");
 			for (Thuoc t : list) {
 				model.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getDonGia(),
 						t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(), t.getDonViTinh() });
@@ -529,54 +506,55 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 					t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(), t.getDonViTinh() });
 		}
 	}
+
 	/*
 	 * kiểm tra dữ liệu
 	 */
 	private boolean validData() {
 		String tenThuoc = txtTenThuoc.getText().trim();
-		int soluong = Integer.parseInt(txtSoLuong.getText().trim()); 
+		int soluong = Integer.parseInt(txtSoLuong.getText().trim());
 		int donGia = Integer.parseInt(txtDonGia.getText().trim());
-		
+
 		Date now = new Date();
 		Date nsx = jdcNgaySX.getDate();
 		Date nhh = jdcNgayHH.getDate();
-		
-		if(!(tenThuoc.matches("[a-zA-Z ]+") && tenThuoc.length()> 0)) {
-			JOptionPane.showMessageDialog(this, "tên thuốc không được rỗng, là kí tự");
+
+		if (!(tenThuoc.matches("[a-zA-Z ]+") && tenThuoc.length() > 0)) {
+			JOptionPane.showMessageDialog(this, "Tên thuốc không được rỗng, là kí tự");
 			txtTenThuoc.requestFocus();
 			return false;
 		}
-		
-		if(soluong <= 0) {
-	        JOptionPane.showMessageDialog(this, "Số lượng phải > 0");
-	        txtSoLuong.requestFocus();
-	        return false;
-	    }
 
-	    if(donGia <= 0) {
-	        JOptionPane.showMessageDialog(this, "Đơn giá phải > 0");
-	        txtDonGia.requestFocus();
-	        return false;
-	    }
-	    
-	    if(nsx.after(now)) {
-	        JOptionPane.showMessageDialog(this, "ngày sản xuất phải trước ngày hiện tại");
-	        jdcNgaySX.requestFocus();
-	        return false;
-	    }
+		if (soluong <= 0) {
+			JOptionPane.showMessageDialog(this, "Số lượng phải > 0");
+			txtSoLuong.requestFocus();
+			return false;
+		}
 
-	    if(nhh.before(nsx)) {
-	    	JOptionPane.showMessageDialog(this, "ngày hết hạn phải sau ngày sản xuất");
-	    	jdcNgayHH.requestFocus();
-	    	return false;
-	    }
+		if (donGia <= 0) {
+			JOptionPane.showMessageDialog(this, "Đơn giá phải > 0");
+			txtDonGia.requestFocus();
+			return false;
+		}
 
-	    // Kiểm tra dữ liệu các trường thông tin khác nếu có
+		if (nsx.after(now)) {
+			JOptionPane.showMessageDialog(this, "Ngày sản xuất phải trước ngày hiện tại");
+			jdcNgaySX.requestFocus();
+			return false;
+		}
 
-	    return true;
-		
+		if (nhh.before(nsx)) {
+			JOptionPane.showMessageDialog(this, "Ngày hết hạn phải sau ngày sản xuất");
+			jdcNgayHH.requestFocus();
+			return false;
+		}
+
+		// Kiểm tra dữ liệu các trường thông tin khác nếu có
+
+		return true;
+
 	}
-	
+
 	/*
 	 * hàm genarateOBJThuoc() có chức năng lấy dữ liệu từ field chuyển thành obj
 	 * Thuốc
@@ -593,19 +571,19 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 		String ma = String.format("T%01d", soLuong + 1);
 
 		if (txtTenThuoc.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(null, "vui lòng nhập tên!!!");
+			JOptionPane.showMessageDialog(null, "Vui lòng nhập tên thuốc!!!");
 			return null;
 		}
 		String tenthuoc = txtTenThuoc.getText();
 
 		if (txtSoLuong.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(null, "vui lòng nhập tên!!!");
+			JOptionPane.showMessageDialog(null, "Vui lòng nhập số lượng!!!");
 			return null;
 		}
 		int soluong = Integer.parseInt(txtSoLuong.getText());
 
 		if (txtDonGia.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(this, "vui lòng nhập giá!!");
+			JOptionPane.showMessageDialog(this, "Vui lòng nhập giá!!");
 			return null;
 		}
 		double dongianhap = Double.parseDouble(txtDonGia.getText());
@@ -693,32 +671,9 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 		txtMaThuoc.requestFocus();
 	}
 
-	// tìm kiếm và hiển thị lại danh sách
-	public void UpdateTable() {
-		String ten = txtTimTheoTen.getText();
-		ArrayList<Thuoc> ds = thuoc_dao.getAllThuoc();
-		ArrayList<Thuoc> dsMoi = new ArrayList<Thuoc>();
-		model = (DefaultTableModel) table.getModel();
-		model.getDataVector().removeAllElements();
-		if (ten.isEmpty()) {
-			DocDuLieuDBVaoTable();
-		} else {
-			for (Thuoc t : ds) {
-				if (t.getTenThuoc().toLowerCase().startsWith(ten.toLowerCase()))
-					dsMoi.add(t);
-				else {
-					model = (DefaultTableModel) table.getModel();
-					model.getDataVector().removeAllElements();
-				}
-			}
-		}
-//		int stt = 0;
-//		for (Thuoc t : dsMoi) {
-//			model.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getDonGia(),
-//					t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(), t.getDonViTinh() });
-//		}
-	}
-
+	/*
+	 * xử lí sự kiện DocumentEvent
+	 */
 	@Override
 	public void insertUpdate(DocumentEvent e) {
 		UpdateTable();
@@ -732,6 +687,28 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 	@Override
 	public void changedUpdate(DocumentEvent e) {
 		UpdateTable();
+	}
+
+	// tìm kiếm và hiển thị lại danh sách
+	public void UpdateTable() {
+		String ten = txtTimTheoTen.getText();
+		ArrayList<Thuoc> ds = thuoc_dao.getAllThuoc();
+		ArrayList<Thuoc> dsMoi = new ArrayList<Thuoc>();
+		model = (DefaultTableModel) table.getModel();
+		model.getDataVector().removeAllElements();
+		if (ten.isEmpty()) {
+			DocDuLieuDBVaoTable();
+		} else {
+			for (Thuoc t : ds) {
+				if (t.getTenThuoc().toLowerCase().startsWith(ten.toLowerCase()))
+					dsMoi.add(t);
+			}
+		}
+		int stt = 0;
+		for (Thuoc t : dsMoi) {
+			model.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getDonGia(),
+					t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(), t.getDonViTinh() });
+		}
 	}
 
 }

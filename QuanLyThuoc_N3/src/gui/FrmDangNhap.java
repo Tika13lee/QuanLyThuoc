@@ -103,8 +103,8 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 		add(lblImg);
 
 		// set data
-//		txtUser.setText("user1");
-//		txtPass.setText("password1");
+		txtUser.setText("ThuyKieu");
+		txtPass.setText("password1");
 
 		// event
 		txtUser.addActionListener(this);
