@@ -61,7 +61,10 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 	private KhachHang_DAO kh_DAO;
 	private NhanVien_DAO nv_dao;
 
-	public FrmQLThongKe() {
+	private FrmManHinhChinh mhc;
+
+	public FrmQLThongKe(FrmManHinhChinh mhc) {
+		this.mhc = mhc;
 
 		try {
 			ConnectDB.getInstance().connect();
@@ -466,8 +469,8 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 			txtTenNV.setText("");
 		}
 		if (o.equals(btnThoat)) {
+			mhc.display();
 			setVisible(false);
-			new FrmManHinhChinh().setVisible(true);
 		}
 		if (o.equals(btnXemKQ1)) {
 			int month = Integer.parseInt((String) cboThang.getSelectedItem());
@@ -533,9 +536,5 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 						JOptionPane.WARNING_MESSAGE);
 			}
 		}
-	}
-
-	public static void main(String[] args) {
-		new FrmQLThongKe().setVisible(true);
 	}
 }

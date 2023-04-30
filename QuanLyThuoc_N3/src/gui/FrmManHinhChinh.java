@@ -20,7 +20,13 @@ public class FrmManHinhChinh extends JFrame implements ActionListener {
 	private JLabel lblImg;
 	private JButton btnLogOut;
 
-	public FrmManHinhChinh() {
+	private FrmDangNhap dn;
+	private String user;
+
+	public FrmManHinhChinh(FrmDangNhap dn, String user) {
+		this.dn = dn;
+		this.user = user;
+
 		setTitle("ManHinhChinh");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -77,23 +83,27 @@ public class FrmManHinhChinh extends JFrame implements ActionListener {
 		btnLogOut.addActionListener(this);
 	}
 
+	public void display() {
+		setVisible(true);
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		if (o.equals(btnQuanLyThuoc)) {
-			new FrmQLThuoc().setVisible(true);
+			new FrmQLThuoc(this).setVisible(true);
 			setVisible(false);
 		}
 		if (o.equals(btnQuanLyHoaDon)) {
-			new FrmQLHoaDon().setVisible(true);
+			new FrmQLHoaDon(this, user).setVisible(true);
 			setVisible(false);
 		}
 		if (o.equals(btnQuanLyThongKe)) {
-			new FrmQLThongKe().setVisible(true);
+			new FrmQLThongKe(this).setVisible(true);
 			setVisible(false);
 		}
 		if (o.equals(btnLogOut)) {
-			new FrmDangNhap().setVisible(true);
+			dn.display();
 			setVisible(false);
 		}
 	}

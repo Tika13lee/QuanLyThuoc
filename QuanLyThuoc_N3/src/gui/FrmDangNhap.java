@@ -111,8 +111,8 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 		btnExit.addActionListener(this);
 	}
 
-	public String getUser() {
-		return txtUser.getText();
+	public void display() {
+		setVisible(true);
 	}
 
 	public static void main(String[] args) {
@@ -133,8 +133,9 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 				for (TaiKhoan tk : dsTK) {
 					if (tk.getTenTK().equals(user) && tk.getMatKhau().equals(pass)) {
 						JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
+						String t = txtUser.getText();
+						new FrmManHinhChinh(this, t).setVisible(true);
 						setVisible(false);
-						new FrmManHinhChinh().setVisible(true);
 					}
 				}
 				flag = 1;

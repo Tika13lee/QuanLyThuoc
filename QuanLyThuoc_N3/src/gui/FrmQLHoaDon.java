@@ -88,7 +88,11 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 	private NhanVien_DAO nv_dao;
 	// private ChiTietHoaDon_DAO cthd_DAO;
 
-	public FrmQLHoaDon() {
+	private FrmManHinhChinh mhc;
+
+	public FrmQLHoaDon(FrmManHinhChinh mhc, String user) {
+		this.mhc = mhc;
+
 		try {
 			ConnectDB.getInstance().connect();
 		} catch (Exception e) {
@@ -265,8 +269,6 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		txtDiaChiNV.setEditable(false);
 
 		// lấy thông tin nhân viên đã đăng nhập đưa vào JTextField
-		dn = new FrmDangNhap();
-		String user = dn.getUser();
 		tk_dao = new TaiKhoan_DAO();
 		nv_dao = new NhanVien_DAO();
 		ArrayList<TaiKhoan> dsTK = tk_dao.getAllTaiKhoan();
@@ -464,8 +466,8 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		// TODO Auto-generated method stub
 		Object o = e.getSource();
 		if (o.equals(btnThoat)) {
+			mhc.display();
 			setVisible(false);
-			new FrmManHinhChinh().setVisible(true);
 		}
 		if (o.equals(btnThemMoi)) {
 			txtMaHD.setText("");
@@ -493,10 +495,6 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 			createHD();
 		}
 
-	}
-
-	public static void main(String[] args) {
-		new FrmQLHoaDon().setVisible(true);
 	}
 
 //	public void DuaNVVaoCBO() {

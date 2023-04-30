@@ -128,7 +128,7 @@ public class FrmDanhMucThuoc extends JFrame implements ActionListener {
 		Object o = e.getSource();
 		if (o.equals(btnThoat)) {
 			setVisible(false);
-			new FrmQLHoaDon().setVisible(true);
+//			new FrmQLHoaDon().setVisible(true);
 		} else if (o.equals(btnChon)) {
 			int r = tableDM.getSelectedRow();
 			String sl = txtSL.getText().trim();
@@ -153,7 +153,7 @@ public class FrmDanhMucThuoc extends JFrame implements ActionListener {
 			LoadDatabaseVaoTable(ds);
 
 		} else if (o.equals(btnXem)) {
-			new FrmQLThuoc().setVisible(true);
+//			new FrmQLThuoc().setVisible(true);
 		}
 
 	}

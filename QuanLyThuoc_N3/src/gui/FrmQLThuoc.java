@@ -77,7 +77,11 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 	private JLabel lblTimTheoTen;
 	private JTextField txtTimTheoTen;
 
-	public FrmQLThuoc() {
+	private FrmManHinhChinh mhc;
+
+	public FrmQLThuoc(FrmManHinhChinh mhc) {
+		this.mhc = mhc;
+
 		setTitle("QuanLyThuoc");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -315,10 +319,6 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 		cboMaThuoc.addActionListener(this);
 	}
 
-	public static void main(String[] args) {
-		new FrmQLThuoc().setVisible(true);
-	}
-
 	/*
 	 * sử lý sự kiện chuột
 	 */
@@ -445,8 +445,8 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 		}
 
 		if (o.equals(btnThoat)) {
+			mhc.display();
 			setVisible(false);
-			new FrmManHinhChinh().setVisible(true);
 		}
 
 		if (o.equals(btnTaiLai)) {
