@@ -154,7 +154,7 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		b2.add(txtTenKH = new JTextField());
 		b2.add(Box.createHorizontalStrut(316));
 		b2.add(lblGioiTinh = new JLabel("Giới tính:"));
-		radNam = new JRadioButton("Nam", true);
+		radNam = new JRadioButton("Nam");
 		b2.add(radNam);
 		b2.add(Box.createHorizontalStrut(20));
 		pText.add(Box.createVerticalStrut(20));
@@ -409,12 +409,6 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		btnThoat.setIcon(new ImageIcon("src/img/thoat.png"));
 		btnThanhToan.setIcon(new ImageIcon("src/img/thanhToan.png"));
 
-		// event
-		btnThemThuoc.addActionListener(this);
-		btnThemMoi.addActionListener(this);
-		btnThoat.addActionListener(this);
-		btnThanhToan.addActionListener(this);
-
 		// Đưa database và table
 		// DocDuLieuDBVaoTable();
 
@@ -426,6 +420,15 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 
 		// dua du liue vao cbo nhan vien
 //		DuaNVVaoCBO();
+
+		// event
+		txtHoKH.addActionListener(this);
+		txtTenKH.addActionListener(this);
+		txtSDT.addActionListener(this);
+		btnThemThuoc.addActionListener(this);
+		btnThemMoi.addActionListener(this);
+		btnThoat.addActionListener(this);
+		btnThanhToan.addActionListener(this);
 
 	}
 	// Doc dux lieu len table
@@ -465,6 +468,15 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		Object o = e.getSource();
+		if (o.equals(txtHoKH)) {
+			txtTenKH.requestFocus();
+		}
+		if (o.equals(txtTenKH)) {
+			txtSDT.requestFocus();
+		}
+		if (o.equals(txtSDT)) {
+			txtDiaChi.requestFocus();
+		}
 		if (o.equals(btnThoat)) {
 			mhc.display();
 			setVisible(false);

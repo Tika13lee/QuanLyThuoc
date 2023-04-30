@@ -15,8 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.MatteBorder;
 
 import connect.ConnectDB;
 import dao.TaiKhoan_DAO;
@@ -82,6 +80,8 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 		btnLogIn = new JButton("Đăng nhập");
 		btnLogIn.setBorder(BorderFactory.createRaisedBevelBorder());
 		btnLogIn.setBounds(480, 270, 100, 30);
+		// thiết lập nút mặc định khi nhấn enter
+		getRootPane().setDefaultButton(btnLogIn);
 
 		btnExit = new JButton("Thoát");
 
@@ -107,6 +107,7 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 //		txtPass.setText("password1");
 
 		// event
+		txtUser.addActionListener(this);
 		btnLogIn.addActionListener(this);
 		btnExit.addActionListener(this);
 	}
@@ -122,26 +123,31 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
+		if (o.equals(txtUser)) {
+			txtPass.requestFocus();
+		}
 		if (o.equals(btnLogIn)) {
 			int flag = 0;
 			String user = txtUser.getText().trim();
 			String pass = String.valueOf(txtPass.getPassword());
 			if (user.equals("") || pass.equals("")) {
 				JOptionPane.showMessageDialog(this, "Vui lòng nhập đủ thông tin");
+				flag = 1;
 			} else {
 				ArrayList<TaiKhoan> dsTK = tk_dao.getAllTaiKhoan();
 				for (TaiKhoan tk : dsTK) {
 					if (tk.getTenTK().equals(user) && tk.getMatKhau().equals(pass)) {
+						flag = 1;
 						JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
 						String t = txtUser.getText();
 						new FrmManHinhChinh(this, t).setVisible(true);
 						setVisible(false);
 					}
 				}
-				flag = 1;
 			}
 			if (flag == 0) {
 				JOptionPane.showMessageDialog(this, "Tên đăng nhập hoặc mật khẩu không đúng");
+				txtUser.requestFocus();
 			}
 		}
 		if (o.equals(btnExit)) {
