@@ -269,9 +269,11 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 		// gọi hàm đổ dl vào cbo
 		ArrayList<Thuoc> listThuoc = thuoc_dao.getAllThuoc();
 		for (Thuoc t : listThuoc) {
-			cboNhaCC.addItem(t.getNhaCC().getMaNCC());
-//			cboTenThuoc.addItem(t.getTenThuoc());
 			cboMaThuoc.addItem(t.getMaThuoc());
+		}
+		ArrayList<NhaCungCap> listNCC = ncc_dao.getAllNhaCungCap();
+		for (NhaCungCap ncc : listNCC) {
+			cboNhaCC.addItem(ncc.getMaNCC());
 		}
 
 		// south
@@ -305,6 +307,8 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 		this.add(pn);
 
 		// đăng kí sự kiện
+		txtTenThuoc.addActionListener(this);
+		txtSoLuong.addActionListener(this);
 		table.addMouseListener(this);
 		btnThem.addActionListener(this);
 		btnXoa.addActionListener(this);
@@ -389,6 +393,12 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
+		if (o.equals(txtTenThuoc)) {
+			txtSoLuong.requestFocus();
+		}
+		if (o.equals(txtSoLuong)) {
+			txtDonGia.requestFocus();
+		}
 		if (o.equals(btnThem)) {
 			if (!txtMaThuoc.getText().isEmpty()) {
 				JOptionPane.showMessageDialog(null, "Đang trong chế độ chỉnh sửa.vui lòng làm mới.");
@@ -645,13 +655,17 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 			for (Thuoc t : ds) {
 				if (t.getTenThuoc().toLowerCase().startsWith(ten.toLowerCase()))
 					dsMoi.add(t);
+				else {
+					model = (DefaultTableModel) table.getModel();
+					model.getDataVector().removeAllElements();
+				}
 			}
 		}
-		int stt = 0;
-		for (Thuoc t : dsMoi) {
-			model.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getDonGia(),
-					t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(), t.getDonViTinh() });
-		}
+//		int stt = 0;
+//		for (Thuoc t : dsMoi) {
+//			model.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getDonGia(),
+//					t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(), t.getDonViTinh() });
+//		}
 	}
 
 	@Override

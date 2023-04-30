@@ -27,9 +27,9 @@ public class NhaCungCap_DAO {
 				ncc.setDiaChi(rs.getString("diaChi"));
 				list.add(ncc);
 			}
-			rs.close();
-			stmt.close();
-			con.close();
+//			rs.close();
+//			stmt.close();
+//			con.close();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
