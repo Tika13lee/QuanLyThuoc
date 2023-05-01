@@ -29,6 +29,8 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JDateChooser;
@@ -37,17 +39,19 @@ import connect.ConnectDB;
 import dao.ChiTietHoaDon_DAO;
 import dao.HoaDon_DAO;
 import dao.KhachHang_DAO;
+import dao.NhaCungCap_DAO;
 import dao.NhanVien_DAO;
 import dao.TaiKhoan_DAO;
 import dao.Thuoc_DAO;
 import entity.ChiTietHoaDon;
 import entity.HoaDon;
 import entity.KhachHang;
+import entity.NhaCungCap;
 import entity.NhanVien;
 import entity.TaiKhoan;
 import entity.Thuoc;
 
-public class FrmQLHoaDon extends JFrame implements ActionListener {
+public class FrmQLHoaDon extends JFrame implements ActionListener, DocumentListener {
 	private static final long serialVersionUID = 1L;
 	private static final double VAT = 0.05;
 	private JLabel lblMaHD, lblNgayLap, lblSDT, lblHoKH, lblTenKH, lblGioiTinh, lblDiaChi, lblNgaySinh, lblMaKH;
@@ -71,9 +75,18 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 	private KhachHang_DAO kh_dao = new KhachHang_DAO();
 	private TaiKhoan_DAO tk_dao;
 	private NhanVien_DAO nv_dao;
+	private NhaCungCap_DAO ncc_dao;
 	// private ChiTietHoaDon_DAO cthd_DAO;
 
 	private FrmManHinhChinh mhc;
+	private JLabel lblLocTheoTen;
+	private JTextField txtLocTheoTen;
+	private JLabel lblPhanLoai;
+	private JComboBox<String> cboPhanLoai;
+	private JLabel lblNCC;
+	private JComboBox<String> cboNCC;
+	private DefaultTableModel modelThuoc;
+	private JTable tableThuoc;
 
 	public FrmQLHoaDon(FrmManHinhChinh mhc, String user) {
 		this.mhc = mhc;
@@ -83,6 +96,8 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		nv_dao = new NhanVien_DAO();
+		ncc_dao = new NhaCungCap_DAO();
 
 		// Giao dien
 		JPanel pBorder = new JPanel();
@@ -93,6 +108,7 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		setLocationRelativeTo(null);
 		setResizable(false);
 
+		// north
 		JPanel pNorth = new JPanel();
 		JLabel lblTitle = new JLabel("HÓA ĐƠN");
 		lblTitle.setForeground(Color.BLUE);
@@ -137,7 +153,7 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		b2.add(Box.createHorizontalStrut(50));
 		b2.add(lblTenKH = new JLabel("Tên KH:"));
 		b2.add(txtTenKH = new JTextField());
-		b2.add(Box.createHorizontalStrut(316));
+		b2.add(Box.createHorizontalStrut(150));
 		b2.add(lblGioiTinh = new JLabel("Giới tính:"));
 		radNam = new JRadioButton("Nam");
 		b2.add(radNam);
@@ -159,11 +175,11 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		b3.add(dcrNgaySinh = new JDateChooser());
 		dcrNgaySinh.setLocale(new Locale("vi", "VN"));
 		dcrNgaySinh.setDateFormatString("dd/MM/yyyy");
-		b3.add(Box.createHorizontalStrut(140));
-		b3.add(cboAddThuoc = new JComboBox<String>());
-		cboAddThuoc.setPreferredSize(new Dimension(200, 15));
+		b3.add(Box.createHorizontalStrut(180));
+//		b3.add(cboAddThuoc = new JComboBox<String>());
+//		cboAddThuoc.setPreferredSize(new Dimension(200, 15));
 		b3.add(Box.createHorizontalStrut(20));
-		b3.add(btnThemThuoc = new JButton("Thêm thuốc"));
+		b3.add(btnThemThuoc = new JButton("Chọn thuốc"));
 		b3.add(Box.createHorizontalStrut(20));
 
 		pText.add(Box.createVerticalStrut(20));
@@ -214,6 +230,57 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 
 		pBorder.add(pCenter, BorderLayout.CENTER);
 
+		// eath
+		JPanel jpEath = new JPanel();
+		jpEath.setBorder(new EmptyBorder(10, 20, 15, 10));
+		jpEath.setLayout(new BoxLayout(jpEath, BoxLayout.Y_AXIS));
+		pBorder.add(jpEath, BorderLayout.EAST);
+
+		Box be1, be2;
+
+		be1 = Box.createHorizontalBox();
+		be1.add(Box.createHorizontalStrut(10));
+		be1.add(lblLocTheoTen = new JLabel("Lọc theo tên thuốc"));
+		be1.add(Box.createHorizontalStrut(10));
+		be1.add(txtLocTheoTen = new JTextField());
+		be1.add(Box.createHorizontalStrut(10));
+
+		be2 = Box.createHorizontalBox();
+		be2.add(Box.createHorizontalStrut(10));
+		be2.add(lblPhanLoai = new JLabel("Phân loại"));
+		be2.add(Box.createHorizontalStrut(10));
+		be2.add(cboPhanLoai = new JComboBox<String>());
+		cboPhanLoai.addItem("Kê đơn");
+		cboPhanLoai.addItem("Không kê đơn");
+		be2.add(Box.createHorizontalStrut(20));
+		be2.add(lblNCC = new JLabel("Mã nhà cung cấp"));
+		be2.add(Box.createHorizontalStrut(10));
+		be2.add(cboNCC = new JComboBox<String>());
+		be2.add(Box.createHorizontalStrut(10));
+
+		// load data vào cboNCC
+		ArrayList<NhaCungCap> dsNCC = ncc_dao.getAllNhaCungCap();
+		for (NhaCungCap ncc : dsNCC) {
+			cboNCC.addItem(ncc.getMaNCC());
+		}
+
+		String[] col = { "STT", "Mã thuốc", "Tên thuốc", "Số lượng", "Phân loại", "Nhà cung cấp" };
+		modelThuoc = new DefaultTableModel(col, 0);
+		tableThuoc = new JTable(modelThuoc);
+		JScrollPane spThuoc = new JScrollPane(tableThuoc, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+		jpEath.add(Box.createVerticalStrut(40));
+		jpEath.add(be2);
+		jpEath.add(Box.createVerticalStrut(20));
+		jpEath.add(be1);
+		jpEath.add(Box.createVerticalStrut(40));
+		jpEath.add(spThuoc);
+
+		ArrayList<Thuoc> dsT = thuoc_dao.getAllThuoc();
+		loadThuoc(dsT);
+
+		// south
 		JPanel pSouth = new JPanel();
 		// pSouth.setLayout(BorderLayout);
 		// pSouth.setSize(1000,500);
@@ -397,14 +464,11 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		// Đưa database và table
 		// DocDuLieuDBVaoTable();
 
-		ArrayList<Thuoc> listThuoc;
-		listThuoc = thuoc_dao.getAllThuoc();
-		for (Thuoc t : listThuoc) {
-			cboAddThuoc.addItem(t.getMaThuoc());
-		}
-
-		// dua du liue vao cbo nhan vien
-//		DuaNVVaoCBO();
+//		ArrayList<Thuoc> listThuoc;
+//		listThuoc = thuoc_dao.getAllThuoc();
+//		for (Thuoc t : listThuoc) {
+//			cboAddThuoc.addItem(t.getMaThuoc());
+//		}
 
 		// event
 		txtHoKH.addActionListener(this);
@@ -414,7 +478,9 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 		btnThemMoi.addActionListener(this);
 		btnThoat.addActionListener(this);
 		btnThanhToan.addActionListener(this);
-
+		cboPhanLoai.addActionListener(this);
+		cboNCC.addActionListener(this);
+		txtLocTheoTen.getDocument().addDocumentListener(this);
 	}
 	// Doc dux lieu len table
 //	public void DocDuLieuDBVaoTable() {
@@ -426,6 +492,17 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 //			model.addRow(new Object[] {++stt,ct.getThuoc().getMaThuoc(),ct.getThuoc().getTenThuoc(),ct.getMoTa(),ct.getDonViTinh(),ct.getDonGia(),ct.getSoLuong(),ct.getPhiVAT(),t.soTienPhaiTra()});
 //		}
 //	}
+
+	// load du lieu vao bang thuoc
+	public void loadThuoc(ArrayList<Thuoc> ds) {
+		modelThuoc.setRowCount(0);
+		int stt = 0;
+		for (Thuoc t : ds) {
+			modelThuoc.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getPhanLoai(),
+					t.getNhaCC().getMaNCC() });
+		}
+
+	}
 
 	private HoaDon createHD() {
 		HoaDon temp = new HoaDon();
@@ -475,21 +552,82 @@ public class FrmQLHoaDon extends JFrame implements ActionListener {
 			txtMaKH.requestFocus();
 		}
 		if (o.equals(btnThemThuoc)) {
-			String soLuong = JOptionPane.showInputDialog("Nhập số lương thuốc:");
-			double soL = Double.parseDouble(soLuong);
-			int stt = 0;
-			double thanhTien = 0;
-			double dongia;
-			String maThuoc = (String) cboAddThuoc.getSelectedItem();
-			ArrayList<Thuoc> ds = thuoc_dao.getAllThuocTheoMaThuoc(maThuoc);
-			for (Thuoc t : ds) {
-				dongia = t.getDonGia();
-				thanhTien = dongia * soL + dongia * soL * VAT;
-				model.addRow(new Object[] { ++stt, maThuoc, t.getTenThuoc(), t.getDonViTinh(), t.getDonGia(), soLuong,
-						VAT, thanhTien + "" });
+//			String soLuong = JOptionPane.showInputDialog("Nhập số lương thuốc:");
+//			double soL = Double.parseDouble(soLuong);
+//			int stt = 0;
+//			double thanhTien = 0;
+//			double dongia;
+//			String maThuoc = (String) cboAddThuoc.getSelectedItem();
+//			ArrayList<Thuoc> ds = thuoc_dao.getAllThuocTheoMaThuoc(maThuoc);
+//			for (Thuoc t : ds) {
+//				dongia = t.getDonGia();
+//				thanhTien = dongia * soL + dongia * soL * VAT;
+//				model.addRow(new Object[] { ++stt, maThuoc, t.getTenThuoc(), t.getDonViTinh(), t.getDonGia(), soLuong,
+//						VAT, thanhTien + "" });
+//			}
+//			createHD();
+			int r = tableThuoc.getSelectedRow();
+			if (r != -1) {
+				String soLuong = JOptionPane.showInputDialog("Nhập số lương thuốc:");
+				double soL = Double.parseDouble(soLuong);
+				int stt = 0;
+				double thanhTien = 0;
+				double dongia;
+				String maThuoc = modelThuoc.getValueAt(r, 1).toString();
+				ArrayList<Thuoc> ds = thuoc_dao.getAllThuocTheoMaThuoc(maThuoc);
+				for (Thuoc t : ds) {
+					dongia = t.getDonGia();
+					thanhTien = dongia * soL + dongia * soL * VAT;
+					model.addRow(new Object[] { ++stt, maThuoc, t.getTenThuoc(), t.getDonViTinh(), t.getDonGia(),
+							soLuong, VAT, thanhTien + "" });
+				}
+				createHD();
+			} else {
+				JOptionPane.showMessageDialog(this, "Vui lòng chọn thuốc");
 			}
-			createHD();
 		}
+		if (o.equals(cboNCC)) {
+			String maNCC = cboNCC.getSelectedItem().toString();
+			ArrayList<Thuoc> dsT = thuoc_dao.getAllThuocTheoNCC(maNCC);
+			loadThuoc(dsT);
+		}
+		if (o.equals(cboPhanLoai)) {
+			String pl = cboPhanLoai.getSelectedItem().toString();
+			ArrayList<Thuoc> dsT = thuoc_dao.getAllThuocTheoPL(pl);
+			loadThuoc(dsT);
+		}
+	}
 
+	// tìm kiếm và hiển thị lại danh sách
+	public void UpdateTableThuoc() {
+		String ten = txtLocTheoTen.getText();
+		ArrayList<Thuoc> ds = thuoc_dao.getAllThuoc();
+		ArrayList<Thuoc> dsMoi = new ArrayList<Thuoc>();
+		modelThuoc = (DefaultTableModel) tableThuoc.getModel();
+		modelThuoc.getDataVector().removeAllElements();
+		if (ten.isEmpty()) {
+			loadThuoc(ds);
+		} else {
+			for (Thuoc t : ds) {
+				if (t.getTenThuoc().toLowerCase().startsWith(ten.toLowerCase()))
+					dsMoi.add(t);
+			}
+			loadThuoc(dsMoi);
+		}
+	}
+
+	@Override
+	public void insertUpdate(DocumentEvent e) {
+		UpdateTableThuoc();
+	}
+
+	@Override
+	public void removeUpdate(DocumentEvent e) {
+		UpdateTableThuoc();
+	}
+
+	@Override
+	public void changedUpdate(DocumentEvent e) {
+		UpdateTableThuoc();
 	}
 }
