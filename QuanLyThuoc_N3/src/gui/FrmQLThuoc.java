@@ -442,6 +442,10 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 		if (o.equals(btnTaiLai)) {
 			clearDataOnTable();
 			DocDuLieuDBVaoTable();
+			cboNhaCC.setSelectedIndex(0);
+			cboPhanLoai.setSelectedIndex(0);
+			cboMaThuoc.setSelectedIndex(0);
+			txtTimTheoTen.setText("");
 		}
 
 		if (o.equals(btnLocPhanLoai)) {
@@ -613,7 +617,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 	private void replaceID() {
 		int pos = table.getSelectedRow();
 		if (pos < 0) {
-			JOptionPane.showMessageDialog(this, "vui lòng chọn dòng cần sửa");
+			JOptionPane.showMessageDialog(this, "Vui lòng chọn dòng cần sửa");
 			return;
 		}
 		// lấy dữ liệu từ textField chuyển đổi sang objThuoc
@@ -638,7 +642,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 			thuoc_dao.update(t);
 			clearDataOnTable();
 			DocDuLieuDBVaoTable();
-			JOptionPane.showMessageDialog(this, "sửa thành công");
+			JOptionPane.showMessageDialog(this, "Sửa thành công");
 
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
