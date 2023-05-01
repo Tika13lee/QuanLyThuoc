@@ -9,15 +9,20 @@ public class HoaDon {
 	private Date ngayLapHD;
 	private KhachHang khachHang;
 	private NhanVien nhanVien;
+	private double thanhTien;
 
-	public HoaDon(String maHD, Date ngayLapHD, KhachHang khachHang, NhanVien nhanVien) {
+	
+	
+
+	public HoaDon(String maHD, Date ngayLapHD, KhachHang khachHang, NhanVien nhanVien, double thanhTien) {
 		super();
 		this.maHD = maHD;
 		this.ngayLapHD = ngayLapHD;
 		this.khachHang = khachHang;
 		this.nhanVien = nhanVien;
+		this.thanhTien = thanhTien;
 	}
-	
+
 
 	public HoaDon(String maHD) {
 		super();
@@ -79,10 +84,23 @@ public class HoaDon {
 		return Objects.equals(maHD, other.maHD);
 	}
 
+	
+
+
 	@Override
 	public String toString() {
 		return "HoaDon [maHD=" + maHD + ", ngayLapHD=" + ngayLapHD + ", khachHang=" + khachHang + ", nhanVien="
-				+ nhanVien + "]";
+				+ nhanVien + ", thanhTien=" + thanhTien + "]";
+	}
+
+
+	public double getThanhTien() {
+		return thanhTien;
+	}
+
+
+	public void setThanhTien(double thanhTien) {
+		this.thanhTien = thanhTien;
 	}
 
 }

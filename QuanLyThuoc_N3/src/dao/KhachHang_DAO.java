@@ -48,7 +48,7 @@ public class KhachHang_DAO {
 					kh.getDiaChi()+ "')";
 			stmt.executeUpdate(sql);
 			stmt.close();
-			con.close();
+			//con.close();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
