@@ -1,7 +1,6 @@
 package entity;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.Objects;
 
 public class HoaDon {
@@ -10,9 +9,6 @@ public class HoaDon {
 	private KhachHang khachHang;
 	private NhanVien nhanVien;
 	private double thanhTien;
-
-	
-	
 
 	public HoaDon(String maHD, Date ngayLapHD, KhachHang khachHang, NhanVien nhanVien, double thanhTien) {
 		super();
@@ -23,12 +19,10 @@ public class HoaDon {
 		this.thanhTien = thanhTien;
 	}
 
-
 	public HoaDon(String maHD) {
 		super();
 		this.maHD = maHD;
 	}
-
 
 	public HoaDon() {
 		super();
@@ -84,20 +78,15 @@ public class HoaDon {
 		return Objects.equals(maHD, other.maHD);
 	}
 
-	
-
-
 	@Override
 	public String toString() {
 		return "HoaDon [maHD=" + maHD + ", ngayLapHD=" + ngayLapHD + ", khachHang=" + khachHang + ", nhanVien="
 				+ nhanVien + ", thanhTien=" + thanhTien + "]";
 	}
 
-
 	public double getThanhTien() {
 		return thanhTien;
 	}
-
 
 	public void setThanhTien(double thanhTien) {
 		this.thanhTien = thanhTien;

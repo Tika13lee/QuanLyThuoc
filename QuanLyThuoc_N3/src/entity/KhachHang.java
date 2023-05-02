@@ -10,7 +10,6 @@ public class KhachHang {
 	private String diaChi;
 	private String soDT;
 	private Date ngaySinh;
-	private int tuoi;
 	private boolean gioiTinh;
 
 	public KhachHang() {
@@ -21,8 +20,8 @@ public class KhachHang {
 	public KhachHang(String maKH) {
 		this.maKH = maKH;
 	}
-	
-	public KhachHang(String maKH, String hoKH, String tenKH, String diaChi, String soDT, Date ngaySinh, int tuoi,
+
+	public KhachHang(String maKH, String hoKH, String tenKH, String diaChi, String soDT, Date ngaySinh,
 			boolean gioiTinh) {
 		super();
 		this.maKH = maKH;
@@ -31,7 +30,6 @@ public class KhachHang {
 		this.diaChi = diaChi;
 		this.soDT = soDT;
 		this.ngaySinh = ngaySinh;
-		this.tuoi = tuoi;
 		this.gioiTinh = gioiTinh;
 	}
 
@@ -83,14 +81,6 @@ public class KhachHang {
 		this.ngaySinh = ngaySinh;
 	}
 
-	public int getTuoi() {
-		return tuoi;
-	}
-
-	public void setTuoi(int tuoi) {
-		this.tuoi = tuoi;
-	}
-
 	public boolean isGioiTinh() {
 		return gioiTinh;
 	}
@@ -119,7 +109,7 @@ public class KhachHang {
 	@Override
 	public String toString() {
 		return "KhachHang [maKH=" + maKH + ", hoKH=" + hoKH + ", tenKH=" + tenKH + ", diaChi=" + diaChi + ", soDT="
-				+ soDT + ", ngaySinh=" + ngaySinh + ", tuoi=" + tuoi + ", gioiTinh=" + gioiTinh + "]";
+				+ soDT + ", ngaySinh=" + ngaySinh + ", gioiTinh=" + gioiTinh + "]";
 	}
 
 }

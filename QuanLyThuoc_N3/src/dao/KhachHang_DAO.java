@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -8,10 +9,9 @@ import java.util.ArrayList;
 
 import connect.ConnectDB;
 import entity.KhachHang;
-import entity.NhaCungCap;
 
 public class KhachHang_DAO {
-	public ArrayList<KhachHang> getAllNhanVien(){
+	public ArrayList<KhachHang> getAllNhanVien() {
 		ArrayList<KhachHang> dsKhachHangs = new ArrayList<KhachHang>();
 		try {
 			ConnectDB.getInstance();
@@ -19,7 +19,7 @@ public class KhachHang_DAO {
 			String sql = "select * from KhachHang";
 			Statement statement = con.createStatement();
 			ResultSet rs = statement.executeQuery(sql);
-			while(rs.next()) {
+			while (rs.next()) {
 				KhachHang kh = new KhachHang();
 				kh.setMaKH(rs.getString("maKH"));
 				kh.setHoKH(rs.getString("hoKH"));
@@ -29,31 +29,43 @@ public class KhachHang_DAO {
 				kh.setGioiTinh(rs.getBoolean("gioiTinh"));
 				kh.setDiaChi(rs.getString("diaChi"));
 				dsKhachHangs.add(kh);
-				
 			}
-			//rs.close();
-			statement.close();
-			//con.close();
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return dsKhachHangs;
 	}
+
+	// thêm khách hàng
 	public void insertKhachHang(KhachHang kh) {
+		ConnectDB.getInstance();
+		Connection con = ConnectDB.getConnection();
+		PreparedStatement stmt = null;
+		int n;
 		try {
-			Connection con = ConnectDB.getConnection();
-			Statement stmt = con.createStatement();
-			String sql = "INSERT INTO KhachHang (maKH, hoKH, tenKH, soDT, ngaySinh, gioiTinh, diaChi) VALUES ('" + kh.getMaKH() +"','"+
-			kh.getHoKH() + "','" + kh.getTenKH() + "','" +kh.getSoDT() + "','"+ kh.getNgaySinh() + "','"+ kh.isGioiTinh() + "','"+
-					kh.getDiaChi()+ "')";
-			stmt.executeUpdate(sql);
-			stmt.close();
-			//con.close();
-		} catch (SQLException ex) {
-			ex.printStackTrace();
+			String sql = "insert into KhachHang values (?, ?, ?, ?, ?, ?, ?)";
+			stmt = con.prepareStatement(sql);
+			stmt.setString(1, kh.getMaKH());
+			stmt.setString(2, kh.getHoKH());
+			stmt.setString(3, kh.getTenKH());
+			stmt.setString(4, kh.getSoDT());
+			stmt.setDate(5, kh.getNgaySinh());
+			stmt.setBoolean(6, kh.isGioiTinh());
+			stmt.setString(7, kh.getDiaChi());
+			n = stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
+//		return n > 0;
 	}
-	// Phat sinh ma
+
+	// lấy số lượng khách hàng có trong data
 	public int getSoluong() {
 		try {
 			ConnectDB.getInstance();

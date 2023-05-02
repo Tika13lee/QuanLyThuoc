@@ -457,15 +457,6 @@ public class FrmQLHoaDon extends JFrame implements ActionListener, DocumentListe
 		btnThoat.setIcon(new ImageIcon("src/img/quayLai.png"));
 		btnThanhToan.setIcon(new ImageIcon("src/img/thanhToan.png"));
 
-		// Đưa database và table
-		// DocDuLieuDBVaoTable();
-
-//		ArrayList<Thuoc> listThuoc;
-//		listThuoc = thuoc_dao.getAllThuoc();
-//		for (Thuoc t : listThuoc) {
-//			cboAddThuoc.addItem(t.getMaThuoc());
-//		}
-
 		// event
 		txtHoKH.addActionListener(this);
 		txtTenKH.addActionListener(this);
@@ -492,61 +483,47 @@ public class FrmQLHoaDon extends JFrame implements ActionListener, DocumentListe
 	}
 
 	private HoaDon createHD() {
-		HoaDon temp = new HoaDon();
-		// phat sinh ma hd
+		// phát sinh mã hóa đơn
 		int soHD = hd_dao.getSoluong();
+		String maHD;
 		if (soHD == -1) {
-			JOptionPane.showMessageDialog(null, "Phát sinh mã thất bại - Vui lòng kiểm tra kết nối database!!");
-			return null;
+			soHD = 0;
+			maHD = String.format("HD%01d", soHD + 1);
+		} else {
+			maHD = String.format("HD%01d", soHD + 1);
 		}
-		String maHD = String.format("HD%01d", soHD + 1);
 		txtMaHD.setText(maHD);
-		// phat sinh ma kh
+
+		// phát sinh mã khách hàng
 		int soKH = kh_dao.getSoluong();
+		String maKH;
 		if (soKH == -1) {
-			JOptionPane.showMessageDialog(null, "Phát sinh mã thất bại - Vui lòng kiểm tra kết nối database!!");
-			return null;
+			soKH = 0;
+			maKH = String.format("KH%01d", soKH + 1);
+		} else {
+			maKH = String.format("KH%01d", soKH + 1);
 		}
-		String maKH = String.format("KH%01d", soKH + 1);
 		txtMaKH.setText(maKH);
 
 		Date dateNgayLapHD = dcrNgayLap.getDate();
 		java.sql.Date sqlNgayLapHD = new java.sql.Date(dateNgayLapHD.getTime());
-
 		Date dateNgaySinhKH = dcrNgaySinh.getDate();
 		java.sql.Date sqlNgaySinh = new java.sql.Date(dateNgaySinhKH.getTime());
 
 		String hoKH = txtHoKH.getText();
 		String tenKH = txtTenKH.getText();
-		Boolean gioiTinh = radNam.isSelected();
+		boolean gioiTinh = radNam.isSelected();
 		String sdt = txtSDT.getText();
 		String diaChi = txtDiaChi.getText();
+		KhachHang kh = new KhachHang(maKH, hoKH, tenKH, diaChi, sdt, sqlNgaySinh, gioiTinh);
+		kh_dao.insertKhachHang(kh);
+
 		String maNhanVien = txtMaNV.getText();
+		NhanVien nv = new NhanVien(maNhanVien);
 
 		Double thanhTien = Double.parseDouble(txtTongThanhToan.getText());
 
-		NhanVien nv = new NhanVien(maNhanVien);
-		KhachHang kh = new KhachHang(maKH);
-
-		// HoaDon hd = new HoaDon(maHD, sqlNgayLapHD, kh, nv,thanhTien );
-
-		temp = new HoaDon(maHD, sqlNgayLapHD, kh, nv, thanhTien);
-		KhachHang khdao = new KhachHang(maKH, hoKH, tenKH, diaChi, sdt, sqlNgaySinh, soKH, gioiTinh);
-		kh_dao.insertKhachHang(khdao);
-
-		// HoaDon hd = new HoaDon(maHD);
-
-//		for(int i=0;i<model.getRowCount();i++) {
-//			String maThuoc = (String) model.getValueAt(i, 1);
-//			Thuoc t = new Thuoc(maThuoc);
-//			String donViTinh = (String) model.getValueAt(i, 3);
-//			Double donGia = (Double) model.getValueAt(i, 4);
-//			int soLuong = (Integer) model.getValueAt(i, 5);
-//			
-//			
-//			ChiTietHoaDon ct = new ChiTietHoaDon(t, donGia, soLuong, donViTinh, VAT, hd);
-//			cthd_dao.createChiTietHoaDon(ct);
-//		}
+		HoaDon temp = new HoaDon(maHD, sqlNgayLapHD, kh, nv, thanhTien);
 
 		return temp;
 	}
@@ -605,6 +582,7 @@ public class FrmQLHoaDon extends JFrame implements ActionListener, DocumentListe
 		txtHoKH.setText("");
 		txtTenKH.setText("");
 		txtSDT.setText("");
+		dcrNgaySinh.setDate(null);
 		txtDiaChi.setText("");
 		txtHoKH.requestFocus();
 		model.setRowCount(0);
@@ -616,6 +594,38 @@ public class FrmQLHoaDon extends JFrame implements ActionListener, DocumentListe
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
+		if (o.equals(btnThanhToan)) {
+			if (validData()) {
+				double tienKD = Double.parseDouble(txtTienKhachDua.getText());
+				double tienTL = tienKD - tongThanhTien;
+				txtTienTraLai.setText(tienTL + "");
+				HoaDon hd = createHD();
+				if (!hd_dao.createHoaDon(hd)) {
+					JOptionPane.showMessageDialog(this, "Trùng mã - Kiểm tra lại !!!");
+//					return;
+				} else {
+					int flag = 0;
+					for (int i = 0; i < model.getRowCount(); i++) {
+						String maThuoc = model.getValueAt(i, 1).toString();
+						Thuoc t = new Thuoc(maThuoc);
+						String donViTinh = model.getValueAt(i, 3).toString();
+						Double donGia = Double.parseDouble(model.getValueAt(i, 4).toString());
+						int soLuong = Integer.parseInt(model.getValueAt(i, 5).toString());
+						Double tien = Double.parseDouble(model.getValueAt(i, 7).toString());
+
+						ChiTietHoaDon ct = new ChiTietHoaDon(t, donGia, soLuong, donViTinh, VAT, hd, tien);
+						cthd_dao.createChiTietHoaDon(ct);
+						flag = 1;
+					}
+					if (flag == 1) {
+						JOptionPane.showMessageDialog(this, "Đã lưu hóa đơn");
+						xoaTrang();
+					} else {
+						JOptionPane.showMessageDialog(this, "Lưu hóa đơn với không có sản phẩm");
+					}
+				}
+			}
+		}
 		if (o.equals(txtHoKH)) {
 			txtTenKH.requestFocus();
 		}
@@ -649,7 +659,6 @@ public class FrmQLHoaDon extends JFrame implements ActionListener, DocumentListe
 							soLuong, VAT, thanhTien + "" });
 					txtTongThanhToan.setText(tongThanhTien + "");
 				}
-				// createHD();
 			} else {
 				JOptionPane.showMessageDialog(this, "Vui lòng chọn thuốc");
 			}
@@ -664,21 +673,7 @@ public class FrmQLHoaDon extends JFrame implements ActionListener, DocumentListe
 			ArrayList<Thuoc> dsT = thuoc_dao.getAllThuocTheoPL(pl);
 			loadThuoc(dsT);
 		}
-		if (o.equals(btnThanhToan)) {
-			if (validData()) {
-				double tienKD = Double.parseDouble(txtTienKhachDua.getText());
-				double tienTL = tienKD - tongThanhTien;
-				txtTienTraLai.setText(tienTL + "");
-				HoaDon hd = createHD();
-				if (!hd_dao.createHoaDon(hd)) {
-					JOptionPane.showMessageDialog(null, "Trùng mã - Kiểm tra lại !!!");
-					return;
-				} else {
-					JOptionPane.showMessageDialog(this, "Đã lưu hóa đơn");
-					xoaTrang();
-				}
-			}
-		}
+
 		if (o.equals(btnTaiLai)) {
 			ArrayList<Thuoc> ds = thuoc_dao.getAllThuoc();
 			loadThuoc(ds);
