@@ -442,7 +442,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 			DocDuLieuDBVaoTable();
 			cboNhaCC.setSelectedIndex(0);
 			cboPhanLoai.setSelectedIndex(0);
-			cboMaThuoc.setSelectedIndex(0);
+//			cboMaThuoc.setSelectedIndex(0);
 			txtTimTheoTen.setText("");
 		}
 
@@ -572,19 +572,16 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 		String ma = String.format("T%01d", soLuong + 1);
 
 		if (txtTenThuoc.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Vui lòng nhập tên thuốc!!!");
 			return null;
 		}
 		String tenthuoc = txtTenThuoc.getText();
 
 		if (txtSoLuong.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Vui lòng nhập số lượng!!!");
 			return null;
 		}
 		int soluong = Integer.parseInt(txtSoLuong.getText());
 
 		if (txtDonGia.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(this, "Vui lòng nhập giá!!");
 			return null;
 		}
 		double dongianhap = Double.parseDouble(txtDonGia.getText());
@@ -639,7 +636,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 			thuoc_dao.update(t);
 			clearDataOnTable();
 			DocDuLieuDBVaoTable();
-			JOptionPane.showMessageDialog(this, "Sửa thành công");
+			JOptionPane.showMessageDialog(this, "Sửa thành công thuốc: " +tenthuoc +", có mã: "+maThuoc);
 
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
