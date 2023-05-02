@@ -139,13 +139,11 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 		b2.add(txtDonGia = new JTextField());
 
 		b3.add(lblngaySX = new JLabel("Ngày sản xuất:"));
-//		b3.add(txtngaySX = new JTextField());
 		b3.add(jdcNgaySX = new JDateChooser());
 		jdcNgaySX.setLocale(new Locale("vi", "VN"));
 		jdcNgaySX.setDateFormatString("yyyy-MM-dd");
 		b3.add(Box.createHorizontalStrut(20));
 		b3.add(lblhanSD = new JLabel("Ngày hết hạn:"));
-//		b3.add(txtNgayHH = new JTextField());
 		b3.add(jdcNgayHH = new JDateChooser());
 		jdcNgayHH.setLocale(new Locale("vi", "VN"));
 		jdcNgayHH.setDateFormatString("yyyy-MM-dd");
@@ -222,7 +220,6 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 		bAll.add(pnTieuDe);
 		bAll.add(Box.createVerticalStrut(10));
 		bAll.add(b);
-//		bAll.add(Box.createVerticalStrut(30)); // ngăn cách giữa bảng và textField
 		bAll.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 
 		// design kích thước
@@ -381,6 +378,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 		if (o.equals(txtSoLuong)) {
 			txtDonGia.requestFocus();
 		}
+		
 		if (o.equals(btnThem)) {
 			if (!txtMaThuoc.getText().isEmpty()) {
 				JOptionPane.showMessageDialog(null, "Đang trong chế độ chỉnh sửa - Vui lòng làm mới.");
@@ -512,44 +510,43 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 	 */
 	private boolean validData() {
 		String tenThuoc = txtTenThuoc.getText().trim();
-		int soluong = Integer.parseInt(txtSoLuong.getText().trim());
-		int donGia = Integer.parseInt(txtDonGia.getText().trim());
 
+		String soluong = txtSoLuong.getText().trim();
+		String dongia = txtDonGia.getText().trim();
 		Date now = new Date();
 		Date nsx = jdcNgaySX.getDate();
 		Date nhh = jdcNgayHH.getDate();
 
-		if (!(tenThuoc.matches("[a-zA-Z ]+") && tenThuoc.length() > 0)) {
+		if (!(tenThuoc.matches("[\\p{L}\\p{M} ]+") && tenThuoc.length() > 0)) {
 			JOptionPane.showMessageDialog(this, "Tên thuốc không được rỗng, là kí tự");
 			txtTenThuoc.requestFocus();
 			return false;
 		}
 
-		if (soluong <= 0) {
-			JOptionPane.showMessageDialog(this, "Số lượng phải > 0");
+		if (soluong.length() <= 0 || !soluong.matches("[0-9]+")) {
+			JOptionPane.showMessageDialog(this, "Số lượng là số nguyên dương!!!");
 			txtSoLuong.requestFocus();
 			return false;
 		}
 
-		if (donGia <= 0) {
-			JOptionPane.showMessageDialog(this, "Đơn giá phải > 0");
+		if (dongia.length() <= 0 || !dongia.matches("[0-9]+")) {
+			JOptionPane.showMessageDialog(this, "Đơn giá là sô nguyên dương !!!");
 			txtDonGia.requestFocus();
 			return false;
 		}
 
-		if (nsx.after(now)) {
-			JOptionPane.showMessageDialog(this, "Ngày sản xuất phải trước ngày hiện tại");
+		if (nsx == null || nsx.after(now)) {
+			JOptionPane.showMessageDialog(this, "Ngày sản xuất phải trước ngày hiện tại, không được rỗng");
 			jdcNgaySX.requestFocus();
 			return false;
 		}
 
-		if (nhh.before(nsx)) {
-			JOptionPane.showMessageDialog(this, "Ngày hết hạn phải sau ngày sản xuất");
+		if ( nhh == null || nhh.before(nsx) ) {
+			JOptionPane.showMessageDialog(this, "Ngày hết hạn phải sau ngày sản xuất, không được rỗng");
 			jdcNgayHH.requestFocus();
 			return false;
 		}
 
-		// Kiểm tra dữ liệu các trường thông tin khác nếu có
 
 		return true;
 
@@ -659,12 +656,13 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 	 * xóa rỗng textField
 	 */
 	private void clearTextField() {
+		Date now = new Date();
 		txtMaThuoc.setText("");
 		txtTenThuoc.setText("");
 		txtSoLuong.setText("");
 		txtDonGia.setText("");
-//		jdcNgaySX.setDateFormatString("");
-//		jdcNgayHH.setDateFormatString("");
+		jdcNgaySX.setDate(null);
+		jdcNgayHH.setDate(null);
 		cboNhaCC.setSelectedIndex(0);
 		cboPhanLoai.setSelectedIndex(0);
 		cboDonViTinh.setSelectedIndex(0);

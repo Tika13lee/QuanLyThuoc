@@ -12,16 +12,11 @@ create table TaiKhoan(
 )
 --Thêm data vào table Tài Khoản
 INSERT INTO TaiKhoan (maTK, tenTK, loaiTK, matKhau) VALUES
-('TK001', 'user1', 'basic', 'password1'),
-('TK002', 'user2', 'basic', 'password2'),
-('TK003', 'user3', 'admin', 'password3'),
-('TK004', 'user4', 'basic', 'password4'),
-('TK005', 'user5', 'admin', 'password5'),
-('TK006', 'user6', 'basic', 'password6'),
-('TK007', 'user7', 'basic', 'password7'),
-('TK008', 'user8', 'admin', 'password8'),
-('TK009', 'user9', 'basic', 'password9'),
-('TK010', 'user10', 'admin', 'password10');
+('TK001', 'ThuyKieu', 'basic', 'password1'),
+('TK002', 'ThanhNhan', 'basic', 'password2'),
+('TK003', 'DuyKhang', 'basic', 'password3'),
+('TK004', 'LePhu', 'basic', 'password4');
+
 
 
 --Nhân Viên
@@ -32,21 +27,15 @@ create table NhanVien(
 	tuoiNV int,
 	soDT char(12),
 	gioiTinh bit,
-	maTK nvarchar(10) REFERENCES TaiKhoan(maTK),
+	maTK nvarchar(10) REFERENCES TaiKhoan(maTK) on delete cascade on update cascade,
 	diaChi nvarchar(100)
 )
 --Thêm data vào table Nhân Viên
 INSERT INTO NhanVien (maNV, hoNV, tenNV, tuoiNV, soDT, gioiTinh, maTK, diaChi) VALUES
-('NV001', N'Nguyễn', N'An', 23, '0987654321', 0, 'TK001', N'Hà Nội'),
-('NV002', N'Trần', N'Bình', 29, '0981234567', 1, 'TK002', N'Hồ Chí Minh'),
-('NV003', N'Lê', N'Công', 25, '0977123456', 1, 'TK003', N'Đà Nẵng'),
-('NV004', N'Phạm', N'Duy', 27, '0987123456', 1, 'TK004', N'Nghệ An'),
-('NV005', N'Vũ', N'Hà', 28, '0967123456', 0, 'TK005', N'Hải Phòng'),
-('NV006', N'Trần', N'Hoài', 26, '0981123456', 1, 'TK006', N'Hưng Yên'),
-('NV007', N'Lê', N'Hồng', 30, '0977123456', 0, 'TK007', N'Hà Tĩnh'),
-('NV008', N'Nguyễn', N'Huy', 32, '0961123456', 1, 'TK008', N'Nam Định'),
-('NV009', N'Phạm', N'Long', 24, '0987123456', 1, 'TK009', N'Bình Dương'),
-('NV010', N'Đặng', N'Minh', 31, '0977123456', 1, 'TK010', N'Thái Bình');
+('NV001', N'Lê Thị Thúy', N'Kiều', 23, '0987654321', 0, 'TK001', N'Hà Nội'),
+('NV002', N'Nguyễn Thành', N'Nhân', 29, '0981234567', 1, 'TK002', N'Hồ Chí Minh'),
+('NV003', N'Lê Nguyễn Duy', N'Khang', 25, '0977123456', 1, 'TK003', N'Đà Nẵng'),
+('NV004', N'Tạ Lê', N'Phú', 27, '0987123456', 1, 'TK004', N'Nghệ An');
 
 
 
@@ -124,7 +113,7 @@ create table Thuoc(
 	donViTinh nvarchar(15),
 	donGia float,
 	soLuong int,
-	maNCC nvarchar(10) REFERENCES NhaCungCap(maNCC)
+	maNCC nvarchar(10) REFERENCES NhaCungCap(maNCC) on delete cascade on update cascade
 )
 --Thêm data vào table Thuốc 
 INSERT INTO Thuoc (maThuoc, tenThuoc, phanLoai, ngaySX, ngayHetHan, donViTinh, donGia, soLuong, maNCC)
@@ -138,7 +127,17 @@ VALUES
     ('T007', N'Ibuprofen', N'Không kê đơn', '2022-07-01', '2023-07-01', N'Viên', 10000, 150, 'NCC007'),
     ('T008', N'Aspirin', N'Không kê đơn', '2022-08-01', '2023-08-01', N'Viên', 7000, 180, 'NCC008'),
     ('T009', N'Gliclazide', N'Không kê đơn', '2022-09-01', '2023-09-01', N'Viên', 11000, 70, 'NCC009'),
-    ('T010', N'Omeprazole', N'Không kê đơn', '2022-10-01', '2023-10-01', N'Viên', 18000, 60, 'NCC010');
+    ('T010', N'Omeprazole', N'Không kê đơn', '2022-10-01', '2023-10-01', N'Viên', 18000, 60, 'NCC010'),
+	('T011', N'Amoxicillin', N'Kê đơn', '2022-11-01', '2023-11-01', N'Viên', 9000, 90, 'NCC009'),
+	('T012', N'Cephalexin', N'Kê đơn', '2022-12-01', '2023-12-01', N'Viên', 12000, 70, 'NCC008'),
+	('T013', N'Azithromycin', N'Kê đơn', '2023-01-01', '2024-01-01', N'Viên', 18000, 50, 'NCC007'),	
+	('T014', N'Fluoxetine', N'Kê đơn', '2023-02-01', '2024-02-01', N'Viên', 15000, 80, 'NCC006'),
+	('T015', N'Sertraline', N'Kê đơn', '2023-03-01', '2024-03-01', N'Viên', 16000, 70, 'NCC005'),	
+	('T016', N'Amoxicillin', N'Không kê đơn', '2023-04-01', '2024-04-01', N'Viên', 8000, 120, 'NCC004'),
+	('T017', N'Cephalexin', N'Không kê đơn', '2023-05-01', '2024-05-01', N'Viên', 10000, 100, 'NCC003'),
+	('T018', N'Azithromycin', N'Không kê đơn', '2023-06-01', '2024-06-01', N'Viên', 14000, 60, 'NCC002'),
+	('T019', N'Fluoxetine', N'Không kê đơn', '2023-07-01', '2024-07-01', N'Viên', 17000, 50, 'NCC001'),
+	('T020', N'Sertraline', N'Không kê đơn', '2023-08-01', '2024-08-01', N'Viên', 13000, 90, 'NCC010');
 
 
 
@@ -147,8 +146,9 @@ VALUES
 create table HoaDon(
 	maHD nvarchar (20)primary key not null,
 	ngayLapHD Date,
-	maKH nvarchar(10) REFERENCES KhachHang(maKH),
-	maNV nvarchar(10) REFERENCES NhanVien(maNV)
+	maKH nvarchar(10) REFERENCES KhachHang(maKH) on delete cascade on update cascade,
+	maNV nvarchar(10) REFERENCES NhanVien(maNV) on delete cascade on update cascade,
+	thanhTien float
 )
 --Thêm data vào table Hóa Đơn
 INSERT INTO HoaDon (maHD, ngayLapHD, maKH, maNV) VALUES
@@ -156,12 +156,12 @@ INSERT INTO HoaDon (maHD, ngayLapHD, maKH, maNV) VALUES
 ('HD002', '2022-02-02', 'KH002', 'NV002'),
 ('HD003', '2022-03-03', 'KH003', 'NV003'),
 ('HD004', '2022-04-04', 'KH004', 'NV004'),
-('HD005', '2022-05-05', 'KH005', 'NV005'),
-('HD006', '2022-06-06', 'KH006', 'NV006'),
-('HD007', '2022-07-07', 'KH007', 'NV007'),
-('HD008', '2022-08-08', 'KH008', 'NV008'),
-('HD009', '2022-09-09', 'KH009', 'NV009'),
-('HD010', '2022-10-10', 'KH010', 'NV010');
+('HD005', '2022-05-05', 'KH005', 'NV003'),
+('HD006', '2022-06-06', 'KH006', 'NV002'),
+('HD007', '2022-07-07', 'KH007', 'NV001'),
+('HD008', '2022-08-08', 'KH008', 'NV002'),
+('HD009', '2022-09-09', 'KH009', 'NV003'),
+('HD010', '2022-10-10', 'KH010', 'NV004');
 
 
 
@@ -176,15 +176,15 @@ create table ChiTietHoaDon(
 	maHD nvarchar (20) REFERENCES HoaDon(maHD)
 )
 --Thêm data vào table Chi Tiết Hóa Đơn
-INSERT INTO ChiTietHoaDon(donGia, soLuong, donViTinh, phiVAT, mota, maThuoc, maHD)
+INSERT INTO ChiTietHoaDon(donGia, soLuong, donViTinh, phiVAT, maThuoc, maHD)
 VALUES
-(25.5, 2, N'vỉ', 0.1, N'Thuốc cảm cúm', N't001', N'HD001'),
-(32.0, 3, N'hộp', 0.05, N'Thuốc giảm đau', N't002', N'HD001'),
-(15.0, 1, N'vỉ', 0.1, N'Thuốc ho', N't003', N'HD002'),
-(10.0, 2, N'tube', 0.0, N'Thuốc bôi trơn', N't004', N'HD002'),
-(20.0, 4, N'hộp', 0.1, N'Thuốc trị mụn', N't005', N'HD003'),
-(18.5, 1, N'vỉ', 0.05, N'Thuốc giảm đau', N't002', N'HD003'),
-(13.0, 3, N'vỉ', 0.0, N'Thuốc cảm cúm', N't001', N'HD004'),
-(8.5, 1, N'tube', 0.0, N'Thuốc trị mụn', N't005', N'HD004'),
-(30.0, 2, N'hộp', 0.1, N'Thuốc ho', N't003', N'HD005'),
-(22.0, 1, N'vỉ', 0.05, N'Thuốc cảm cúm', N't001', N'HD005');
+(25.5, 2, N'vỉ', 0.01 ,N't001', N'HD001'),
+(32.0, 3, N'hộp', 0.01, N't002', N'HD001'),
+(15.0, 1, N'vỉ', 0.01, N't003', N'HD002'),
+(10.0, 2, N'tube', 0.01, N't004', N'HD002'),
+(20.0, 4, N'hộp', 0.01, N't005', N'HD003'),
+(18.5, 1, N'vỉ', 0.01, N't002', N'HD003'),
+(13.0, 3, N'vỉ', 0.01, N't001', N'HD004'),
+(8.5, 1, N'tube', 0.01,N't005', N'HD004'),
+(30.0, 2, N'hộp', 0.01, N't003', N'HD005'),
+(22.0, 1, N'vỉ', 0.01, N't001', N'HD005');
