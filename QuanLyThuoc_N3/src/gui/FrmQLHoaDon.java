@@ -682,6 +682,10 @@ public class FrmQLHoaDon extends JFrame implements ActionListener, DocumentListe
 		if (o.equals(btnTaiLai)) {
 			ArrayList<Thuoc> ds = thuoc_dao.getAllThuoc();
 			loadThuoc(ds);
+			cboNCC.setSelectedIndex(0);
+			cboPhanLoai.setSelectedIndex(0);
+			txtLocTheoTen.setText("");
+			txtLocTheoTen.requestFocus();
 		}
 	}
 

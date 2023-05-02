@@ -378,7 +378,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 		if (o.equals(txtSoLuong)) {
 			txtDonGia.requestFocus();
 		}
-		
+
 		if (o.equals(btnThem)) {
 			if (!txtMaThuoc.getText().isEmpty()) {
 				JOptionPane.showMessageDialog(null, "Đang trong chế độ chỉnh sửa - Vui lòng làm mới.");
@@ -417,7 +417,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 			int row = table.getSelectedRow();
 
 			if (row < 0) {
-				JOptionPane.showMessageDialog(this, "Bạn chưa chọn dòng để xóa");
+				JOptionPane.showMessageDialog(this, "Bạn chưa chọn thuốc để xóa");
 				return;
 			}
 			String ma = model.getValueAt(row, 1).toString();
@@ -515,8 +515,8 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 	private boolean validData() {
 		String tenThuoc = txtTenThuoc.getText().trim();
 
-		String soluong = txtSoLuong.getText().trim();
-		String dongia = txtDonGia.getText().trim();
+		String sl = txtSoLuong.getText().trim();
+		String dg = txtDonGia.getText().trim();
 		Date now = new Date();
 		Date nsx = jdcNgaySX.getDate();
 		Date nhh = jdcNgayHH.getDate();
@@ -527,30 +527,59 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 			return false;
 		}
 
-		if (soluong.length() <= 0 || !soluong.matches("[0-9]+")) {
-			JOptionPane.showMessageDialog(this, "Số lượng là số nguyên dương!!!");
-			txtSoLuong.requestFocus();
+		if (sl.length() > 0) {
+			try {
+				int soLuong = Integer.parseInt(sl);
+				if (soLuong < 0) {
+					JOptionPane.showMessageDialog(this, "Số lượng phải là số nguyên dương");
+					return false;
+				}
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(this, "Số lượng phải là số nguyên");
+				return false;
+			}
+		} else {
+			JOptionPane.showMessageDialog(this, "Vui lòng nhập số lượng thuốc");
 			return false;
 		}
 
-		if (dongia.length() <= 0 || !dongia.matches("[0-9]+")) {
-			JOptionPane.showMessageDialog(this, "Đơn giá là sô nguyên dương !!!");
-			txtDonGia.requestFocus();
+		if (dg.length() > 0) {
+			try {
+				double donGia = Double.parseDouble(dg);
+				if (donGia < 0) {
+					JOptionPane.showMessageDialog(this, "Đơn giá phải lớn hơn 0");
+					return false;
+				}
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(this, "Đơn giá phải là kiểu số");
+				return false;
+			}
+		} else {
+			JOptionPane.showMessageDialog(this, "Vui lòng nhập đơn giá thuốc");
 			return false;
 		}
 
-		if (nsx == null || nsx.after(now)) {
-			JOptionPane.showMessageDialog(this, "Ngày sản xuất phải trước ngày hiện tại, không được rỗng");
-			jdcNgaySX.requestFocus();
+		if (nsx != null) {
+			if (nsx.after(now)) {
+				JOptionPane.showMessageDialog(this, "Ngày sản xuất phải trước hoặc bằng ngày hiện tại");
+				jdcNgaySX.requestFocus();
+				return false;
+			}
+		} else {
+			JOptionPane.showMessageDialog(this, "Vui lòng chọn ngày sản xuất");
 			return false;
 		}
 
-		if ( nhh == null || nhh.before(nsx) ) {
-			JOptionPane.showMessageDialog(this, "Ngày hết hạn phải sau ngày sản xuất, không được rỗng");
-			jdcNgayHH.requestFocus();
+		if (nhh != null) {
+			if (nhh.before(nsx)) {
+				JOptionPane.showMessageDialog(this, "Ngày hết hạn phải sau hoặc bằng ngày sản xuất");
+				jdcNgayHH.requestFocus();
+				return false;
+			}
+		} else {
+			JOptionPane.showMessageDialog(this, "Vui lòng chọn ngày hết hạn");
 			return false;
 		}
-
 
 		return true;
 
@@ -636,7 +665,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 			thuoc_dao.update(t);
 			clearDataOnTable();
 			DocDuLieuDBVaoTable();
-			JOptionPane.showMessageDialog(this, "Sửa thành công thuốc: " +tenthuoc +", có mã: "+maThuoc);
+			JOptionPane.showMessageDialog(this, "Sửa thành công thuốc: " + tenthuoc + ", có mã: " + maThuoc);
 
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
@@ -702,11 +731,11 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 				if (t.getTenThuoc().toLowerCase().startsWith(ten.toLowerCase()))
 					dsMoi.add(t);
 			}
-		}
-		int stt = 0;
-		for (Thuoc t : dsMoi) {
-			model.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getDonGia(),
-					t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(), t.getDonViTinh() });
+			int stt = 0;
+			for (Thuoc t : dsMoi) {
+				model.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getDonGia(),
+						t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(), t.getDonViTinh() });
+			}
 		}
 	}
 
