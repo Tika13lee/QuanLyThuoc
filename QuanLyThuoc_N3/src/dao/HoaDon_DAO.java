@@ -12,6 +12,7 @@ import connect.ConnectDB;
 import entity.HoaDon;
 import entity.KhachHang;
 import entity.NhanVien;
+import entity.Thuoc;
 
 public class HoaDon_DAO {
 	public ArrayList<HoaDon> getAllHoaDon() {
@@ -27,9 +28,10 @@ public class HoaDon_DAO {
 				Date ngay = rs.getDate("ngayLapHD");
 				String maKH = rs.getString("maKH");
 				String maNV = rs.getString("maNV");
+				Double thanhTien = rs.getDouble("thanhTien");
 				KhachHang kh = new KhachHang(maKH);
 				NhanVien nv = new NhanVien(maNV);
-				HoaDon hd = new HoaDon(maHD, ngay, kh, nv);
+				HoaDon hd = new HoaDon(maHD, ngay, kh, nv,thanhTien);
 				dsHD.add(hd);
 			}
 		} catch (SQLException e) {
@@ -53,9 +55,10 @@ public class HoaDon_DAO {
 				Date ngay = rs.getDate("ngayLapHD");
 				String maKH = rs.getString("maKH");
 				String maNV = rs.getString("maNV");
+				Double thanhTien = rs.getDouble("thanhTien");
 				KhachHang kh = new KhachHang(maKH);
 				NhanVien nv = new NhanVien(maNV);
-				HoaDon hd = new HoaDon(maHD, ngay, kh, nv);
+				HoaDon hd = new HoaDon(maHD, ngay, kh, nv,thanhTien);
 				dsHD.add(hd);
 			}
 		} catch (SQLException e) {
@@ -128,9 +131,10 @@ public class HoaDon_DAO {
 	            Date ngay = rs.getDate("ngayLapHD");
 	            String maKH = rs.getString("maKH");
 	            String maNV = rs.getString("maNV");
+	            Double thanhTien = rs.getDouble("thanhTien");
 	            KhachHang kh = new KhachHang(maKH);
 	            NhanVien nv = new NhanVien(maNV);
-	            HoaDon hd = new HoaDon(maHD, ngay, kh, nv);
+	            HoaDon hd = new HoaDon(maHD, ngay, kh, nv,thanhTien);
 	            dsHD.add(hd);
 	        }
 	    } catch (SQLException e) {
@@ -160,9 +164,10 @@ public class HoaDon_DAO {
 				Date ngay = rs.getDate("ngayLapHD");
 				String maKH = rs.getString("maKH");
 				String maNV = rs.getString("maNV");
+				Double thanhTien = rs.getDouble("thanhTien");
 				KhachHang kh = new KhachHang(maKH);
 				NhanVien nv = new NhanVien(maNV);
-				HoaDon hd = new HoaDon(maHD, ngay, kh, nv);
+				HoaDon hd = new HoaDon(maHD, ngay, kh, nv,thanhTien);
 				dsHD.add(hd);
 			}
 		} catch (SQLException e) {
@@ -193,9 +198,10 @@ public class HoaDon_DAO {
 	            Date ngay = rs.getDate("ngayLapHD");
 	            String maKH = rs.getString("maKH");
 	            String maNV = rs.getString("maNV");
+	            Double thanhTien = rs.getDouble("thanhTien");
 	            KhachHang kh = new KhachHang(maKH);
 	            NhanVien nv = new NhanVien(maNV);
-	            HoaDon hd = new HoaDon(maHD, ngay, kh, nv);
+	            HoaDon hd = new HoaDon(maHD, ngay, kh, nv,thanhTien);
 	            dsHD.add(hd);
 	        }
 	    } catch (SQLException e) {
@@ -208,6 +214,32 @@ public class HoaDon_DAO {
 	        }
 	    }
 	    return dsHD;
+	}
+	
+	//Them hoa don
+	public boolean createHoaDon(HoaDon hd) {
+		ConnectDB.getInstance();
+		Connection con = ConnectDB.getConnection();
+		PreparedStatement stmt = null;
+		int n = 0;
+		try {
+			stmt = con.prepareStatement("insert into" + " HoaDon values (?,?,?,?,?)");
+			stmt.setString(1, hd.getMaHD());
+			stmt.setDate(2, (java.sql.Date) hd.getNgayLapHD());
+			stmt.setString(3, hd.getKhachHang().getMaKH());
+			stmt.setString(4, hd.getNhanVien().getMaNV());
+			stmt.setDouble(5, hd.getThanhTien());
+			n = stmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return n > 0;
 	}
 
 }

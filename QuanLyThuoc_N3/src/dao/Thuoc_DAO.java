@@ -135,7 +135,7 @@ public class Thuoc_DAO {
 	}
 
 	/*
-	 * them nhan vien
+	 * thêm thuốc
 	 */
 	public boolean createThuoc(Thuoc t) {
 		ConnectDB.getInstance();
