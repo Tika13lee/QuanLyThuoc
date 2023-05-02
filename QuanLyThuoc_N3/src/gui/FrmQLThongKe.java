@@ -418,7 +418,15 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 					hd.getNhanVien().getMaNV() });// Thêm dòng vào bảng
 		}
 	}
-
+	//xử lí thống kê doanh thu
+	public void thongKeDoanhThu() {
+	    double tongThanhTien = 0;
+	    for (int i = 0; i < tablemodel.getRowCount(); i++) {
+	        double thanhTien = Double.parseDouble(tablemodel.getValueAt(i, 5).toString());
+	        tongThanhTien += thanhTien;
+	    }
+	    txtTongDoanhThu1.setText(String.format("%.0f", tongThanhTien));
+	}
 	// xử lý thống kê hóa đơn
 	public void thongKeHoaDon() {
 		int rowCount = table_1.getRowCount(); // lấy số hàng của table_1
@@ -430,6 +438,15 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 		int rowCount = table_1.getRowCount(); // lấy số hàng của table_1
 		txtTongSoHD.setText(String.valueOf(rowCount)); // hiển thị tổng số hóa đơn
 	}
+	//xử lí thống kê doanh thu vào kết quả
+		public void thongKeDoanhThuKQ() {
+		    double tongThanhTien = 0;
+		    for (int i = 0; i < tablemodel.getRowCount(); i++) {
+		        double thanhTien = Double.parseDouble(tablemodel.getValueAt(i, 5).toString());
+		        tongThanhTien += thanhTien;
+		    }
+		    txtTongDoanhThu.setText(String.format("%.0f", tongThanhTien));
+		}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -484,8 +501,8 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 						tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(),
 								hd.getKhachHang().getMaKH(), hd.getNhanVien().getMaNV() });
 					}
-					thongKeHoaDon();
 					thongKeHoaDonKQ();
+					thongKeDoanhThuKQ();
 				}
 
 			}
@@ -500,8 +517,8 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 				tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(), hd.getKhachHang().getMaKH(),
 						hd.getNhanVien().getMaNV() });
 			}
-			thongKeHoaDon();
 			thongKeHoaDonKQ();
+			thongKeDoanhThuKQ();
 		}
 		if (o.equals(cboMaNV)) {
 			String ma = cboMaNV.getSelectedItem().toString();
@@ -514,22 +531,31 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 
 		}
 		if (o.equals(btnXoa)) {
-			int row = table_1.getSelectedRow(); // Lấy dòng được chọn trong bảng
-			if (row >= 0) {
-				String maHD = String.valueOf(table_1.getValueAt(row, 0)); // Lấy mã hóa đơn của dòng được chọn dưới dạng
-																			// String
-				if (hd_DAO.xoaTheoMaHD(maHD)) { // Xóa hóa đơn khỏi cơ sở dữ liệu
-					tablemodel.removeRow(row); // Xóa dòng được chọn khỏi bảng
-					JOptionPane.showMessageDialog(null, "Xóa hóa đơn thành công!", "Thông báo",
-							JOptionPane.INFORMATION_MESSAGE);
-				} else {
-					JOptionPane.showMessageDialog(null, "Xóa hóa đơn thất bại!", "Thông báo",
-							JOptionPane.ERROR_MESSAGE);
-				}
-			} else { // Nếu không có dòng nào được chọn
-				JOptionPane.showMessageDialog(null, "Vui lòng chọn hóa đơn cần xóa!", "Thông báo",
-						JOptionPane.WARNING_MESSAGE);
-			}
+		    int row = table_1.getSelectedRow();
+		    if (row >= 0) {
+		        String maHD = table_1.getValueAt(row, 1).toString();
+		        HoaDon h = new HoaDon(maHD);
+		        int dialogResult = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa hóa đơn này?",
+		                                                          "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
+		        if (dialogResult == JOptionPane.YES_OPTION) {
+		            if (hd_DAO.xoaTheoMaHD(h)) {
+		                tablemodel.removeRow(row);
+		                JOptionPane.showMessageDialog(null, "Xóa hóa đơn thành công!", "Thông báo",
+		                                              JOptionPane.INFORMATION_MESSAGE);
+		                reloadData();
+		                thongKeHoaDon();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Xóa hóa đơn thất bại!", "Thông báo",
+		                                              JOptionPane.ERROR_MESSAGE);
+		            }
+		        }
+		    } else {
+		        JOptionPane.showMessageDialog(null, "Vui lòng chọn hóa đơn cần xóa!", "Thông báo",
+		                                      JOptionPane.WARNING_MESSAGE);
+		    }
 		}
+		
+		
+		
 	}
 }

@@ -73,25 +73,26 @@ public class HoaDon_DAO {
 		return dsHD;
 	}
 
-	public boolean xoaTheoMaHD(String ma) {
-		ConnectDB.getInstance();
-		Connection con = ConnectDB.getConnection();
-		PreparedStatement ps = null;
-		try {
-			String sql = "delete from HoaDon where maHD = ?";
-			ps = con.prepareStatement(sql);
-			ps.setString(1, ma);
-			ps.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				ps.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return true;
+	public boolean xoaTheoMaHD(HoaDon ma) {
+	    ConnectDB.getInstance();
+	    Connection con = ConnectDB.getConnection();
+	    PreparedStatement ps = null;
+	    int n = 0;
+	    try {
+	        String sql = "delete from HoaDon where maHD = ?";
+	        ps = con.prepareStatement(sql);
+	        ps.setString(1, ma.getMaHD());
+	        n = ps.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            ps.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return n > 0;
 	}
 	public int getSoluong() {
 //		ArrayList<Thuoc> dsThuoc = new ArrayList<Thuoc>();
