@@ -45,7 +45,6 @@ import dao.Thuoc_DAO;
 import entity.ChiTietHoaDon;
 import entity.HoaDon;
 import entity.KhachHang;
-import entity.NhaCungCap;
 import entity.NhanVien;
 import entity.TaiKhoan;
 import entity.Thuoc;
@@ -81,12 +80,12 @@ public class FrmQLHoaDon extends JFrame implements ActionListener, DocumentListe
 
 	private JLabel lblLocTheoTen, lblPhanLoai, lblNCC;
 	private JTextField txtLocTheoTen;
-	private JComboBox<String> cboPhanLoai, cboNCC;
+	private JComboBox<String> cboPhanLoai, cboNCC, cboTacDung;
 	private DefaultTableModel modelThuoc;
 	private JTable tableThuoc;
+	private JButton btnTaiLai;
 
 	private FrmManHinhChinh mhc;
-	private JButton btnTaiLai;
 
 	public FrmQLHoaDon(FrmManHinhChinh mhc, String user) {
 		this.mhc = mhc;
@@ -239,28 +238,21 @@ public class FrmQLHoaDon extends JFrame implements ActionListener, DocumentListe
 
 		be2 = Box.createHorizontalBox();
 		be2.add(Box.createHorizontalStrut(10));
-		be2.add(lblPhanLoai = new JLabel("Phân loại"));
+		be2.add(lblPhanLoai = new JLabel("Qui định"));
 		be2.add(Box.createHorizontalStrut(10));
 		be2.add(cboPhanLoai = new JComboBox<String>());
 		cboPhanLoai.addItem("Kê đơn");
 		cboPhanLoai.addItem("Không kê đơn");
 		be2.add(Box.createHorizontalStrut(20));
-		be2.add(lblNCC = new JLabel("Mã nhà cung cấp"));
-		be2.add(Box.createHorizontalStrut(10));
-		be2.add(cboNCC = new JComboBox<String>());
+		String[] str = { "Kháng viêm", "Kháng sinh", "Trị đau", "Tim mạch", "Thần kinh" };
+		be2.add(cboTacDung = new JComboBox<String>(str));
 		be2.add(Box.createHorizontalStrut(10));
 
 		be3 = Box.createHorizontalBox();
 		be3.add(btnTaiLai = new JButton("TẢI LẠI"));
 		btnTaiLai.setIcon(new ImageIcon("src/img/taiLai.png"));
 
-		// load data vào cboNCC
-		ArrayList<NhaCungCap> dsNCC = ncc_dao.getAllNhaCungCap();
-		for (NhaCungCap ncc : dsNCC) {
-			cboNCC.addItem(ncc.getMaNCC());
-		}
-
-		String[] col = { "STT", "Mã thuốc", "Tên thuốc", "Số lượng", "Phân loại", "Nhà cung cấp" };
+		String[] col = { "STT", "Mã thuốc", "Tên thuốc", "Số lượng", "Qui định", "Tác dụng" };
 		modelThuoc = new DefaultTableModel(col, 0);
 		tableThuoc = new JTable(modelThuoc);
 		JScrollPane spThuoc = new JScrollPane(tableThuoc, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
@@ -467,7 +459,7 @@ public class FrmQLHoaDon extends JFrame implements ActionListener, DocumentListe
 		btnThanhToan.addActionListener(this);
 		btnTaiLai.addActionListener(this);
 		cboPhanLoai.addActionListener(this);
-		cboNCC.addActionListener(this);
+		cboTacDung.addActionListener(this);
 		txtLocTheoTen.getDocument().addDocumentListener(this);
 	}
 
@@ -477,7 +469,7 @@ public class FrmQLHoaDon extends JFrame implements ActionListener, DocumentListe
 		int stt = 0;
 		for (Thuoc t : ds) {
 			modelThuoc.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getPhanLoai(),
-					t.getNhaCC().getMaNCC() });
+					t.getTacDung() });
 		}
 
 	}
@@ -591,7 +583,24 @@ public class FrmQLHoaDon extends JFrame implements ActionListener, DocumentListe
 		txtTongThanhToan.setText("");
 	}
 
-	@Override
+	// tìm kiếm và hiển thị lại danh sách
+	public void UpdateTableThuoc() {
+		String ten = txtLocTheoTen.getText();
+		ArrayList<Thuoc> ds = thuoc_dao.getAllThuoc();
+		ArrayList<Thuoc> dsMoi = new ArrayList<Thuoc>();
+		modelThuoc = (DefaultTableModel) tableThuoc.getModel();
+		modelThuoc.getDataVector().removeAllElements();
+		if (ten.isEmpty()) {
+			loadThuoc(ds);
+		} else {
+			for (Thuoc t : ds) {
+				if (t.getTenThuoc().toLowerCase().startsWith(ten.toLowerCase()))
+					dsMoi.add(t);
+			}
+			loadThuoc(dsMoi);
+		}
+	}
+
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		if (o.equals(btnThanhToan)) {
@@ -663,56 +672,36 @@ public class FrmQLHoaDon extends JFrame implements ActionListener, DocumentListe
 				JOptionPane.showMessageDialog(this, "Vui lòng chọn thuốc");
 			}
 		}
-		if (o.equals(cboNCC)) {
-			String maNCC = cboNCC.getSelectedItem().toString();
-			ArrayList<Thuoc> dsT = thuoc_dao.getAllThuocTheoNCC(maNCC);
-			loadThuoc(dsT);
-		}
 		if (o.equals(cboPhanLoai)) {
 			String pl = cboPhanLoai.getSelectedItem().toString();
 			ArrayList<Thuoc> dsT = thuoc_dao.getAllThuocTheoPL(pl);
 			loadThuoc(dsT);
 		}
 
+		if (o.equals(cboTacDung)) {
+			String td = cboTacDung.getSelectedItem().toString();
+			ArrayList<Thuoc> dsT = thuoc_dao.getAllThuocTheoTacDung(td);
+			loadThuoc(dsT);
+		}
+
 		if (o.equals(btnTaiLai)) {
 			ArrayList<Thuoc> ds = thuoc_dao.getAllThuoc();
 			loadThuoc(ds);
-			cboNCC.setSelectedIndex(0);
+			cboTacDung.setSelectedIndex(0);
 			cboPhanLoai.setSelectedIndex(0);
 			txtLocTheoTen.setText("");
 			txtLocTheoTen.requestFocus();
 		}
 	}
 
-	// tìm kiếm và hiển thị lại danh sách
-	public void UpdateTableThuoc() {
-		String ten = txtLocTheoTen.getText();
-		ArrayList<Thuoc> ds = thuoc_dao.getAllThuoc();
-		ArrayList<Thuoc> dsMoi = new ArrayList<Thuoc>();
-		modelThuoc = (DefaultTableModel) tableThuoc.getModel();
-		modelThuoc.getDataVector().removeAllElements();
-		if (ten.isEmpty()) {
-			loadThuoc(ds);
-		} else {
-			for (Thuoc t : ds) {
-				if (t.getTenThuoc().toLowerCase().startsWith(ten.toLowerCase()))
-					dsMoi.add(t);
-			}
-			loadThuoc(dsMoi);
-		}
-	}
-
-	@Override
 	public void insertUpdate(DocumentEvent e) {
 		UpdateTableThuoc();
 	}
 
-	@Override
 	public void removeUpdate(DocumentEvent e) {
 		UpdateTableThuoc();
 	}
 
-	@Override
 	public void changedUpdate(DocumentEvent e) {
 		UpdateTableThuoc();
 	}

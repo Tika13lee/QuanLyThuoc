@@ -8,8 +8,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
-//import java.sql.Date;
-import java.util.List;
 
 import connect.ConnectDB;
 import entity.NhaCungCap;
@@ -36,6 +34,7 @@ public class Thuoc_DAO {
 				String ma = rs.getString("maThuoc");
 				String ten = rs.getString("tenThuoc");
 				String phanLoai = rs.getString("phanLoai");
+				String td = rs.getString("tacDung");
 				Date ngaySX = rs.getDate("ngaySX");
 				Date ngayHH = rs.getDate("ngayHetHan");
 				String donViTinh = rs.getString("donViTinh");
@@ -43,7 +42,7 @@ public class Thuoc_DAO {
 				double dongia = rs.getDouble("donGia");
 				NhaCungCap ncc = new NhaCungCap(rs.getString("maNCC"));
 
-				Thuoc thuoc = new Thuoc(ma, ten, phanLoai, ngayHH, donViTinh, soLuong, dongia, ngaySX, ncc);
+				Thuoc thuoc = new Thuoc(ma, ten, phanLoai, td, ngayHH, donViTinh, soLuong, dongia, ngaySX, ncc);
 				dsThuoc.add(thuoc);
 			}
 		} catch (Exception e) {
@@ -71,13 +70,56 @@ public class Thuoc_DAO {
 				String ma = rs.getString(1);
 				String ten = rs.getString(2);
 				String phanLoai = rs.getString(3);
-				Date ngaySX = rs.getDate(4);
-				Date ngayHH = rs.getDate(5);
-				String donViTinh = rs.getString(6);
-				int soLuong = rs.getInt(7);
-				double dongia = rs.getDouble(8);
-				NhaCungCap ncc = new NhaCungCap(rs.getString(9));
-				Thuoc thuoc = new Thuoc(ma, ten, phanLoai, ngayHH, donViTinh, soLuong, dongia, ngaySX, ncc);
+				String td = rs.getString(4);
+				Date ngaySX = rs.getDate(5);
+				Date ngayHH = rs.getDate(6);
+				String donViTinh = rs.getString(7);
+				int soLuong = rs.getInt(8);
+				double dongia = rs.getDouble(9);
+				NhaCungCap ncc = new NhaCungCap(rs.getString(10));
+				Thuoc thuoc = new Thuoc(ma, ten, phanLoai, td, ngayHH, donViTinh, soLuong, dongia, ngaySX, ncc);
+				ds.add(thuoc);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+		} finally {
+			try {
+				statement.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return ds;
+	}
+
+	/*
+	 * lấy data thuốc theo tác dụng;
+	 */
+	public ArrayList<Thuoc> getAllThuocTheoTacDung(String td) {
+		ArrayList<Thuoc> ds = new ArrayList<Thuoc>();
+		ConnectDB.getInstance();
+		Connection con = ConnectDB.getConnection();
+		PreparedStatement statement = null;
+		ResultSet rs = null;
+		String sql = "select * from Thuoc where tacDung = ?";
+
+		try {
+			statement = con.prepareStatement(sql);
+			statement.setString(1, td);
+			rs = statement.executeQuery();
+			while (rs.next()) {
+				String ma = rs.getString(1);
+				String ten = rs.getString(2);
+				String phanLoai = rs.getString(3);
+				String tdung = rs.getString(4);
+				Date ngaySX = rs.getDate(5);
+				Date ngayHH = rs.getDate(6);
+				String donViTinh = rs.getString(7);
+				int soLuong = rs.getInt(8);
+				double dongia = rs.getDouble(9);
+				NhaCungCap ncc = new NhaCungCap(rs.getString(10));
+				Thuoc thuoc = new Thuoc(ma, ten, phanLoai, tdung, ngayHH, donViTinh, soLuong, dongia, ngaySX, ncc);
 				ds.add(thuoc);
 			}
 		} catch (SQLException e) {
@@ -112,13 +154,14 @@ public class Thuoc_DAO {
 				String ma = rs.getString(1);
 				String ten = rs.getString(2);
 				String phanLoai = rs.getString(3);
-				Date ngaySX = rs.getDate(4);
-				Date ngayHH = rs.getDate(5);
-				String donViTinh = rs.getString(6);
-				int soLuong = rs.getInt(7);
-				double dongia = rs.getDouble(8);
-				NhaCungCap ncc = new NhaCungCap(rs.getString(9));
-				Thuoc thuoc = new Thuoc(ma, ten, phanLoai, ngayHH, donViTinh, soLuong, dongia, ngaySX, ncc);
+				String tdung = rs.getString(4);
+				Date ngaySX = rs.getDate(5);
+				Date ngayHH = rs.getDate(6);
+				String donViTinh = rs.getString(7);
+				int soLuong = rs.getInt(8);
+				double dongia = rs.getDouble(9);
+				NhaCungCap ncc = new NhaCungCap(rs.getString(10));
+				Thuoc thuoc = new Thuoc(ma, ten, phanLoai, tdung, ngayHH, donViTinh, soLuong, dongia, ngaySX, ncc);
 				ds.add(thuoc);
 			}
 		} catch (SQLException e) {
@@ -191,11 +234,6 @@ public class Thuoc_DAO {
 			stmt.setString(9, t.getMaThuoc()); // sửa đổi giá trị của đối số này
 
 			int n = stmt.executeUpdate();
-//			if (n > 0) {
-//				System.out.println("Cập nhật thông tin thuốc thành công.");
-//			} else {
-//				System.out.println("Không tìm thấy thuốc để cập nhật.");
-//			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -272,13 +310,14 @@ public class Thuoc_DAO {
 				String ma = rs.getString("maThuoc");
 				String ten = rs.getString("tenThuoc");
 				String phanLoai = rs.getString("phanLoai");
+				String td = rs.getString("tacDung");
 				Date ngaySX = rs.getDate("ngaySX");
 				Date ngayHH = rs.getDate("ngayHetHan");
 				String donViTinh = rs.getString("donViTinh");
 				int soLuong = rs.getInt("soLuong");
 				double dongia = rs.getDouble("donGia");
 				NhaCungCap ncc = new NhaCungCap(rs.getString("maNCC"));
-				Thuoc thuoc = new Thuoc(ma, ten, phanLoai, ngayHH, donViTinh, soLuong, dongia, ngaySX, ncc);
+				Thuoc thuoc = new Thuoc(ma, ten, phanLoai, td, ngayHH, donViTinh, soLuong, dongia, ngaySX, ncc);
 				ds.add(thuoc);
 			}
 
@@ -313,13 +352,14 @@ public class Thuoc_DAO {
 				String ma = rs.getString("maThuoc");
 				String ten = rs.getString("tenThuoc");
 				String phanLoai = rs.getString("phanLoai");
+				String td = rs.getString("tacDung");
 				Date ngaySX = rs.getDate("ngaySX");
 				Date ngayHH = rs.getDate("ngayHetHan");
 				String donViTinh = rs.getString("donViTinh");
 				int soLuong = rs.getInt("soLuong");
 				double dongia = rs.getDouble("donGia");
 				NhaCungCap ncc = new NhaCungCap(rs.getString("maNCC"));
-				Thuoc thuoc = new Thuoc(ma, ten, phanLoai, ngayHH, donViTinh, soLuong, dongia, ngaySX, ncc);
+				Thuoc thuoc = new Thuoc(ma, ten, phanLoai, td, ngayHH, donViTinh, soLuong, dongia, ngaySX, ncc);
 				ds.add(thuoc);
 			}
 
@@ -352,6 +392,7 @@ public class Thuoc_DAO {
 				String ma = rs.getString("maThuoc");
 				String ten = rs.getString("tenThuoc");
 				String phanLoai = rs.getString("phanLoai");
+				String td = rs.getString("tacDung");
 				Date ngaySX = rs.getDate("ngaySX");
 				Date ngayHH = rs.getDate("ngayHetHan");
 				String donViTinh = rs.getString("donViTinh");
@@ -359,7 +400,7 @@ public class Thuoc_DAO {
 				double dongia = rs.getDouble("donGia");
 				NhaCungCap ncc = new NhaCungCap(rs.getString("maNCC"));
 
-				Thuoc thuoc = new Thuoc(ma, ten, phanLoai, ngayHH, donViTinh, soLuong, dongia, ngaySX, ncc);
+				Thuoc thuoc = new Thuoc(ma, ten, phanLoai, td, ngayHH, donViTinh, soLuong, dongia, ngaySX, ncc);
 				dsThuoc.add(thuoc);
 			}
 		} catch (Exception e) {
