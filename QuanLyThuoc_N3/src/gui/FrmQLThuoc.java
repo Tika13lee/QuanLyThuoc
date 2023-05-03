@@ -236,7 +236,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 		bRight.setPreferredSize(new Dimension(400, 200));
 
 		// bảng dữ liệu thuốc (centter)
-		String[] cols = { "STT", "Mã thuốc", "Tên thuốc", "Số lượng", "Đơn giá nhập", "Ngày sản xuất", "Ngày hết hạn",
+		String[] cols = { "STT", "Mã thuốc", "Tên thuốc", "Số lượng", "Đơn giá", "Ngày sản xuất", "Ngày hết hạn",
 				"Nhà cung cấp", "Phân loại", "Đơn vị tính" };
 		model = new DefaultTableModel(cols, 0);
 		table = new JTable(model);
@@ -598,7 +598,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 			return null;
 		}
 
-		String ma = String.format("T%01d", soLuong + 1);
+		String ma = String.format("T%03d", soLuong + 1);
 
 		if (txtTenThuoc.getText().isEmpty()) {
 			return null;

@@ -488,9 +488,9 @@ public class FrmQLHoaDon extends JFrame implements ActionListener, DocumentListe
 		String maHD;
 		if (soHD == -1) {
 			soHD = 0;
-			maHD = String.format("HD%01d", soHD + 1);
+			maHD = String.format("HD%03d", soHD + 1);
 		} else {
-			maHD = String.format("HD%01d", soHD + 1);
+			maHD = String.format("HD%03d", soHD + 1);
 		}
 		txtMaHD.setText(maHD);
 
@@ -499,9 +499,9 @@ public class FrmQLHoaDon extends JFrame implements ActionListener, DocumentListe
 		String maKH;
 		if (soKH == -1) {
 			soKH = 0;
-			maKH = String.format("KH%01d", soKH + 1);
+			maKH = String.format("KH%03d", soKH + 1);
 		} else {
-			maKH = String.format("KH%01d", soKH + 1);
+			maKH = String.format("KH%03d", soKH + 1);
 		}
 		txtMaKH.setText(maKH);
 
