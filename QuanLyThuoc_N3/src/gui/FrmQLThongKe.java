@@ -457,6 +457,7 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 			txtTongSoHD.setText(null);
 			txtNam.setText("");
 			txtTenNV.setText("");
+			txtTongDoanhThu.setText(null);
 		}
 		if (o.equals(btnThoat)) {
 			mhc.display();

@@ -321,9 +321,8 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 		txtSoLuong.setText(model.getValueAt(row, 3).toString());
 		txtDonGia.setText(model.getValueAt(row, 4).toString());
 		cboNhaCC.setSelectedItem(model.getValueAt(row, 7).toString());
-
 		cboPhanLoai.setSelectedItem(model.getValueAt(row, 8).toString());
-		cboDonViTinh.setSelectedItem(model.getValueAt(row, 9).toString());
+		cboTacDung.setSelectedItem(model.getValueAt(row, 9).toString());
 
 		// Lấy giá trị ngày sản xuất từ model
 		String dateSx = model.getValueAt(row, 5).toString();
@@ -350,6 +349,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 		} catch (ParseException ex) {
 			ex.printStackTrace();
 		}
+		
 
 	}
 
@@ -461,7 +461,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 			model.setRowCount(0);
 			for (Thuoc t : ds) {
 				model.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getDonGia(),
-						t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(), t.getDonViTinh() });
+						t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(),t.getTacDung(), t.getDonViTinh() });
 			}
 		}
 
@@ -472,7 +472,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 			model.setRowCount(0);
 			for (Thuoc t : ds) {
 				model.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getDonGia(),
-						t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(), t.getDonViTinh() });
+						t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(),t.getTacDung(), t.getDonViTinh() });
 			}
 		}
 
@@ -485,7 +485,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 					model = (DefaultTableModel) table.getModel();
 					model.getDataVector().removeAllElements();
 					model.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getDonGia(),
-							t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(),
+							t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(),t.getTacDung(), t.getPhanLoai(),
 							t.getDonViTinh() });
 				}
 			}

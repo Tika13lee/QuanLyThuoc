@@ -1,5 +1,4 @@
-﻿
-create database QuanLyThuoc
+﻿create database QuanLyThuoc
 go
 use QuanLyThuoc
 go
