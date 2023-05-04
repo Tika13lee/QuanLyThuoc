@@ -39,7 +39,7 @@ public class FrmManHinhChinh extends JFrame implements ActionListener {
 	}
 
 	public void showGUI() {
-		lblTitle = new JLabel("QUẢN LÝ HIỆU THUỐC");
+		lblTitle = new JLabel("QUẢN LÝ HIỆU THUỐC KNKP PHARMACY");
 		lblTitle.setForeground(Color.BLUE);
 		lblTitle.setFont(new Font("Time new roman", Font.BOLD, 35));
 		lblTitle.setBounds(590, 23, 450, 35);

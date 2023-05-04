@@ -242,7 +242,7 @@ public class FrmQLHoaDon extends JFrame implements ActionListener, DocumentListe
 		be2.add(Box.createHorizontalStrut(20));
 		be2.add(lblTacDung = new JLabel("Tác dụng"));
 		be2.add(Box.createHorizontalStrut(10));
-		String[] str = { "Kháng viêm", "Kháng sinh", "Trị đau", "Tim mạch", "Thần kinh" };
+		String[] str = { "Kháng sinh", "Giảm đau", "Tim mạch", "Chống dị ứng", "Thần kinh", "Hỗ trợ tiêu hóa" };
 		be2.add(cboTacDung = new JComboBox<String>(str));
 		be2.add(Box.createHorizontalStrut(10));
 
@@ -670,8 +670,6 @@ public class FrmQLHoaDon extends JFrame implements ActionListener, DocumentListe
 		if (o.equals(btnTaiLai)) {
 			ArrayList<Thuoc> ds = thuoc_dao.getAllThuoc();
 			loadThuoc(ds);
-			cboTacDung.setSelectedIndex(0);
-			cboPhanLoai.setSelectedIndex(0);
 			txtLocTheoTen.setText("");
 			txtLocTheoTen.requestFocus();
 		}
