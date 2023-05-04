@@ -186,16 +186,17 @@ public class Thuoc_DAO {
 		PreparedStatement stmt = null;
 		int n = 0;
 		try {
-			stmt = con.prepareStatement("insert into" + " Thuoc values (?,?,?,?,?,?,?,?,?)");
+			stmt = con.prepareStatement("insert into" + " Thuoc values (?,?,?,?,?,?,?,?,?,?)");
 			stmt.setString(1, t.getMaThuoc());
 			stmt.setString(2, t.getTenThuoc());
 			stmt.setString(3, t.getPhanLoai());
-			stmt.setDate(4, (java.sql.Date) t.getNgaySX());
-			stmt.setDate(5, (java.sql.Date) t.getNgayHetHan());
-			stmt.setString(6, t.getDonViTinh());
-			stmt.setDouble(7, t.getDonGia());
-			stmt.setInt(8, t.getSoLuong());
-			stmt.setString(9, t.getNhaCC().getMaNCC());
+			stmt.setString(4, t.getTacDung());
+			stmt.setDate(5, (java.sql.Date) t.getNgaySX());
+			stmt.setDate(6, (java.sql.Date) t.getNgayHetHan());
+			stmt.setString(7, t.getDonViTinh());
+			stmt.setDouble(8, t.getDonGia());
+			stmt.setInt(9, t.getSoLuong());
+			stmt.setString(10, t.getNhaCC().getMaNCC());
 			n = stmt.executeUpdate();
 
 		} catch (Exception e) {

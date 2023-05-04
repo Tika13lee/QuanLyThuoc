@@ -41,9 +41,7 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JTabbedPane tabbedPane;
-	private JPanel pnlToanPhan, panel_1;
-	private JLabel lblThongTinKhachHang, lblDiaChi, lblThngKTheo, lblTongSLThuocBan, lblMaNV, lblTenNV, lblSDT, lblNN,
-			lblMaKH, lblNgay, lblDonthuoc, lblTongHD;
+	private JPanel pnlToanPhan;
 	private JTextField txtNam, txtTenNV, txtTongSoHD, txtTongDoanhThu, txtTongSoHD1, txtTongDoanhThu1;
 	private JButton btnMaKH, btnMaHD, btnXoa, btnReload, btnThoat, btnXemKQ1, btnXemKQ2;
 	private JScrollPane scrDSTK;
@@ -191,7 +189,7 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 		lblThang.setBounds(20, 40, 59, 28);
 		pnlThongKeThang.add(lblThang);
 
-		cboThang = new JComboBox();
+		cboThang = new JComboBox<String>();
 		cboThang.setBounds(130, 40, 130, 28);
 		cboThang.addItem("1");
 		cboThang.addItem("2");
@@ -350,14 +348,11 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 		// RIGHT
 
 		// danh sách thống kê và nút báo cáo
-		JScrollPane scrDSTK;
 		String[] tb1 = new String[] { "STT", "Mã Hóa đơn", "Ngày lập Hóa Đơn", "Mã Khách Hàng", "Mã Nhân Viên",
 				"Thành Tiền" };
 		tablemodel = new DefaultTableModel(tb1, 0);
 		table_1 = new JTable(tablemodel);
 		table_1.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
-//		table_1.setBackground(new Color(255, 250, 205));
-//		table_1.setForeground(new Color(0, 0, 205));
 		getContentPane().add(scrDSTK = new JScrollPane(table_1, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS), BorderLayout.CENTER);
 		table_1.setRowHeight(20);
@@ -469,17 +464,13 @@ public class FrmQLThongKe extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(null, "Vui lòng nhập năm!", "Thông báo", JOptionPane.WARNING_MESSAGE);
 			} else {
 				int year = Integer.parseInt(txtNam.getText());
-				List<HoaDon> listHd = hd_DAO.getHoaDonTheoThangNam(month, year);
+				ArrayList<HoaDon> listHd = hd_DAO.getHoaDonTheoThangNam(month, year);
 				tablemodel.setRowCount(0);
-				int stt = 0;
 				if (listHd.size() == 0) {
 					JOptionPane.showMessageDialog(null, "Không tìm thấy hóa đơn nào trong tháng và năm đã chọn!",
 							"Thông báo", JOptionPane.INFORMATION_MESSAGE);
 				} else {
-					for (HoaDon hd : listHd) {
-						tablemodel.addRow(new Object[] { ++stt, hd.getMaHD(), hd.getNgayLapHD(),
-								hd.getKhachHang().getMaKH(), hd.getNhanVien().getMaNV() });
-					}
+					loadData(listHd);
 					thongKeHoaDonKQ();
 					thongKeDoanhThuKQ();
 				}

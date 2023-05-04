@@ -12,7 +12,6 @@ import connect.ConnectDB;
 import entity.HoaDon;
 import entity.KhachHang;
 import entity.NhanVien;
-import entity.Thuoc;
 
 public class HoaDon_DAO {
 	// lấy all data hóa đơn

@@ -10,11 +10,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 //import java.sql.Date;
 import java.util.Date;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -24,13 +22,10 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -49,9 +44,8 @@ import entity.NhaCungCap;
 import entity.Thuoc;
 
 public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener, DocumentListener {
-	private JLabel lblTitle, lblMaThuoc, lblTenThuoc, lblPhanLoai, lblhanSD, lbldonViTinh, lblSoLuong, lblDonGia,
-			lblngaySX, lblnhaCC, lblDonViTinh, lblTimTheoMa, lblTimTheoTen;
-	private JTextField txtMaThuoc, txtTenThuoc, txtSoLuong, txtDonGia, txtTimKiem, txtngaySX, txtNgayHH, txtTimTheoTen;
+	private JLabel lblTitle, lblMaThuoc, lblTenThuoc, lblhanSD, lblSoLuong, lblDonGia, lblngaySX, lblnhaCC;
+	private JTextField txtMaThuoc, txtTenThuoc, txtSoLuong, txtDonGia, txtTimTheoTen;
 	private JButton btnLamMoi, btnThoat, btnThem, btnSua, btnXoa, btnTaiLai, btnCheck, btnLocMaNCC, btnLocPhanLoai;
 	private JDateChooser jdcNgaySX, jdcNgayHH;
 	private JComboBox<String> cboPhanLoai, cboNhaCC, cboDonViTinh, cboMaThuoc;
@@ -154,19 +148,19 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 		b4.add(cboNhaCC = new JComboBox<String>());
 		b4.add(Box.createHorizontalStrut(10));
 
-		b4.add(lblPhanLoai = new JLabel("Qui định:"));
+		b4.add(new JLabel("Qui định:"));
 		cboPhanLoai = new JComboBox<String>();
 		b4.add(cboPhanLoai);
 		cboPhanLoai.addItem("Kê đơn");
 		cboPhanLoai.addItem("Không kê đơn");
 		b4.add(Box.createHorizontalStrut(10));
 
-		b4.add(lblPhanLoai = new JLabel("Tác dụng:"));
+		b4.add(new JLabel("Tác dụng:"));
 		String[] str = { "Kháng sinh", "Giảm đau", "Tim mạch", "Chống dị ứng", "Thần kinh", "Hỗ trợ tiêu hóa" };
 		b4.add(cboTacDung = new JComboBox<String>(str));
 		b4.add(Box.createHorizontalStrut(10));
 
-		b4.add(lblDonViTinh = new JLabel("Đơn vị tính:"));
+		b4.add(new JLabel("Đơn vị tính:"));
 		b4.add(cboDonViTinh = new JComboBox<String>());
 		cboDonViTinh.addItem("milligram");
 
@@ -187,13 +181,13 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 
 		// chức năng tìm kiếm
 		Box ba1 = new Box(BoxLayout.X_AXIS);
-		ba1.add(lblTimTheoTen = new JLabel("Tìm theo tên:"));
+		ba1.add(new JLabel("Tìm theo tên:"));
 		ba1.add(Box.createHorizontalStrut(10));
 		ba1.add(txtTimTheoTen = new JTextField(10));
 		ba1.add(Box.createHorizontalStrut(20));
 
 		Box ba2 = new Box(BoxLayout.X_AXIS);
-		ba2.add(lblTimTheoMa = new JLabel("Tìm theo mã:"));
+		ba2.add(new JLabel("Tìm theo mã:"));
 		ba2.add(Box.createHorizontalStrut(10));
 		ba2.add(cboMaThuoc = new JComboBox<String>());
 		ba2.add(Box.createHorizontalStrut(20));
@@ -349,7 +343,6 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 		} catch (ParseException ex) {
 			ex.printStackTrace();
 		}
-		
 
 	}
 
@@ -450,7 +443,6 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 			DocDuLieuDBVaoTable();
 			cboNhaCC.setSelectedIndex(0);
 			cboPhanLoai.setSelectedIndex(0);
-//			cboMaThuoc.setSelectedIndex(0);
 			txtTimTheoTen.setText("");
 		}
 
@@ -461,7 +453,20 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 			model.setRowCount(0);
 			for (Thuoc t : ds) {
 				model.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getDonGia(),
-						t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(),t.getTacDung(), t.getDonViTinh() });
+						t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(), t.getTacDung(),
+						t.getDonViTinh() });
+			}
+		}
+
+		if (o.equals(btnLocTacDung)) {
+			String td = cboTacDung.getSelectedItem().toString();
+			ArrayList<Thuoc> ds = thuoc_dao.getAllThuocTheoTacDung(td);
+			int stt = 0;
+			model.setRowCount(0);
+			for (Thuoc t : ds) {
+				model.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getDonGia(),
+						t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(), t.getTacDung(),
+						t.getDonViTinh() });
 			}
 		}
 
@@ -472,7 +477,8 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 			model.setRowCount(0);
 			for (Thuoc t : ds) {
 				model.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getDonGia(),
-						t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(),t.getTacDung(), t.getDonViTinh() });
+						t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(), t.getTacDung(),
+						t.getDonViTinh() });
 			}
 		}
 
@@ -485,7 +491,7 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 					model = (DefaultTableModel) table.getModel();
 					model.getDataVector().removeAllElements();
 					model.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getDonGia(),
-							t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(),t.getTacDung(), t.getPhanLoai(),
+							t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getTacDung(), t.getPhanLoai(),
 							t.getDonViTinh() });
 				}
 			}
@@ -498,7 +504,8 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 			JOptionPane.showMessageDialog(this, "Danh sách thuốc hết hạn sử dụng.");
 			for (Thuoc t : list) {
 				model.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getDonGia(),
-						t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(), t.getDonViTinh() });
+						t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(), t.getTacDung(),
+						t.getDonViTinh() });
 			}
 		}
 
@@ -746,7 +753,8 @@ public class FrmQLThuoc extends JFrame implements ActionListener, MouseListener,
 			int stt = 0;
 			for (Thuoc t : dsMoi) {
 				model.addRow(new Object[] { ++stt, t.getMaThuoc(), t.getTenThuoc(), t.getSoLuong(), t.getDonGia(),
-						t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(), t.getDonViTinh() });
+						t.getNgaySX(), t.getNgayHetHan(), t.getNhaCC().getMaNCC(), t.getPhanLoai(), t.getTacDung(),
+						t.getDonViTinh() });
 			}
 		}
 	}
