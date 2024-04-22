@@ -1,0 +1,8 @@
+- Đồ án môn LẬP TRÌNH HƯỚNG SỰ KIỆN VỚI CÔNG NGHỆ JAVA
+  - Tên đề tài: HIỆU THUỐC KNKP
+  - Mô tả: Quản lý hiệu thuốc tư nhân
+- Thành viên
+  - Lê Thị Thúy Kiều
+  - Nguyễn Thành Nhân
+  - Lê Nguyễn Duy Khang
+  - Tạ Lê Phú
